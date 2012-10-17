@@ -1,0 +1,8 @@
+ INFO [main] 2011-05-25 17:56:58,420 Slf4jLog.java (line 55) jetty-7.1.6.v20100715
+ INFO [main] 2011-05-25 17:56:58,554 Slf4jLog.java (line 55) Started SelectChannelConnector@0.0.0.0:8300
+ INFO [main] 2011-05-25 17:58:40,298 Slf4jLog.java (line 55) jetty-7.1.6.v20100715
+ INFO [main] 2011-05-25 17:58:40,423 Slf4jLog.java (line 55) Started SelectChannelConnector@0.0.0.0:8300
+ INFO [main] 2011-05-25 17:59:21,910 Slf4jLog.java (line 55) jetty-7.1.6.v20100715
+ INFO [main] 2011-05-25 17:59:21,983 Slf4jLog.java (line 55) Started SelectChannelConnector@0.0.0.0:8300
+ INFO [main] 2011-05-25 17:59:49,812 Slf4jLog.java (line 55) jetty-7.1.6.v20100715
+ INFO [main] 2011-05-25 17:59:49,888 Slf4jLog.java (line 55) Started SelectChannelConnector@0.0.0.0:8300

@@ -1,0 +1,138 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title id="title" >{{title}}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+            <link href="http://localhost:8084/static.fresher2012.dev/static/lzmain-style.css" media="screen" rel="stylesheet" type="text/css">
+                <link href="http://localhost:8084/static.fresher2012.dev/static/lztab-menu-css.css" media="screen" rel="stylesheet" type="text/css">
+                    <script type="text/javascript" src="http://static.me.zing.vn/feeddialog/js/zmfeeddialog-2.01.min.js" ></script>
+                    <script type="text/javascript" src="http://localhost:8084/static.fresher2012.dev/static/jquery1.8.1.js"></script>
+                    <script type="text/javascript" src="http://localhost:8084/static.fresher2012.dev/static/json_sans_eval.js"></script>
+                    <script type="text/javascript" src="http://fresher2012.live/listtags.js"></script>
+                    <script>
+                        var signkey = "{{#itemRan}}{{signkey}}{{/itemRan}}";
+                    </script>
+                    <script src="http://localhost:8084/static.fresher2012.dev/static/lazyboys-ver1.0-js.js"></script>
+
+                    </head>
+                    <body>		
+                        <div id="lztabContaier">
+                            <ul>
+                                <li>
+                                    <a class="lzactive" href="#lztab1">Ban Nghi Gi?</a>
+                                </li>
+                                <li>
+                                    <a href="#lztab2">Uu Thich</a>
+                                </li>
+                            </ul>
+
+                            <div class="lztabDetails">
+
+                                <div id="lztab1" class="lztabContents" style="display: block; ">
+                                    <div id="lz-wrapper">						
+                                        <input type="hidden" value="{{#itemRan}}{{userID}}{{/itemRan}}" id="usrId" />
+                                        <div id="lz-header">
+
+                                        </div>
+                                        <div id="lz-main-container">
+                                            <div id="lz1-container">
+                                                <div id="lz1-menu">
+                                                    <!--
+                                                    <div class="lz1-item-menu">
+                                                    <a href="#">Bạn Nghĩ Gì?</a>
+                                                    </div>
+                                                    <div class="lz1-item-menu">
+                                                    <a href="#">Ưu thích</a>
+                                                    </div>
+                                                    -->
+                                                </div>
+                                                <div id="lz-item-container">
+                                                    <div id="lz-item-container-text">
+                                                        <div id="lztitle">
+                                                            Ban dang xem chu de: <span id="statusTag"></span><span><a id="close-lztittle" href="#">   [X]  </a></span>
+                                                        </div>
+                                                        <div id="lz-like-unlike">
+                                                            <div id="lz-like-button">
+                                                                <a id="likeItem" type="button" value="Like" ></a>
+                                                            </div>
+                                                            <div id="lz-unlike-button">
+                                                                <a id="unlikeItem" type="button" value="unLike" ></a>
+                                                            </div>
+                                                        </div>
+                                                        <div id="lz-item-textarea">
+                                                            <span id="usrName">{{#itemRan}}{{userName}}{{/itemRan}}</span>
+                                                            <span > <textarea id="ContentItem" cols="92" rows="4"> </textarea></span>
+                                                            </textarea>                                                            
+                                                        </div>
+                                                        <div>
+                                                            <div id="lz-content-key-tags">
+                                                                <div id="lz-key-text">Tu khoa:</div>                                                                
+                                                                <div id="listTag"></div>                                                                
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div id="lz-list-button">
+                                                            <div class="lz-buttons" id="lz-choose-button">
+                                                                <a id="getItem" href="#"></a>
+                                                            </div>
+                                                            <div class="lz-buttons" id="lz-back-button">
+                                                                <a id="lz-back-button-a" href="javascript:backItems();"></a>
+                                                            </div>
+                                                            <div class="lz-buttons" id="lz-next-button">
+                                                                <a id="lz-next-button-a" href="javascript:nextItems();"></a>
+                                                            </div>
+                                                            <div class="lz-buttons" >
+                                                                <input type="hidden" value="" id="valueItemId" />
+                                                                <a id="lz-save-button"herf="#" rel=""></a>
+                                                            </div>
+                                                            <div class="lz-buttons-feed" >
+                                                                <a id="lz-feed-button" herf="#"></a>
+                                                            </div>
+                                                                    
+                                                        </div>
+                                                    </div>
+                                                    <div id="lz2-container">
+                                                        <div id="lz-toptags-bar"></div>
+                                                        <div id="lz-toptags-container"></div>
+                                                    </div>
+                                                    <div id="lz3-container">
+                                                        <div>
+                                                            **Nổi bật**
+                                                        </div>
+                                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="lz-favorited-title" width="84%">Nội dung</td>
+                                                                    <td class="lz-favorited-title" width="16%">Quản lý</td>
+                                                                </tr>
+                                                                <tr>
+
+                                                                    {{#list_section}}
+                                                                    <tr>
+                                                                        <td style="">{{itemContent}}</td>
+                                                                        <td><a href="#">Dang</a> | <a href="#">Luu</a></td>
+                                                                    </tr>
+                                                                    {{/list_section}}
+
+                                                            </tbody>
+                                                        </table>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                    <div id="lztab2" class="lztabContents" style="display: block; ">
+                                        <div>                                           
+                                                <h1>Biển Đông là trọng tâm Hội nghị an ninh châu Á</h1>
+                                                <p>Hội nghị được Viện Nghiên cứu Chiến lược Quốc tế (IISS) có trụ sở tại Anh tổ chức và được biết đến nhiều với tên gọi Đối thoại Shangri-La, vì nó diễn ra hàng năm tại khách sạn cùng tên ở Singapore. Đây là diễn đàn an ninh liên chính phủ có sự tham gia của các quan chức quốc phòng hàng đầu khu vực và thế giới.</p>
+                                                <p>Hội nghị năm nay diễn ra từ 1 tới 3/6, với sự tham gia của đại diện tới từ 28 quốc gia châu Á - Thái Bình dương cùng với Anh, Pháp, Nga và Mỹ. Đây là lần thứ 11 Đối thoại Shangri-La được tổ chức. Chủ đề thảo luận của hội nghị gồm các chương trình hiện đại hóa quân sự, cân bằng lực lượng toàn cầu, cấu trúc an ninh khu vực, chống các mối đe dọa xuyên quốc gia, đối phó thảm họa thiên nhiên. Trong số này, vấn đề tranh chấp chủ quyền trên Biển Đông sẽ được nhấn mạnh.</p>                                           
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                    </body>
+                    </html>
