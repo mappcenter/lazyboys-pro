@@ -1,0 +1,39 @@
+<thead>
+    <tr>
+        <th><input type="checkbox"/></th>
+        <th>ID</th>
+        <th>Status content</th>
+        <th>Actions</th>
+    </tr>
+</thead>
+
+<tbody id="listItems">
+    {{#list_section}}
+    <tr>
+        <td><input type="checkbox" alt="{{itemID}}"/></td>
+        <td><a href="#">{{itemID}}</a></td>
+        <td>{{itemContent}}</td>
+        <td>
+            <a href="#"><img src="http://localhost:81/images/icons/pencil.png" alt="Edit" /></a>
+            <a href="#" class="confirmation"><img src="http://localhost:81/images/icons/cross.png" alt="Delete" /></a>
+        </td>
+    </tr>
+    {{/list_section}}
+</tbody>
+
+<tfoot>
+    <tr>
+        <td colspan="4">	
+            <div class="pagination" id="pagination" >
+                <a href="#first" onclick="aaa(1);" rel="1">first</a>
+                {{#listPage_section}}
+                {{page}}
+                {{/listPage_section}}
+                <a href="#last" onclick="aaa($(this).attr('rel'));" rel="{{last}}">last</a>
+            </div>
+            <div class="bulk-actions" onclick="deleteItem();">
+                <a href="#" class="graybutton">Delete selected</a>
+            </div>
+        </td>
+    </tr>
+</tfoot>
