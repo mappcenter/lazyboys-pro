@@ -1,9 +1,7 @@
 package httpservice;
 
-import com.vng.jcore.common.Config;
-import java.io.File;
-
 import com.vng.jcore.common.LogUtil;
+import java.io.File;
 import org.apache.log4j.Logger;
 
 public class ServiceDaemon {

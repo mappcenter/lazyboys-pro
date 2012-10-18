@@ -1,6 +1,6 @@
 package webservlet.Client;
 
-import MiddlewareFrontend.Item;
+import frontend.Item;
 import appinfo.MyAppInfo;
 import com.google.gson.Gson;
 import com.vng.jcore.common.Config;

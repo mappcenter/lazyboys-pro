@@ -1,6 +1,6 @@
 package webservlet.Client;
 
-import MiddlewareFrontend.Tag;
+import frontend.Tag;
 import com.google.gson.Gson;
 import frontend.MiddlewareHandler;
 import hapax.Template;

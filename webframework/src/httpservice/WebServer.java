@@ -2,24 +2,17 @@ package httpservice;
 
 import com.vng.jcore.common.Config;
 import java.lang.management.ManagementFactory;
-import javax.management.Attribute;
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.jmx.MBeanContainer;
 import org.eclipse.jetty.server.Connector;
-import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.ContextHandler;
-import org.eclipse.jetty.server.handler.ContextHandlerCollection;
-import org.eclipse.jetty.server.handler.HandlerList;
-import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;
-import org.eclipse.jetty.servlet.FilterMapping;
-import org.eclipse.jetty.servlet.ServletContextHandler.Context;
+import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
-import org.eclipse.jetty.webapp.jmx.WebAppContextMBean;
+import webservlet.Admin.IndexControllerServlet;
 
 
 
@@ -61,7 +54,9 @@ public class WebServer {
         
         
         ServletHandler handler = new ServletHandler();
-        
+//        ServletContextHandler contextHandler=new ServletContextHandler(ServletContextHandler.SESSIONS);
+//        contextHandler.setContextPath("/");
+//        contextHandler.addServlet(new ServletHolder(new IndexControllerServlet()), "/");
         
        // handler.setFilterMappings();
         handler.addServletWithMapping("webservlet.Client.IndexControllerServlet", "/");
@@ -71,8 +66,14 @@ public class WebServer {
         handler.addServletWithMapping("webservlet.Client.FeedControllerServlet","/feedItem");
         handler.addServletWithMapping("webservlet.Client.TestFeedControllerServlet","/testfeed");
         handler.addServletWithMapping("webservlet.Client.LikeUnlikeItemControllerServlet","/like_unlike");
-        handler.addServletWithMapping("servlet.randomItemServlet","/random");
+        //handler.addServletWithMapping("servlet.randomItemServlet","/random");
         
+        handler.addServletWithMapping("webservlet.Admin.IndexControllerServlet", "/admin");
+        handler.addServletWithMapping("webservlet.Admin.loginControllerServlet", "/login");
+        handler.addServletWithMapping("webservlet.Admin.randomItemServlet", "/random");
+        handler.addServletWithMapping("webservlet.Admin.getItemPageServlet", "/getItemPage");
+        handler.addServletWithMapping("webservlet.Admin.generatePageServlet", "/generatePage");
+        handler.addServletWithMapping("webservlet.Admin.deleteItemServlet", "/deleteItem");
         
         
 //        

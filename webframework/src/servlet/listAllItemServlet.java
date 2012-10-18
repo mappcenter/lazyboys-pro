@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import MiddlewareFrontend.Item;
+import frontend.Item;
 import org.apache.thrift.TException;
 
 /**
