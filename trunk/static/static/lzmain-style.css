@@ -276,6 +276,12 @@ body {
 #lztab2{
     margin-top: 40px;
 }
+.popular-data td{
+    border-bottom: 1px solid #95B3D7;
+    border-right: 1px solid #95B3D7;
+    border-left: 1px solid #95B3D7;
+    padding: 5px;
+}
 /*
 css 4 top items
 */
