@@ -75,6 +75,7 @@ void BackendMiddlewareHandler::getTopTags(std::vector<Tag> & _return, const int6
 }
 
 void BackendMiddlewareHandler::getTagKeyword(std::vector<Tag> & _return, const std::string& keyWord) {
+    _return = tagDB->getTagKeyword(keyWord);
 }
 
 void BackendMiddlewareHandler::getAllItems(std::vector<Item> & _return, const int64_t number) {
