@@ -1,5 +1,0 @@
-<a href="#first" onclick="aaa(1);" rel="1">first</a>
-{{#listPage_section}}
-{{page}}
-{{/listPage_section}}
-<a href="#last" onclick="aaa({{last}});" rel="{{last}}">last</a>
