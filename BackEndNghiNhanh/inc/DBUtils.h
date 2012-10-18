@@ -15,10 +15,6 @@ using namespace kyotocabinet;
 using namespace std;
 using Poco::Logger;
 
-//Trong mỗi file database sẽ lưu thêm 1 record có key="lastID" - ID cuối cùng được thêm vào file, 
-//mỗi khi insert new record thì sẽ lấy newID=lastID+1
-const string LASTID = "lastID";
-
 class DBUtils {
 public:
     DBUtils();
@@ -34,6 +30,7 @@ public:
     static bool setLastID(GrassDB& grassDB, string id);
 public:
     Logger* logger;
+    string lastID;
 };
 
 #endif	/* DATABASEMANAGER_H */

@@ -10,11 +10,13 @@
 
 ItemDB::ItemDB() {
     logger = &Logger::get("ItemDB");
+    lastID = "lastID";
 }
 
 ItemDB::ItemDB(string path) {
     logger = &Logger::get("ItemDB");
     pathHashDB = path;
+    lastID = "lastID";
 }
 
 ItemDB::~ItemDB() {
@@ -33,10 +35,10 @@ void ItemDB::startItemDB() {
     cout << "Start ItemDB in " << sysTime2 - sysTime1 << " milliseconds." << endl;
     poco_information_f1(*logger, "startItemDB: Start ItemDB in %s milliseconds.", Utils::convertIntToString((sysTime2 - sysTime1)));
 
-    int n = 300;
-    cout << "Getting ListTopItemID" << endl;
+    //int n = 300;
+    //cout << "Getting ListTopItemID" << endl;
     // Mac dinh lTopItemID chi co 300 itemID.
-    lTopItemID = getListTopItemID(n);
+    //lTopItemID = getTopItemID(n);
     //Timestamp sysTime3 = Timestamp().utcTime();
     //cout << "Start ItemDB in " << sysTime3 - sysTime2 << " milliseconds." << endl;
     return;
@@ -61,8 +63,7 @@ string ItemDB::convertItemToJson(Item& item) {
     Value value;
     value["content"] = item.content;
     value["tagsID"];
-    int n = item.tagsID.size();
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < item.tagsID.size(); i++) {
         value["tagsID"][i] = item.tagsID[i];
     }
     value["likeCounts"] = static_cast<int> (item.likeCounts);
@@ -72,6 +73,7 @@ string ItemDB::convertItemToJson(Item& item) {
     value["dateUpdate"] = item.dateUpdate;
     StyledWriter writer; //not use Json::Writer because it is a virtual class
     string jsonString = writer.write(value);
+    //poco_information_f1(*logger, "convertItemToJson: Convert from Item %s to json successful", item.itemID);
     return jsonString;
 }
 
@@ -106,8 +108,7 @@ Item ItemDB::convertJsonToItem(string jsonString) {
 
     //itemReturn.itemID = itemID.asString();
     itemReturn.content = content.asString();
-    int n = tagsID.size();
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < tagsID.size(); i++) {
         string str = tagsID[i].asString();
         itemReturn.tagsID.push_back(str);
     }
@@ -155,8 +156,10 @@ Item ItemDB::getItemInGrassDB(string itemID) {
     Item itemReturn;
     try {
         grassDB.get(itemID, &value);
+        //cout<<"HELLO:"<<value;
         itemReturn = convertJsonToItem(value);
         itemReturn.itemID = itemID;
+        //poco_information_f1(*logger, "getItemInGrassDB: Get ItemID = %s successful", itemReturn.itemID);
         return itemReturn;
     } catch (Exception ex) {
         cerr << "Get error: " << grassDB.error().name() << endl;
@@ -216,6 +219,13 @@ Item ItemDB::getRandomItem() {
             break;
         }
     } while (item.itemID == "-1");
+
+    //    int64_t n_record = grassDB.size();
+    //    int64_t index = Utils::getRandomNumber(n_record);
+    //    item = getItemFromItemID(lTopItemID[index]);
+    //    increaseViewCountItem(lTopItemID[index]);
+
+    //poco_information_f1(*logger, "getRandomItem: ItemID random is %s.", item.itemID);
     return item;
 }
 
@@ -245,7 +255,7 @@ vector<Item> ItemDB::getAllItems(int64_t number) {
         cur->jump();
         string itemID, content;
         while (cur->get(&itemID, &content, true)) {
-            if (itemID == LASTID)
+            if (itemID == "lastID")
                 continue;
             Item item = convertJsonToItem(content);
             item.itemID = itemID;
@@ -263,7 +273,7 @@ vector<Item> ItemDB::getAllItems(int64_t number) {
         while (i < number) {
             if (!cur->get(&itemID, &content, true))
                 cur->jump();
-            if (itemID == LASTID)
+            if (itemID == "lastID")
                 continue;
             Item item = convertJsonToItem(content);
             item.itemID = itemID;
@@ -284,9 +294,9 @@ vector<Item> ItemDB::getAllItemshaveTag(string tagID, ItemTagDB& itemTagDB) {
     vector<Item> listItem;
     vector<string> liststring;
     liststring = itemTagDB.getAllItemsIdHaveTag(tagID);
-    int64_t n = liststring.size();
-    for (int i = 0; i < n; i++) {
-        Item item = getItemInGrassDB(liststring[i]);
+    for (int i = 0; i < liststring.size(); i++) {
+        string itemID = liststring[i];
+        Item item = getItemInGrassDB(itemID);
         listItem.push_back(item);
     }
     return listItem;
@@ -327,6 +337,10 @@ bool ItemDB::increaseLikeCountItem(string itemID) {
         poco_error_f1(*logger, "increaseViewCountItem: Replace error in GrassDB %s", grassDB.error().name());
         cout << "error setting";
     }
+    //    if (hashDB.replace(itemID, content) == false) {
+    //        poco_error_f1(*logger, "increaseViewCountItem: Replace error in HashDB %s", hashDB.error().name());
+    //        cout << "error setting";
+    //    }
     lTopItemIDQueue.push_back(item.itemID);
     if (lTopItemIDQueue.size() > 1000) {
         updateListTop();
@@ -352,6 +366,10 @@ bool ItemDB::increaseDislikeCountItem(string itemID) {
         poco_error_f1(*logger, "increaseViewCountItem: Replace error in GrassDB %s", grassDB.error().name());
         cout << "error setting";
     }
+    //    if (hashDB.replace(itemID, content) == false) {
+    //        poco_error_f1(*logger, "increaseViewCountItem: Replace error in HashDB %s", hashDB.error().name());
+    //        cout << "error setting";
+    //    }
     return true;
 }
 
@@ -377,8 +395,7 @@ string ItemDB::insertItem(string content, vector<string> tagsID, ItemTagDB& item
     Item item;
     item.itemID = Utils::convertIntToString(lastID);
     item.content = content;
-    int sizeTagsID = tagsID.size();
-    for (int i = 0; i < sizeTagsID; i++) {
+    for (int i = 0; i < tagsID.size(); i++) {
         temp = tagsID[i];
         item.tagsID.push_back(temp);
     }
@@ -392,18 +409,17 @@ string ItemDB::insertItem(string content, vector<string> tagsID, ItemTagDB& item
     try {
         grassDB.set(item.itemID, jsonStr);
         DBUtils::setLastID(grassDB, item.itemID);
-        sizeTagsID = item.tagsID.size();
-        for (int i = 0; i < sizeTagsID; i++)
+        for (int i = 0; i < item.tagsID.size(); i++)
             itemTagDB.insertItemIDToTag(item.tagsID[i], item.itemID);
         addQueue(ADD, item.itemID, jsonStr);
-        addQueue(ADD, LASTID, item.itemID);
+        addQueue(ADD, "lastID", item.itemID);
         return item.itemID;
-    } catch (Exception ex) {
-        cout << "insertItem: Error to add itemID=" << item.itemID << endl;
+    }catch(Exception ex){
+        cout<<"insertItem: Error to add itemID="<<item.itemID<<endl;
         poco_error_f1(*logger, "insertItem: Error to add itemID=%s", item.itemID);
         return "-1";
     }
-
+    
 }
 
 /**
@@ -416,13 +432,16 @@ bool ItemDB::deleteItem(string itemID, ItemTagDB& itemTagDB) {
         poco_error_f1(*logger, "deleteItem: Don't exits ItemID %s", itemID);
         return false;
     }
-    Item item = getItemFromItemID(itemID);
+    if (!hashDB.remove(itemID)) {
+        poco_error_f1(*logger, "deleteItem: Error in HashDB %s", hashDB.error().name());
+        return false;
+    }
     if (!grassDB.remove(itemID)) {
         poco_error_f1(*logger, "deleteItem: Error in GrassDB %s", grassDB.error().name());
         return false;
     }
-    int size = item.tagsID.size();
-    for (int i = 0; i < size; i++)
+    Item item = getItemFromItemID(itemID);
+    for (int i = 0; i < item.tagsID.size(); i++)
         itemTagDB.deleteItemIDinTag(item.tagsID[i], itemID);
     addQueue(DELETE, item.itemID, "");
     return true;
@@ -434,15 +453,13 @@ bool ItemDB::deleteItem(string itemID, ItemTagDB& itemTagDB) {
  * @return bool
  */
 bool ItemDB::deleteAllItem(vector<string> itemIDs, ItemTagDB& itemTagDB) {
-    int size = itemIDs.size();
-    bool result = true;
-    for (int i = 0; i < size; i++) {
+    for (int i = 0; i < itemIDs.size(); i++) {
         if (!deleteItem(itemIDs[i], itemTagDB)) {
             poco_error_f1(*logger, "deleteAllItem: Error to delete ItemID = %s", itemIDs[i]);
-            result = false;
+            return false;
         }
     }
-    return result;
+    return true;
 }
 
 /**
@@ -473,8 +490,7 @@ bool ItemDB::editItem(string itemID, string newItemValue, vector<string> newTagI
         itemTagDB.deleteItemIDinTag(item.tagsID[i], itemID);
     item.tagsID.clear();
     string temp;
-    int size = newTagIDs.size();
-    for (int i = 0; i < size; i++) {
+    for (int i = 0; i < newTagIDs.size(); i++) {
         temp = newTagIDs[i];
         item.tagsID.push_back(temp);
         //Edit trong ItemTagDB.
@@ -533,7 +549,7 @@ vector<Item> ItemDB::getItemsPage(int64_t pageNumber, int32_t numberItems, strin
         while (i < last) {
             cur->get(&key, &value, true);
             if (i > first) {
-                if (key == LASTID)
+                if (key == "lastID")
                     continue;
                 item = convertJsonToItem(value);
                 item.itemID = key;
@@ -544,12 +560,12 @@ vector<Item> ItemDB::getItemsPage(int64_t pageNumber, int32_t numberItems, strin
         delete cur;
     } else {
         vector<string> lItemID = itemTagDB.getAllItemsIdHaveTag(tagID);
-        int64_t sizeLItemID = lItemID.size();
+        int64_t size = lItemID.size();
         int totalPageNumber;
-        if (sizeLItemID % numberItems == 0)
-            totalPageNumber = sizeLItemID / numberItems;
+        if (size % numberItems == 0)
+            totalPageNumber = size / numberItems;
         else
-            totalPageNumber = sizeLItemID / numberItems + 1;
+            totalPageNumber = size / numberItems + 1;
         if (pageNumber > totalPageNumber) {
             poco_warning_f2(*logger, "getItemsPage: pageNumber = %d > totalPageNumber = %d",
                     pageNumber, totalPageNumber);
@@ -560,7 +576,7 @@ vector<Item> ItemDB::getItemsPage(int64_t pageNumber, int32_t numberItems, strin
         int64_t i = 0;
         if (!lItemID.empty()) {
             for (i = first + 1; i < last; i++) {
-                if (i == sizeLItemID)
+                if (i == lItemID.size())
                     return lItem;
                 lItem.push_back(getItemFromItemID(lItemID[i]));
             }
@@ -575,8 +591,7 @@ vector<Item> ItemDB::getItemsPage(int64_t pageNumber, int32_t numberItems, strin
  * @return "Item" tra ve Item co Item.itemID=-1 neu khong lay duoc.
  */
 Item ItemDB::getItemFromItemID(string itemID) {
-    // Không tăng viewcount, để cho front-end tăng viewcount.
-    //increaseViewCountItem(itemID);
+    increaseViewCountItem(itemID);
     Item item;
     item.itemID = "-1";
     if (grassDB.check(itemID) == -1) {
@@ -598,13 +613,11 @@ Item ItemDB::getItemFromItemID(string itemID) {
  */
 vector<Item> ItemDB::getItemsFromListItemID(vector<string> itemIDs) {
     vector<Item> lItem;
-    int64_t size = itemIDs.size();
-    if (size < 1) {
-        poco_error(*logger, "getItemsFromListItemID: List ItemIDs is empty.");
+    if (itemIDs.empty()) {
+        poco_error(*logger, "getItemsFromListItemID: List ItemIDs id empty.");
         return lItem;
     }
-
-    for (int i = 0; i < size; i++) {
+    for (int i = 0; i < itemIDs.size(); i++) {
         lItem.push_back(getItemFromItemID(itemIDs[i]));
     }
     return lItem;
@@ -615,7 +628,7 @@ vector<Item> ItemDB::getItemsFromListItemID(vector<string> itemIDs) {
  * @param number
  * @return vector<string>
  */
-vector<string> ItemDB::getListTopItemID(int64_t number) {
+vector<string> ItemDB::getTopItemID(int64_t number) {
     int n = grassDB.count();
     vector < string> itemsReturn;
     vector < pair<int, string > > allItems;
@@ -627,12 +640,12 @@ vector<string> ItemDB::getListTopItemID(int64_t number) {
     string ckey, cvalue;
     while (cur->get(&ckey, &cvalue, true)) {
         try {
-            if (ckey != LASTID) {
+            if (ckey != "lastID") {
                 Item item = convertJsonToItem(cvalue);
                 allItems.push_back(std::make_pair(item.likeCounts, item.itemID));
             }
-        } catch (Exception ex) {
-            poco_error_f1(*logger, "getListTopItemID: %s.", ex.message());
+        } catch (char* str) {
+            //cout << "error make pair:" << str << endl;
         }
     }
     sort(allItems.begin(), allItems.end(),
@@ -656,7 +669,7 @@ vector<string> ItemDB::getListTopItemID(int64_t number) {
  * @param itemTagDB
  * @return vector<string>
  */
-vector<string> ItemDB::getListTopItemID(int64_t number, string tagID, ItemTagDB& itemTagDB) {
+vector<string> ItemDB::getTopItemID(int64_t number, string tagID, ItemTagDB& itemTagDB) {
     vector<string> allItemHaveTag = itemTagDB.getAllItemsIdHaveTag(tagID);
     int n = allItemHaveTag.size();
     vector < string> itemsReturn;
@@ -670,9 +683,8 @@ vector<string> ItemDB::getListTopItemID(int64_t number, string tagID, ItemTagDB&
             grassDB.get(allItemHaveTag[i], &cvalue);
             Item item = convertJsonToItem(cvalue);
             allItems.push_back(std::make_pair(item.likeCounts, item.itemID));
-        } catch (Exception ex) {
-            cout << "error make pair:" << ex.message() << endl;
-            poco_error_f1(*logger, "getListTopItemID: %s.", ex.message());
+        } catch (char* str) {
+            cout << "error make pair:" << str << endl;
         }
     }
     sort(allItems.begin(), allItems.end(),
@@ -740,7 +752,7 @@ vector<Item> ItemDB::getListTopItem(int64_t number, string tagID, ItemTagDB& ite
         poco_error_f1(*logger, "getListTopItem: number = %d < 0.", number);
         return result;
     }
-    return getItemsFromListItemID(getListTopItemID(number, tagID, itemTagDB));
+    return getItemsFromListItemID(getTopItemID(number, tagID, itemTagDB));
 }
 
 /**
@@ -750,15 +762,13 @@ void ItemDB::updateListTop() {
     vector<Item> lSum;
     vector<string> lTopItemIDQueueTemp(lTopItemIDQueue);
     lTopItemIDQueue.clear();
-    int n = lTopItemID.size();
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < lTopItemID.size(); i++)
         lSum.push_back(getItemFromItemID(lTopItemID[i]));
-    n = lTopItemIDQueue.size();
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < lTopItemIDQueueTemp.size(); i++)
         if (!checkItemIDinList(lTopItemIDQueueTemp[i], lTopItemID))
             lSum.push_back(getItemFromItemID(lTopItemIDQueueTemp[i]));
     vector < pair<int, string > > allItems;
-    n = lSum.size();
+    int n = lSum.size();
     for (int i = 0; i < n; i++) {
         allItems.push_back(std::make_pair(lSum[i].likeCounts, lSum[i].itemID));
     }
@@ -783,44 +793,27 @@ void ItemDB::updateListTop() {
  * @return bool
  */
 bool ItemDB::checkItemInTag(Item& item, string& tagID) {
-    int n = item.tagsID.size();
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < item.tagsID.size(); i++) {
         if (item.tagsID[i] == tagID)
             return true;
     }
     return false;
 }
 
-/**
- * Kiểm tra itemID có thuộc listItemID hay không.
- * @param itemID
- * @param lItemID
- * @return bool
- */
 bool ItemDB::checkItemIDinList(string& itemID, vector<string>& lItemID) {
-    int n = lItemID.size();
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < lItemID.size(); i++)
         if (itemID == lItemID[i])
             return true;
     return false;
 }
 
-/**
- * Lấy listItem mà content có chứa từ khóa keyword.
- * @param keyword
- * @return vector<Item>
- */
 vector<Item> ItemDB::getItemKeyword(string keyword) {
     vector<Item> result;
-    if (keyword.empty()) {
-        poco_error(*logger, "getItemKeyword: keyword is empty.");
-        return result;
-    }
     DB::Cursor* cur = grassDB.cursor();
     cur->jump();
     string ckey, cvalue;
     while (cur->get(&ckey, &cvalue, true)) {
-        if (ckey == LASTID)
+        if (ckey == "lastID")
             continue;
         if (Utils::findStringInString(cvalue, keyword)) {
             Item item = getItemFromItemID(ckey);
@@ -840,22 +833,18 @@ vector<Item> ItemDB::getItemKeyword(string keyword) {
  */
 vector<Item> ItemDB::getItemKeyword(string keyword, int32_t numberItems) {
     vector<Item> result;
-    if (keyword.empty()) {
-        poco_error(*logger, "getItemKeyword: keyword is empty.");
-        return result;
-    }
     int32_t i = 0;
     DB::Cursor* cur = grassDB.cursor();
     cur->jump();
     string ckey, cvalue;
     while (cur->get(&ckey, &cvalue, true)) {
-        if (ckey != LASTID && Utils::findStringInString(cvalue, keyword)) {
+        if (ckey != "lastID" && Utils::findStringInString(cvalue, keyword)) {
             i++;
             Item item = convertJsonToItem(cvalue);
             item.itemID = ckey;
             result.push_back(item);
         }
-        if (i == numberItems)
+        if (i >= numberItems)
             break;
     }
     delete cur;
@@ -871,16 +860,11 @@ vector<Item> ItemDB::getItemKeyword(string keyword, int32_t numberItems) {
  */
 vector<Item> ItemDB::getItemKeyword(string keyword, string tagID, ItemTagDB& itemTagDB) {
     vector<Item> result;
-    if (keyword.empty()) {
-        poco_error(*logger, "getItemKeyword: keyword is empty.");
-        return result;
-    }
-    vector<string> lItemID = itemTagDB.getAllItemsIdHaveTag(tagID);
-    int64_t n = lItemID.size();
-    for (int i = 0; i < n; i++) {
-        Item item = getItemFromItemID(lItemID[i]);
-        if (Utils::findStringInString(item.content, keyword))
-            result.push_back(item);
+    vector<Item> listItem = getAllItemshaveTag(tagID, itemTagDB);
+    for (int i = 0; i < listItem.size(); i++) {
+        if (listItem[i].itemID != "lastID" && Utils::findStringInString(listItem[i].content, keyword)) {
+            result.push_back(listItem[i]);
+        }
     }
     return result;
 }
@@ -895,24 +879,15 @@ vector<Item> ItemDB::getItemKeyword(string keyword, string tagID, ItemTagDB& ite
  */
 vector<Item> ItemDB::getItemKeyword(string keyword, string tagID, ItemTagDB& itemTagDB, int32_t numberItems) {
     vector<Item> result;
-    if (keyword.empty()) {
-        poco_error(*logger, "getItemKeyword: keyword is empty.");
-        return result;
-    }
-    if (numberItems < 1) {
-        poco_error_f1(*logger, "getItemKeyword: numberItem = %d < 1", numberItems);
-        return result;
-    }
+    vector<Item> listItem = getAllItemshaveTag(tagID, itemTagDB);
     int32_t index = 0;
-    vector<string> lItemID = itemTagDB.getAllItemsIdHaveTag(tagID);
-    int64_t n = lItemID.size();
-    for (int i = 0; i < n; i++) {
-        Item item = getItemFromItemID(lItemID[i]);
-        if (Utils::findStringInString(item.content, keyword))
-            result.push_back(item);
-        index++;
-        if (index == numberItems)
-            return result;
+    for (int i = 0; i < listItem.size(); i++) {
+        if (listItem[i].itemID != "lastID" && Utils::findStringInString(listItem[i].content, keyword)) {
+            result.push_back(listItem[i]);
+            index++;
+            if (index >= numberItems)
+                return result;
+        }
     }
     return result;
 }
