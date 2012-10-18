@@ -119,7 +119,7 @@ public class IndexControllerServlet extends HttpServlet {
         }
         
         int itemTagSize = (int) handler.itemdbSize();
-        int pageCount = (int) Math.ceil(itemTagSize / itemPerPage);
+        int pageCount = (int) Math.ceil((float)itemTagSize / itemPerPage);
 
         int start=Math.max(page-4, 1);
         int end=Math.min(page+4, pageCount);
@@ -130,7 +130,7 @@ public class IndexControllerServlet extends HttpServlet {
                 listPageSection.setVariable("page", "<a href=\"#\" class=\"graybutton pagelink active\" rel=\"" + page + "\">" + page + "</a>");
             } else {
                 TemplateDataDictionary listPageSection = dic.addSection("listPage_section");
-                listPageSection.setVariable("page", "<a href=\"#\" onclick='aaa("+i+");' class=\"graybutton pagelink\" rel=\"" + i + "\">" + i + "</a>");
+                listPageSection.setVariable("page", "<a href=\"#\" onclick='itemList("+i+");' class=\"graybutton pagelink\" rel=\"" + i + "\">" + i + "</a>");
             }
         }
         dic.setVariable("last", String.valueOf(pageCount));

@@ -27,7 +27,7 @@ public class deleteItemServlet extends HttpServlet{
         //boolean result = false;
         try {
             for(int i=0; i<listItemID.length; i++){
-                handler.deleteItem(itemID);
+                handler.deleteItem(listItemID[i]);
             }
             
         } catch (TException ex) {

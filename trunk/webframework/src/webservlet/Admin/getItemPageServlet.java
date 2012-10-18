@@ -85,65 +85,6 @@ public class getItemPageServlet extends HttpServlet {
     }
 
     private String render(HttpServletRequest req) throws Exception {
-//        int page = 1;
-//        String tagID = "-1";
-//        
-//        int itemPerPage = getConfig.getInstance().getItemPerPage();
-//        try {
-//            if (req.getParameter("p") != null) {
-//                page = Integer.parseInt(req.getParameter("p"));
-//            }
-//            if (req.getParameter("t") != null) {
-//                tagID = req.getParameter("t");
-//            }
-//
-//        } catch (Exception ex) {
-//            return "Error: " + ex.getMessage();
-//        }
-//
-//        List<Item> listItem = this.getItemPage(tagID, page, itemPerPage);
-//
-//        TemplateDataDictionary dic = TemplateDictionary.create();
-//
-//        for (int i = 0; i < listItem.size(); i++) {
-//            TemplateDataDictionary listsection = dic.addSection("list_section");
-//            listsection.setVariable("itemContent", listItem.get(i).content);
-//            listsection.setVariable("itemID", listItem.get(i).itemID);
-//        }
-//        
-//        int itemTagSize;
-//        if(tagID.equals("-1")){
-//            itemTagSize=(int) handler.itemdbSize();
-//        }
-//        else
-//        {
-//            itemTagSize = (int) handler.itemtagSize(tagID);
-//        }
-//        int pageCount = (int) Math.ceil(itemTagSize / itemPerPage);
-//
-//        int start=Math.max(page-4, 1);
-//        int end=Math.min(page+4, pageCount);
-//
-//        
-//        for (int i = start; i <= end; i++) {
-//            if (i == page) {
-//                TemplateDataDictionary listPageSection = dic.addSection("listPage_section");
-//                listPageSection.setVariable("page", "<a href=\"#\" class=\"graybutton pagelink active\" rel=\"" + page + "\">" + page + "</a>");
-//            } else {
-//                TemplateDataDictionary listPageSection = dic.addSection("listPage_section");
-//                listPageSection.setVariable("page", "<a href=\"#\" onclick='aaa("+i+");' class=\"graybutton pagelink\" rel=\"" + i + "\">" + i + "</a>");
-//            }
-//        }
-//        dic.setVariable("last", String.valueOf(pageCount));
-//       
-//
-//        Template template = this.getCTemplate();
-//        String content = template.renderToString(dic);
-//        
-//        return content;
-        
-        
-        
         int page = 1;
         String tagID = "-1";
         int itemPerPage = Integer.valueOf(Config.getParam("paging", "itemPerPage"));
@@ -185,7 +126,7 @@ public class getItemPageServlet extends HttpServlet {
             itemTagSize= (int) handler.itemtagSize(tagID);
         }
 	
-        int pageCount = (int) Math.ceil(itemTagSize / itemPerPage)+1;
+        int pageCount = (int) Math.ceil((float)itemTagSize / itemPerPage);
 
         int start=Math.max(page-4, 1);
         int end=Math.min(page+4, pageCount);
@@ -196,7 +137,7 @@ public class getItemPageServlet extends HttpServlet {
                 listPageSection.setVariable("page", "<a href=\"#\" class=\"graybutton pagelink active\" rel=\"" + page + "\">" + page + "</a>");
             } else {
                 TemplateDataDictionary listPageSection = dic.addSection("listPage_section");
-                listPageSection.setVariable("page", "<a href=\"#\" onclick='aaa("+i+");' class=\"graybutton pagelink\" rel=\"" + i + "\">" + i + "</a>");
+                listPageSection.setVariable("page", "<a href=\"#\" onclick='itemList("+i+");' class=\"graybutton pagelink\" rel=\"" + i + "\">" + i + "</a>");
             }
         }
         dic.setVariable("last", String.valueOf(pageCount));
