@@ -20,6 +20,7 @@ using Poco::RegularExpression;
 using Poco::replace;
 
 using namespace Poco;
+
 class TestCase {
 public:
     TestCase();

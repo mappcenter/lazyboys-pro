@@ -6,7 +6,6 @@
  */
 
 #include "FeedBackDB.h"
-#include "synchronizeDB.h"
 
 FeedBackDB::FeedBackDB() {
     logger = &Logger::get("FeedBackDB");

@@ -77,7 +77,7 @@ string DBUtils::getLastID(GrassDB& grassDB) {
         cerr << "getLastID: Can't open LastID in Database. GrassDB Error: " << grassDB.error().name() << endl;
         //poco_error_f1(*logger, "getLastID: Can't open LastID in Database. GrassDB: %s.", grassDB.error().name());
         return "-1";
-    } 
+    }
 }
 
 /**

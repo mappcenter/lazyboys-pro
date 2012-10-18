@@ -21,6 +21,7 @@
 #include "BackendMiddleware.h"
 #include "DBUtils.h"
 #include "synchronizeDB.h"
+#include "FeedBackDB.h"
 
 using Poco::Logger;
 using namespace Poco;
@@ -39,10 +40,10 @@ public:
     void startUserDB();
     void stopUserDB();
     bool userExisted(string userID);
-    bool addUser(string userID, string userToken, int32_t userRole);
-    bool addUser(User& user);
-    bool deleteUser(string userID);
-    bool deleteAllUser();
+    bool addUser(string userID, string userToken, int32_t userRole, FeedBackDB& feedBackDB);
+    bool addUser(User& user, FeedBackDB& feedBackDB);
+    bool deleteUser(string userID, FeedBackDB& feedBackDB);
+    bool deleteAllUser(FeedBackDB& feedBackDB);
     bool blockUser(string userID);
     bool unblockUser(string userID);
     bool editUser(string userID, string userToken, int32_t userRole);

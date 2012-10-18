@@ -89,7 +89,7 @@ bool UserDB::userExisted(string userID) {
     return false;
 }
 
-bool UserDB::addUser(string userID, string userToken, int32_t userRole) {
+bool UserDB::addUser(string userID, string userToken, int32_t userRole, FeedBackDB& feedBackDB) {
     if (grassDB.check(userID) != -1) {
         return false;
     }
@@ -97,10 +97,10 @@ bool UserDB::addUser(string userID, string userToken, int32_t userRole) {
     user.userID = userID;
     user.userToken = userToken;
     user.userRole = userRole;
-    return addUser(user);
+    return addUser(user, feedBackDB);
 }
 
-bool UserDB::addUser(User& user) {
+bool UserDB::addUser(User& user, FeedBackDB& feedBackDB) {
     try {
         string jsonString = convertUserToJson(user);
         string ckey = user.userID;
@@ -110,6 +110,8 @@ bool UserDB::addUser(User& user) {
             return false;
         }
         grassDB.set(ckey, jsonString);
+        vector<string> temp;
+        feedBackDB.insertFeedBack(ckey, temp, temp, temp);
         addQueue(ADD, user.userID, jsonString);
         return true;
     } catch (char *str) {
@@ -119,9 +121,10 @@ bool UserDB::addUser(User& user) {
     }
 }
 
-bool UserDB::deleteUser(string userID) {
+bool UserDB::deleteUser(string userID, FeedBackDB& feedBackDB) {
     if (grassDB.check(userID) != -1) {
         grassDB.remove(userID);
+        feedBackDB.deleteFeedBack(userID);
         addQueue(DELETE, userID, "");
         return true;
     }
@@ -130,10 +133,11 @@ bool UserDB::deleteUser(string userID) {
     return false;
 }
 
-bool UserDB::deleteAllUser() {
+bool UserDB::deleteAllUser(FeedBackDB& feedBackDB) {
     try {
         grassDB.clear();
         hashDB.clear();
+        feedBackDB.deleteAllFeedBack();
         return true;
     } catch (...) {
         poco_error(*logger, "deleteAllUser: Error deleteAllUser");

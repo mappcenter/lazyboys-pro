@@ -28,12 +28,12 @@ public:
     ServerManager();
     ServerManager(const ServerManager& orig);
     virtual ~ServerManager();
-    
+
 public:
     TNonblockingServer createConnection(int port, string pathItemsDB, string pathTagsDB,
-        string pathItemTagDB, string pathUserDB, string pathFeedBackDB);
+            string pathItemTagDB, string pathUserDB, string pathFeedBackDB);
     void listenning(TNonblockingServer server);
-    
+
 private:
     Logger* logger;
 

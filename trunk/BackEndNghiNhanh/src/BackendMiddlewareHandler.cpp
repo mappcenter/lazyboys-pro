@@ -218,11 +218,11 @@ bool BackendMiddlewareHandler::unblockUser(const std::string& userID) {
 }
 
 bool BackendMiddlewareHandler::addUser(const std::string& userID, const std::string& userToken, const int32_t userRole) {
-    return userDB->addUser(userID, userToken, userRole);
+    return userDB->addUser(userID, userToken, userRole, *feedBackDB);
 }
 
 bool BackendMiddlewareHandler::deleteUser(const std::string& userID) {
-    return userDB->deleteUser(userID);
+    return userDB->deleteUser(userID, *feedBackDB);
 }
 
 bool BackendMiddlewareHandler::editUser(const std::string& userID, const std::string& userToken, const int32_t userRole) {
@@ -230,7 +230,7 @@ bool BackendMiddlewareHandler::editUser(const std::string& userID, const std::st
 }
 
 bool BackendMiddlewareHandler::deleteAllUser() {
-    return userDB->deleteAllUser();
+    return userDB->deleteAllUser(*feedBackDB);
 }
 
 int64_t BackendMiddlewareHandler::itemdbSize() {
