@@ -4,16 +4,14 @@
  */
 package src;
 
-import libs.Item;
-import libs.Tag;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import libs.Item;
+import libs.Tag;
 import memcache.MyCache;
 import org.apache.thrift.TException;
 
