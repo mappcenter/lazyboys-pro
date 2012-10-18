@@ -21,14 +21,36 @@ import org.apache.thrift.TException;
  * interface between middle ware and front end
  *
  * @author chanhlt
- */public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
+ */
+public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
 
     BackendHandler handler = new BackendHandler();
+    public static List<String> tagIDs = new ArrayList<>();
+    public static List<String> itemIDs = new ArrayList<>();
+    private static List<Tag> listTag = new ArrayList<>();
+
+    public FrontendHandler() throws TException, IOException {
+        if (listTag.isEmpty()) {
+            listTag = getAllTag();
+            for (int i = 0; i < listTag.size(); i++) {
+                tagIDs.add(listTag.get(i).tagID);
+                //getAllItemshaveTag(listTag.get(i).tagID, 50);
+                String key = listTag.get(i).tagID + "listItemID";                                
+                    List<String> listItemID=new ArrayList<>();
+                    listItemID = handler.getAllItemsIDhaveTag(listTag.get(i).tagID, 100);
+                    MyCache.getInstance().set(key, 3600, listItemID); 
+                }
+            }
+        }
+
+    
 
     public void Caching() throws TException {
-        List<Tag> listTag = getAllTag();
-        for (int i = 0; i < listTag.size(); i++) {
-            getAllItemsIDhaveTag(listTag.get(i).tagID, 1);
+        if (listTag.isEmpty()) {
+            listTag = getAllTag();
+            for (int i = 0; i < listTag.size(); i++) {
+                tagIDs.add(listTag.get(i).tagID);
+            }
         }
     }
 
@@ -41,20 +63,18 @@ import org.apache.thrift.TException;
     @Override
     public List<Tag> getAllTag() throws TException {
 
-        List<Tag> listTag = null;
+        //List<Tag> listTag = null;
         try {
-            listTag = (List<Tag>) MyCache.getInstance().get("listTag");
-            if (listTag == null) {
-                listTag = handler.getAllTag();
-                Properties pro = new Properties();
-                pro.load(new FileInputStream("src/conf/config.ini"));
-                int ttl = Integer.parseInt(pro.getProperty("ttl"));
-                MyCache.getInstance().set("listTag", ttl, listTag);
-                //System.out.println("get from database");
+            if (listTag.isEmpty()) {
+                listTag = (List<Tag>) MyCache.getInstance().get("listTag");
+                System.out.println("get listTag from Cached");
             }
-//            } else {
-//                System.out.println("get from memcache");
-//            }
+            if (listTag == null) {
+                System.out.println("get listTag from DB");
+                listTag = handler.getAllTag();
+                int ttl = getConfig.getInstance().getTtl();
+                MyCache.getInstance().set("listTag", ttl, listTag);
+            }
         } catch (IOException ex) {
             Logger.getLogger(FrontendHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -88,9 +108,7 @@ import org.apache.thrift.TException;
 
     @Override
     public void setViewCountTag(String tagID) throws TException {
-
         handler.setViewCountTag(tagID);
-
     }
 
     @Override
@@ -115,7 +133,6 @@ import org.apache.thrift.TException;
             Item item = getRandomItem();
             listItem.add(item);
         }
-
         return listItem;
     }
 
@@ -136,6 +153,7 @@ import org.apache.thrift.TException;
         try {
             listItemID = (List<String>) MyCache.getInstance().get(key);
             if (listItemID == null) {
+                System.out.println("get list ItemID from DB");
                 listItemID = handler.getAllItemsIDhaveTag(tagID, numberItemsID);
                 MyCache.getInstance().set(key, 3600, listItemID);
             }
@@ -153,28 +171,27 @@ import org.apache.thrift.TException;
      */
     @Override
     public Item getRandomItem() throws TException {
-        Tag tag = getRandomTag();
-        Item item = getRandomItemhaveTag(tag.tagID);
+        String tagID = getRandomTag();
+        Item item = getRandomItemhaveTag(tagID);
         return item;
+        //return handler.getRandomItem();
     }
 
     public int getRandomIndex(int size) {
-        int index = (new Random()).nextInt(size);
-        return index;
+        return (new Random()).nextInt(size - 1);
     }
 
-    public Tag getRandomTag() throws TException {
-        List<Tag> listag = getAllTag();
-        int index = getRandomIndex(listag.size());
-        Tag tag = listag.get(index);
-        return tag;
+    public String getRandomTag() throws TException {
+        int index = getRandomIndex((int) tagdbSize());
+        String tagID = listTag.get(index).tagID;
+        return tagID;
     }
 
     @Override
     public Item getRandomItemhaveTag(String tagID) throws TException {
         Item item = null;
         //an com roi lam tiep
-        List<String> listitem = getAllItemsIDhaveTag(tagID, 1000);
+        List<String> listitem = getAllItemsIDhaveTag(tagID, 100);
         int index = getRandomIndex(listitem.size());
         String itemID = listitem.get(index);
         item = getItemFromItemID(itemID);
@@ -220,8 +237,6 @@ import org.apache.thrift.TException;
     public List<Item> getTopItemsofTag(long number, String tagID) throws TException {
         return handler.getTopItemsofTag(number, tagID);
     }
-
-   
 
     @Override
     public boolean blockUser(String userID) throws TException {
@@ -277,7 +292,6 @@ import org.apache.thrift.TException;
     public List<Item> getItemsPage(long pageNumber, long itemNumber, String tagID) throws TException {
         return handler.getItemsPage(pageNumber, itemNumber, tagID);
     }
-
 
     @Override
     public boolean addUser(String userID, String userToken, int userRole) throws TException {

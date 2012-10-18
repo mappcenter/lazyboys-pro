@@ -27,7 +27,12 @@ public class hellohandler extends AbstractHandler {
         res.setContentType("text/html; charset=utf-8");
         res.setStatus(HttpServletResponse.SC_OK);
         baseReq.setHandled(true);
-        FrontendHandler handler = new FrontendHandler();
+        FrontendHandler handler = null;
+        try {
+            handler = new FrontendHandler(); 
+        } catch (TException ex) {
+            Logger.getLogger(hellohandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
         List<Item> item = null;
         try {
             item = handler.getFavouriteItems("userID", 10);
