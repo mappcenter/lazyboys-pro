@@ -1,0 +1,170 @@
+.update{ text-align:right;float: right; background-position:0 -143px; padding-left:18px;margin-top: 3px; font-weight:bold;}
+.updt_loading{background: url(../images/loading_feed.gif) no-repeat left center}
+.bookmarkfeed_view{float:right;margin-right:10px;margin-top:3px;line-height:17px;}
+.bookmarkfeed_view a{margin-right:7px;}
+.feedtab{display:block; position:relative;overflow:hidden;}
+.feedtab a{ margin-right:5px; display:inline-block; overflow:hidden; height:20px; text-decoration:none; text-align:center; font-weight:bold; width:auto;}
+.feedtab a:hover{ color:#f1f2f3;}
+.feedtab a.acti{ background:#75BDE5;border-bottom: 1px solid #429ACA; color:#fff;}
+.feedtab a.unacti{background:#E9E9E9;border-bottom: 1px solid #C6C6C6;color: #555;}
+.feedtpl.shortfed{border-top:1px solid #eaeff4 !important; margin-top:15px; padding:8px 0 0 58px; display:block; _display:inline-block}
+.linetoprofile{height:1px; background:#EAEFF4;}
+.feedtpl h3{color:#bebebe; font-size:10px; font-weight:bold; line-height:16px; margin-bottom:3px;}
+
+/* Close icon for feedrow */
+a.closefed,.rowcomment a.closefed{float:right;width:18px;display:block;height:16px;text-indent:-9999em;outline:none;}
+a.closefed.active,.rowcomment a.closefed.active{background-position:-52px -143px;}
+a.closefed.active:hover,.rowcomment a.closefed.active:hover{background-position:-72px -143px;}
+/* */
+.topdot{display:block; background:none; border-left:1px solid #fff; border-right:1px solid #fff; height:1px; overflow:hidden;*display:inline-table;}
+.feed_tab{display:block; height:21px;}
+.feed_tab a{margin-right:5px; display:inline-block; overflow:hidden; height:20px; text-decoration:none; text-align:center; font-weight:bold;}
+.feed_tab a:hover{color:#f1f2f3;}
+.feed_tab a.acti{background:#75BDE5;border-bottom: 1px solid #429ACA; color:#fff;}
+.feed_tab a.unacti{background:#E9E9E9;border-bottom: 1px solid #C6C6C6;color: #555;}
+
+.feedtpl{border-top:1px solid #eaeff4; margin-top:17px; padding-top:15px; display:block; _display:inline-block}
+.feedtpl:first-child{border-top:none; margin-top:0px; padding-top:15px; display:block; _display:inline-block;}
+	.feedlt{width:50px; float:left;}
+	.feedlt a{display:block;}
+	.feedrt{margin-left:58px;}
+    /* Added by Thaotlh */
+    .gift_grp {display:block;padding-top:5px; outline:none;}
+    /* */
+		.messagert{font-size:12px; margin:0 58px 5px 0; overflow:hidden; min-height:20px;}
+		.messagert img{ vertical-align:-6px;}
+		.attachrt{ margin:2px 0 5px 0;overflow:hidden;/*width:100%*/}
+		.attachrt.applink{border:1px solid #e0edf5; background:#f7fcff; padding:8px; display:block; _display:inline-block;margin: 5px 58px 8px 0; max-height:145px;}
+		.attachrt.applink.fullmedia{ max-height:none;}
+		.infophofeedrt{ margin:2px 0 5px 0; color:#808080}
+		.feedphort{ padding-right:58px;}
+			.imgalone{border:1px solid #D9E2EB; padding:2px; margin-right:3px; overflow:hidden; float:left; cursor:pointer; background:#fff;}
+			.imgalone:hover{border:1px solid #476DA4}
+			.imglarge{border:1px solid #D9E2EB; padding:2px; margin-right:3px; width:expression(this.scrollWidth > 254? "255px": "auto" ); max-width:255px; overflow:hidden; float:left; cursor:pointer; }
+			.imglarge:hover{border:1px solid #476DA4;}
+			.imglarge i{display:block;_display:inline-block; overflow:hidden;}	
+			.imglarge .hor{ height:auto; _height:199px; max-height:199px; overflow:hidden}
+			.imglarge .ver{height:auto; _height:303px; max-height:303px; overflow:hidden;}
+			.imgsmall{display:inline-block; width:136px; overflow:hidden; float:left}
+			.imgsmall img{border:1px solid #D9E2EB !important; height:95px; padding:2px;margin-bottom:3px; display:block}
+			.imgsmall a:hover img{border:1px solid #476DA4 !important;}
+			.mediaitemrt{max-width:120px; max-height:145px; float:left; margin-right:8px; position:relative;overflow:hidden; font-size:1px; line-height:1px}
+			.mediaitemrt i{width:35px; height:26px; background:url(../images/icoplayer.png) no-repeat; position:absolute; bottom:2px; left:2px;cursor:pointer;}
+			.mediainfort{display:table; padding-right:58px;}
+			.mediainfortapplink{display:table; max-height:145px; overflow:hidden;}
+			.mediawide{display:block;/* float:none;*/ margin-bottom:5px;}
+			.mediainfort.linert{ border-left:2px solid #ccc; padding-left:8px;}
+				.titnamert{ font-weight:bold; margin-bottom:3px;}
+				.captionrt, .usernameshare{ color:#808080; margin-bottom:3px;}
+				.desrt{ color:#808080;}
+			.icoarrfeed{background-position: -240px -602px;height:5px;width:9px; margin-left:15px; display:block; overflow:hidden;}	
+			.actlinkrt{ line-height:16px; margin-bottom:5px;}
+			.actlinkrt.sharefeed{margin-top:7px;}
+			.likelink {background-position:left -455px;padding-left:20px;}
+			.likelinkgrey {background-position:left -455px;padding-left:20px;}
+			.icodot {background-position: -152px -34px;height:11px;margin:0 5px;width:3px;display: inline-block;}
+			.comlink {background-position:0 -311px;padding-left:20px;}
+			.emofeed {background-position:2px -249px;float: right;height: 21px;margin-right: 5px; width: 23px;}
+			.icomediafeed{width:35px; height:26px; background:url(../images/icoplayer.png) no-repeat; position:absolute; bottom:2px; left:2px; cursor:pointer}
+		.bxcomment{ margin:5px 58px 0 0; display:block;}
+		.rowcomment{ display:block; background:#f0f3f7;border-bottom:1px solid #eaeff4;margin-bottom:1px;padding:5px;overflow:hidden;_height:1%}
+		.rowcomment.wid{padding:5px 8px;}
+		.rowcomment.cmtwid{padding:5px 8px; border-top:1px solid #fff;}
+			.rowcommentlt{width:32px; float:left;}
+			.rowcommentlt a{display:block;}
+			.rowcommentrt{margin-left:37px; margin-right:20px;display:block;}
+			.rowcommentrt img{ vertical-align:-6px;}
+			.rowcommentrtwid{margin-left:37px; padding-right:20px; display:block;}
+			.rowcommentrtwid img{ vertical-align:-6px;}
+			.bxwrtcmt{ background:#fff; padding:3px 4px; border:1px solid #d9e2eb;margin-right:0}
+			.tmpcmt{ height:20px; color:#888; cursor:text;}
+			.rowcommentrt textarea{outline:none; resize: none; border:none; width:100%; _width:98%; padding:0!important; overflow:hidden; min-height:48px;line-height:13px;}
+			.bxcmtend{display:block;padding-top:5px;height:20px;_overflow: hidden;}
+			.bxcmtend.wid{padding-top:8px;}
+			.tipcmtend{padding-left:37px; float:left; color:#808080}
+			.btncmtend{float:right}
+  .feedviewmore{background:#F1F7FA;border:1px solid #D8DFEA;height:1%;overflow:hidden;padding:7px 15px;margin-top:20px;font-size:12px;font-weight:bold;}  
+  .feedviewmorelt{background-position: 0 -292px; padding-left:16px; float:left; width:45%; outline:none;}
+  .feedviewmorert {float:right;line-height:16px;text-align:right;width:50%;}
+  .topage{background-position:4px -18px;float:right;}
+  .moreloading{width:16px; height:11px; background:url(../images/loading_small.gif) no-repeat 0 0; vertical-align:middle; display:inline-block;}
+  
+.icovip{width:16px; height:16px; background-image:url(../images/ico_fam-1.05.gif); background-repeat:no-repeat; margin-right:5px; display:inline-block; vertical-align:middle;}
+.icovip.vipstar{background-position:-1px -1px;} 
+.icovip.vipbiz{background-position:-1px -171px;} 
+.icovip.vipcommunity{background-position:0 -633px;} 
+.icovip.vipstargrey{background-position:-1px -870px; margin-top:-4px;} 
+.icovip.vipbizgrey{background-position:-21px -870px;}
+.icovip.vipcommunitygrey{background-position:-40px -870px; margin-top:-2px;} 
+.disboxfed{ margin-right: 20px;}
+.heightcmtdisbox{}
+.closedisbox{background-position:-52px -143px;height:16px;width:18px;display:block; float:right}
+.closedisbox:hover{background-position:-72px -143px;}
+ul.becomefrdfed{ margin-top:5px; display:block; overflow:hidden;}
+ul.becomefrdfed li{margin-right:2px; display:inline; float:left;}
+ul.becomefrdfed li img{width:32px; height:32px; background:#f0f3f7;}
+
+.disbox_notfound{ margin:0 0 10px 50px;}
+.disbox_notfound p.titnotfound{ font-size:14px; font-weight:bold; margin-bottom:5px;}
+.icodisbox_notfound{ background-position:-35px -603px; width:16px; height:13px; display:inline-block; margin-right:5px; vertical-align:middle;}
+
+#likeboxcontent {display: block;position: relative;}
+    .listMember {position: relative;height: 325px;}
+    .listMember ul.listitem{width:auto;overflow:hidden; display:block;}
+    .listMember li {border-bottom: 1px solid #EAEFF4;margin-bottom: 8px; display: block;padding-bottom: 8px;height:1%;}
+    .listMember li .avatar {float: left;position: relative;width: 42px !important;height:42px !important;margin-right: 8px;}
+    .listMember li .avatar img{height:42px !important;width: 42px;}
+    .listMember li .info {margin: 12px 0 0 50px;*margin-top:-5px;}
+    .listMember li .info .name{ float:left; width:176px;}
+    .listMember li .makefr {background-position:-273px -233px;float: left;height: 25px;margin-top: 15px;overflow: hidden;width: 73px;}
+
+.padtitfed{padding:0 5px;}
+.ctntitfed {margin-top:10px; height:1%; overflow:hidden;border-bottom:1px solid #eaeff4; padding-bottom:10px;}
+.ctntitfed_noline{margin-top:10px; height:1%; overflow:hidden; margin-bottom:-10px; padding-bottom:10px;}
+.padtitfed{ padding:0 5px;}
+.txtphotostt{ margin-top:10px; display:inline-block;}
+.newact{ border:1px solid #C8D4E5; text-align:center; height:28px; line-height:28px; background:#EAEFF4; font-size:12px; font-weight:bold; cursor:pointer; color:#476DA4;-moz-border-radius:2px;-webkit-border-radius:2px;border-radius:2px; margin-top:10px;}
+.dynamic_counter{background-color:#d9514e;color:#fff;padding:1px 4px;font-weight:bold;font-size:10px;line-height:normal;font-style:normal;-moz-border-radius:2px;-webkit-border-radius:2px;border-radius:2px; margin:0 2px; vertical-align:1px;}
+.iconewact{width:9px; height:5px; background-position:-276px -138px; margin-left:5px; display:inline-block; vertical-align:1px;}
+
+.rowmore, .rowmore:hover { background-color: #F1F7FA; border-top: 1px solid #D8DFEA; display: block; font-size: 12px; font-weight: bold; margin-top: 20px; padding: 7px 15px;   text-align: center; text-decoration: none;}
+.rowmore .arrow_icn { background-position: -176px -80px; display: inline-block; font-size: 0; height: 5px; width: 9px; margin-right: 5px; vertical-align: middle;}
+
+.reprinted{border:1px solid #e0edf5; background:#f7fcff; padding:8px 8px 3px; display:block; _display:inline-block; margin:0 58px 8px 0; min-height:37px;}
+.reprinted_lt{width:32px; margin-right:8px; float:left;}
+.reprinted_rt{ margin-left:40px;}
+.reprinted_boss{overflow:hidden; margin-bottom:5px;}
+.reprinted_boss img{ vertical-align:-6px;}
+
+/* Popup: Share a feed */
+.sharefeed_form{background-color:#eaeff4;border-bottom:1px solid #c8d4e5;margin:-8px -8px 10px;padding:10px 8px;}
+.sharefeed_form .txthead{font-size:12px;padding:0 0 8px;line-height:normal;}
+.sharefeed_form .emofeed{margin:0;float:right;margin-right:-4px;}
+.sharefeed_form .useravt{float:left;margin-right:8px;}
+.sharefeed_form .ftextarea{border:1px solid #8ea5bc;padding:3px;box-shadow: 0 1px 0 #fff;background-color:#fff;}
+.sharefeed_form .textarea_feed{color:#333;font-size:12px;resize:none;padding:0;border:0 none;height:42px;width:100%;margin:0;overflow-y:auto;}
+.sharedf_excerpt{padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid #eaeff4}
+.sharedf_excerpt .attachrt{margin:0}
+.whoshared{padding-bottom:5px;}
+.whoshared .txthead{font-weight:bold;padding:0 0 8px;color:#666}
+.whoshared ul{height:35px;}
+.whoshared li{display:inline;float:left;}
+.whoshared li a:hover{text-decoration:none;}
+.whoshared li img{vertical-align:bottom;width:35px;height:35px;margin:0 2px;}
+
+
+
+.mediainfortshare{display:table;}
+.mediainfortshare .desrt{vertical-align:-6px;}
+.imgsharefeed{max-width:100px;}
+.titnamertshare{font-size:12px;font-weight:bold;}
+.nolinetop{border-top:none;margin-top:0;padding-top:0;}
+.feed_notfound{margin-bottom:5px;}
+.feed_notfound p.titnotfound{font-size:13px;font-weight:bold;color:#5b5b5b;margin-bottom:4px;}
+
+.apphoto{position:relative; color:#fff;}
+.bginterphoto{background:#000; filter:alpha(opacity=50); opacity:0.5;-moz-opacity:0.5;-khtml-opacity:0.5; padding:1px 3px; position:absolute; top:3px; right:3px;}
+.marinterphoto{ margin-right:5px;}
+.icophotofed{width:12px; height:12px; background-image:url(../images/imgsprt_feed.png); background-repeat:no-repeat; margin-right:3px; display:inline-block; vertical-align:-2px;}
+.icophotofed.likephotofed{ background-position:0 0;}
+.icophotofed.cmtphotofed{ background-position:-16px 0;}
