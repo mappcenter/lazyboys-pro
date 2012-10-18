@@ -17,12 +17,12 @@
                     <body>		
                         <div id="lztabContaier">
                             <div id="lzmenu-container">
-                                <ul>
+                                <ul id="lz1-menu">
                                     <li>
-                                        <a class="lzactive" href="#lztab1">Ban Nghi Gi?</a>
+                                        <a class="lzactive" href="#lztab1" rel="mpage">Ban Nghi Gi?</a>
                                     </li>
                                     <li>
-                                        <a href="#lztab2">Uu Thich</a>
+                                        <a href="#lztab2" rel="fpage">Uu Thich</a>
                                     </li>
                                 </ul>
                             </div>
@@ -36,16 +36,7 @@
                                         </div>
                                         <div id="lz-main-container">
                                             <div id="lz1-container">
-                                                <div id="lz1-menu">
-                                                    <!--
-                                                    <div class="lz1-item-menu">
-                                                    <a href="#">Bạn Nghĩ Gì?</a>
-                                                    </div>
-                                                    <div class="lz1-item-menu">
-                                                    <a href="#">Ưu thích</a>
-                                                    </div>
-                                                    -->
-                                                </div>
+                                           
                                                 <div id="lz-item-container">
                                                     <div id="lz-item-container-text">
                                                         <div id="lztitle">
@@ -118,8 +109,8 @@
 
                                                                                 {{#list_section}}
                                                                                 <tr>
-                                                                                    <td style="width:84%;">{{itemContent}}</td>
-                                                                                    <td style="width:16%;"><a href="#">Dang</a> | <a href="#">Luu</a></td>
+                                                                                    <td id="itemID{{itemID}}" style="width:84%;">{{itemContent}}</td>
+                                                                                    <td style="width:16%;"><a class="feedItemWall" href="#" rel="{{itemID}}">Dang</a> | <a class="saveItem" href="#" rel="{{itemID}}">Luu</a></td>
                                                                                 </tr>
                                                                                 {{/list_section}}
 
@@ -158,11 +149,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div id="lztab2" class="lztabContents" style="display: block; ">
-                                    <div>                                           
-                                        <h1>Biển Đông là trọng tâm Hội nghị an ninh châu Á</h1>
-                                        <p>Hội nghị được Viện Nghiên cứu Chiến lược Quốc tế (IISS) có trụ sở tại Anh tổ chức và được biết đến nhiều với tên gọi Đối thoại Shangri-La, vì nó diễn ra hàng năm tại khách sạn cùng tên ở Singapore. Đây là diễn đàn an ninh liên chính phủ có sự tham gia của các quan chức quốc phòng hàng đầu khu vực và thế giới.</p>
-                                        <p>Hội nghị năm nay diễn ra từ 1 tới 3/6, với sự tham gia của đại diện tới từ 28 quốc gia châu Á - Thái Bình dương cùng với Anh, Pháp, Nga và Mỹ. Đây là lần thứ 11 Đối thoại Shangri-La được tổ chức. Chủ đề thảo luận của hội nghị gồm các chương trình hiện đại hóa quân sự, cân bằng lực lượng toàn cầu, cấu trúc an ninh khu vực, chống các mối đe dọa xuyên quốc gia, đối phó thảm họa thiên nhiên. Trong số này, vấn đề tranh chấp chủ quyền trên Biển Đông sẽ được nhấn mạnh.</p>                                           
+                                <script ></script>
+                                <div id="lztab2" class="lztabContents" style="display: block; "> 
+                                    <div class="popular">
+                                        <h3>Ưa thích</h3>
+                                        <div class="popular-data">
+                                            
+                                        </div>
                                     </div>
                                 </div>
 
