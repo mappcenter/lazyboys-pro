@@ -1,8 +1,8 @@
 package webservlet.Client;
 
-import frontend.Tag;
 import com.google.gson.Gson;
 import frontend.MiddlewareHandler;
+import frontend.Tag;
 import hapax.Template;
 import hapax.TemplateDataDictionary;
 import hapax.TemplateDictionary;
@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.http.client.ClientProtocolException;
-
 import testFile.FileIO;
 
 public class listTagsControllerServlet extends HttpServlet {
