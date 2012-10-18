@@ -66,6 +66,8 @@ public class WebServer {
         handler.addServletWithMapping("webservlet.Client.FeedControllerServlet","/feedItem");
         handler.addServletWithMapping("webservlet.Client.TestFeedControllerServlet","/testfeed");
         handler.addServletWithMapping("webservlet.Client.LikeUnlikeItemControllerServlet","/like_unlike");
+        handler.addServletWithMapping("webservlet.Client.SaveItemControllerServlet","/saveItem");
+        handler.addServletWithMapping("webservlet.Client.DeleteItemControllerServlet","/delItem");
         //handler.addServletWithMapping("servlet.randomItemServlet","/random");
         
         handler.addServletWithMapping("webservlet.Admin.IndexControllerServlet", "/admin");
