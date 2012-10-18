@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.http.client.ClientProtocolException;
-import testFile.FileIO;
 
 public class listTagsControllerServlet extends HttpServlet {
 
@@ -45,8 +44,7 @@ public class listTagsControllerServlet extends HttpServlet {
     private String render(HttpServletRequest req, HttpServletResponse res) throws Exception {
 
         TemplateDataDictionary dic = TemplateDictionary.create();
-        Template template = this.getCTemplate();
-        FileIO file = new FileIO();
+        Template template = this.getCTemplate();       
         if (contentFile == null) {
             ltags=handler.getAllTag();
             Gson gson = new Gson();
