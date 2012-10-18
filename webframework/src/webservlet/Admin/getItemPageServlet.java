@@ -176,7 +176,15 @@ public class getItemPageServlet extends HttpServlet {
         }
     
         
-        int itemTagSize = (int) handler.itemdbSize();
+        int itemTagSize;
+        if(tagID.equals("-1")){
+              itemTagSize= (int) handler.itemdbSize();
+        }
+        else
+        {
+            itemTagSize= (int) handler.itemtagSize(tagID);
+        }
+	
         int pageCount = (int) Math.ceil(itemTagSize / itemPerPage);
 
         int start=Math.max(page-4, 1);
