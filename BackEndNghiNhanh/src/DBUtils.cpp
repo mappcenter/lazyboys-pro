@@ -70,8 +70,7 @@ bool DBUtils::closeBasicDB(BasicDB& basicDB) {
  */
 string DBUtils::getLastID(GrassDB& grassDB) {
     string value;
-    string lastID = "lastID";
-    if (grassDB.get(lastID, &value)) {
+    if (grassDB.get(LASTID, &value)) {
         //poco_information_f1(*logger, "getLastID: Get lastID in GrassDB successful, lastID of ItemDB is : %s", value);
         return value;
     } else {
@@ -87,9 +86,8 @@ string DBUtils::getLastID(GrassDB& grassDB) {
  * @return bool
  */
 bool DBUtils::setLastID(GrassDB& grassDB, HashDB& hashDB, string id) {
-    string lastID = "lastID";
-    if (!grassDB.set(lastID, id) ||
-            !hashDB.set(lastID, id)) {
+    if (!grassDB.set(LASTID, id) ||
+            !hashDB.set(LASTID, id)) {
         cerr << "setLastID: Error to setLastID. HashDB: " << hashDB.error().name() << "GrassDB: " << grassDB.error().name() << endl;
         //poco_error_f2(*logger, "setLastID: Error tot setLastID. HashDB: %s. GrassDB: %s", hashDB.error().name(), grassDB.error().name());
         return false;
@@ -104,8 +102,7 @@ bool DBUtils::setLastID(GrassDB& grassDB, HashDB& hashDB, string id) {
  * @return bool
  */
 bool DBUtils::setLastID(GrassDB& grassDB, string id) {
-    string lastID = "lastID";
-    if (!grassDB.set(lastID, id)) {
+    if (!grassDB.set(LASTID, id)) {
         cerr << "setLastID: Error to setLastID. GrassDB: " << grassDB.error().name() << endl;
         //poco_error_f2(*logger, "setLastID: Error tot setLastID. HashDB: %s. GrassDB: %s", hashDB.error().name(), grassDB.error().name());
         return false;

@@ -90,8 +90,8 @@ public:
     vector<Item> getItemKeyword(string keyword, string tagID, ItemTagDB& itemTagDB);
     vector<Item> getItemKeyword(string keyword, string tagID, ItemTagDB& itemTagDB, int32_t numberItems);
 
-    vector<string> getTopItemID(int64_t number);
-    vector<string> getTopItemID(int64_t number, string tagID, ItemTagDB& itemTagDB);
+    vector<string> getListTopItemID(int64_t number);
+    vector<string> getListTopItemID(int64_t number, string tagID, ItemTagDB& itemTagDB);
     void updateListTop();
     bool checkItemInTag(Item& item, string& tagID);
     bool checkItemIDinList(string& itemID, vector<string>& lItemID);
@@ -108,8 +108,6 @@ public:
     void setSynDB(synchronizeDB* synDBPtr);
     void addQueue(string command, string itemID, string jsonString);
 private:
-    //DBUtils dbUtil;
-    string lastID; //Key co ten lastID trong DB.
     HashDB hashDB;
     GrassDB grassDB;
     synchronizeDB* syndb;

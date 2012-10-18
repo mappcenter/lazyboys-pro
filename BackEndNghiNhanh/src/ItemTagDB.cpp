@@ -42,7 +42,8 @@ void ItemTagDB::stopItemTagDB() {
 string ItemTagDB::convertItemTagToJson(ItemTag& itemtag) {
     Value value;
     value["itemsID"];
-    for (int i = 0; i < itemtag.itemsID.size(); i++) {
+    int64_t n = itemtag.itemsID.size();
+    for (int i = 0; i < n; i++) {
         //cout << "item tag i : " << item.tags[i];
         value["itemsID"][i] = itemtag.itemsID[i];
         //cout <<value["tags"][i];
@@ -69,7 +70,8 @@ ItemTag ItemTagDB::convertJsonToItemTag(string jsonString) {
     }
     // Let's extract the array contained in the root object
     Value itemsID = root["itemsID"];
-    for (int i = 0; i < itemsID.size(); i++) {
+    int64_t n = itemsID.size();
+    for (int i = 0; i < n; i++) {
         string str = itemsID[i].asString();
         itemtag.itemsID.push_back(str);
     }
@@ -123,28 +125,29 @@ vector<string> ItemTagDB::getAllItemsIdHaveTag(string tagID, int32_t numberItems
         poco_error_f1(*logger, "getAllItemsIdHaveTag: doesn't exits tagID = %s in ItemTagDB", tagID);
         return result;
     }
-    if (numberItemsID < 1) {
-        poco_error(*logger, "getAllItemsIdHaveTag: numberItemsID < 1");
+    if (numberItemsID < -1 || numberItemsID == 0) {
         return result;
     }
     lItemsID = getAllItemsIdHaveTag(tagID);
     int64_t size = lItemsID.size();
-    if (numberItemsID == size) {
-        return lItemsID;
-    }
-    if (numberItemsID > size) {
-        poco_warning_f2(*logger, "getAllItemsIdHaveTag: numberItemsID = %d > lItemsID -1 = %d", numberItemsID, size);
+    if (numberItemsID == -1) {
         numberItemsID = size;
     }
-    int64_t index = Utils::getRandomNumber(size);
-    while (result.size() < numberItemsID) {
-        result.push_back(lItemsID[index]);
-        if (result.size() == numberItemsID)
-            return result;
-        index++;
-        if (index == (lItemsID.size() - 1))
-            index = 0;
+    if (numberItemsID >= size) {
+        return lItemsID;
     }
+    int64_t index;
+    while (result.size() < numberItemsID) {
+        index = Utils::getRandomNumber(size);
+
+        vector<string>::iterator it;
+        it = find(result.begin(), result.end(), lItemsID[index]);
+
+        if (grassDB.check(lItemsID[index]) && it == result.end()) {
+            result.push_back(lItemsID[index]);
+        }
+    }
+    return result;
 }
 
 /**
@@ -204,7 +207,8 @@ bool ItemTagDB::deleteItemIDinTag(string tagID, string itemID) {
     }
     vector<string> lItemID = getAllItemsIdHaveTag(tagID);
     int index;
-    for (int i = 0; i < lItemID.size(); i++)
+    int64_t n = lItemID.size();
+    for (int i = 0; i < n; i++)
         if (lItemID[i] == itemID) {
             index = i;
             break;
@@ -250,7 +254,7 @@ int64_t ItemTagDB::getItemTagSize(const std::string& tagID) {
 }
 
 int64_t ItemTagDB::getItemTagDBSize() {
-    return grassDB.count() - 1;//bo di itemtag cua tag co ten la notag
+    return grassDB.count() - 1; //bo di itemtag cua tag co ten la notag
 }
 
 void ItemTagDB::setSynDB(synchronizeDB* synDBPtr) {

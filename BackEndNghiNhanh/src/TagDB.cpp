@@ -29,7 +29,7 @@ string TagDB::convertTagToJson(Tag& tag) {
     value["dateUpdate"] = tag.dateUpdate;
     Json::StyledWriter writer;
     string jsonText = writer.write(value);
-    poco_information_f1(*logger, "convertTagToJson: Convert from Tag %s to json successful", tag.tagID);
+    //poco_information_f1(*logger, "convertTagToJson: Convert from Tag %s to json successful", tag.tagID);
     return jsonText;
 }
 
@@ -57,7 +57,7 @@ Tag TagDB::convertJsonToTag(string jsonString) {
     itemReturn.viewCounts = viewCounts.asInt();
     itemReturn.dateAdd = dateAdd.asString();
     itemReturn.dateUpdate = dateUpdate.asString();
-    poco_information(*logger, "convertJsonToTag: Convert from Json to Tag successfull");
+    //poco_information(*logger, "convertJsonToTag: Convert from Json to Tag successfull");
     return itemReturn;
 }
 
@@ -259,7 +259,8 @@ bool TagDB::deleteAllTag(ItemTagDB& itemTagDB) {
 
 bool TagDB::deleteAllTag(vector<string> tagIDs, ItemTagDB& itemTagDB) {
     try {
-        for (int i = 0; i < tagIDs.size(); i++) {
+        int n = tagIDs.size();
+        for (int i = 0; i < n; i++) {
             deleteTag(tagIDs[i], itemTagDB);
             //itemTagDB.deleteItemTag(tagIDs[i]);
         }
@@ -307,12 +308,12 @@ vector<Tag> TagDB::getTopTags(int number) {
                 Tag tag = convertJsonToTag(cvalue);
                 tag.tagID = ckey;
                 topTag.push_back(tag);
-                if (topTag.size() >= number) {
+                if (topTag.size() == number) {
                     break;
                 }
             }
         }
-        if (topTag.size() >= number) {
+        if (topTag.size() == number) {
             break;
         }
     }
