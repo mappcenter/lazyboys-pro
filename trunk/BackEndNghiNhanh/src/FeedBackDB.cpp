@@ -43,13 +43,16 @@ string FeedBackDB::convertUserFeedBackToJson(UserFeedBack& userFeedBack) {
     Value value;
     value["itemsLike"];
     value["itemsDislike"];
-    for (int i = 0; i < userFeedBack.itemsLike.size(); i++) {
+    int64_t n = userFeedBack.itemsLike.size();
+    for (int i = 0; i < n; i++) {
         value["itemsLike"][i] = userFeedBack.itemsLike[i];
     }
-    for (int i = 0; i < userFeedBack.itemsDislike.size(); i++) {
+    n = userFeedBack.itemsDislike.size();
+    for (int i = 0; i < n; i++) {
         value["itemsDislike"][i] = userFeedBack.itemsDislike[i];
     }
-    for (int i = 0; i < userFeedBack.favouriteItems.size(); i++) {
+    n = userFeedBack.favouriteItems.size();
+    for (int i = 0; i < n; i++) {
         value["favouriteItems"][i] = userFeedBack.favouriteItems[i];
     }
     StyledWriter writer; //not use Json::Writer because it is a virtual class
@@ -74,15 +77,18 @@ UserFeedBack FeedBackDB::convertJsonToUserFeedBack(string jsonString) {
     Value itemsLike = root["itemsLike"];
     Value itemsDislike = root["itemsDislike"];
     Value favouriteItems = root["favouriteItems"];
-    for (int i = 0; i < itemsLike.size(); i++) {
+    int64_t n = itemsLike.size();
+    for (int i = 0; i < n; i++) {
         string str = itemsLike[i].asString();
         userFeedBack.itemsLike.push_back(str);
     }
-    for (int i = 0; i < itemsDislike.size(); i++) {
+    n = itemsDislike.size();
+    for (int i = 0; i < n; i++) {
         string str = itemsDislike[i].asString();
         userFeedBack.itemsDislike.push_back(str);
     }
-    for (int i = 0; i < favouriteItems.size(); i++) {
+    n = favouriteItems.size();
+    for (int i = 0; i < n; i++) {
         string str = favouriteItems[i].asString();
         userFeedBack.favouriteItems.push_back(str);
     }
@@ -341,7 +347,8 @@ bool FeedBackDB::insertFavouriteItem(string userID, string itemID) {
 
 bool FeedBackDB::deleteFavouriteItem(string userID, string itemID) {
     UserFeedBack userFeedBack = getUserFeedBack(userID);
-    for (int i = 0; i < userFeedBack.favouriteItems.size(); i++) {
+    int64_t n = userFeedBack.favouriteItems.size();
+    for (int i = 0; i < n; i++) {
         if (userFeedBack.favouriteItems[i] == itemID) {
             //xoa element tai vi tri i va cap nhat lai kich thuoc vector
             userFeedBack.favouriteItems.erase(userFeedBack.favouriteItems.begin() + i);
