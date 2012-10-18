@@ -872,4 +872,14 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         transport.close();
         return result;
     }
+
+    @Override
+    public User getUser(String userID) throws TException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<String> getAllUser() throws TException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }
