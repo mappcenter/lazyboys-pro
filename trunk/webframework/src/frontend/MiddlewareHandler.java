@@ -4,9 +4,6 @@
  */
 package frontend;
 
-import MiddlewareFrontend.Item;
-import MiddlewareFrontend.MiddlewareFrontend;
-import MiddlewareFrontend.Tag;
 import com.vng.jcore.common.Config;
 import java.io.IOException;
 import java.util.List;
@@ -18,7 +15,7 @@ import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
-
+import frontend.Tag;
 /**
  *
  * @author chanhlt
@@ -581,18 +578,298 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
     }
 
     @Override
-    public List<Item> getFavoriteItems(long number) throws TException {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public List<Tag> getTagKeyword(String keyWord) throws TException {
+        try {
+            init();
+        } catch (IOException ex) {
+            Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        transport.open();
+        List<Tag> result = client.getTagKeyword(keyWord);
+        transport.close();
+
+        return result;
     }
 
     @Override
-    public boolean insertFavoriteItem(List<Item> listFavoriteItems, Item item) throws TException {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public List<Item> getFavouriteItems(String userID, long number) throws TException {
+        try {
+            init();
+        } catch (IOException ex) {
+            Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        transport.open();
+        List<Item> result = client.getFavouriteItems(userID, number);
+        transport.close();
+
+        return result;
     }
 
     @Override
-    public boolean deleteFavoriteItem(List<Item> listFavoriteItems, Item item) throws TException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }  
-    
+    public List<Item> getFavouriteItemsofTag(String userID, long number, String tagID) throws TException {
+        try {
+            init();
+        } catch (IOException ex) {
+            Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        transport.open();
+        List<Item> result = client.getFavouriteItemsofTag(userID, number, tagID);
+        transport.close();
+
+        return result;
+    }
+
+    @Override
+    public boolean insertFavouriteItem(String userID, String itemID) throws TException {
+        try {
+            init();
+        } catch (IOException ex) {
+            Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        transport.open();
+        boolean result = client.insertFavouriteItem(userID, itemID);
+        transport.close();
+
+        return result;
+    }
+
+    @Override
+    public boolean deleteFavouriteItem(String userID, String itemID) throws TException {
+        try {
+            init();
+        } catch (IOException ex) {
+            Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        transport.open();
+        boolean result = client.deleteFavouriteItem(userID, itemID);
+        transport.close();
+
+        return result;
+    }
+
+    @Override
+    public long itemdbSize() throws TException {
+        try {
+            init();
+        } catch (IOException ex) {
+            Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        transport.open();
+        long result = client.itemdbSize();
+        transport.close();
+        return result;
+    }
+
+    @Override
+    public long tagdbSize() throws TException {
+        try {
+            init();
+        } catch (IOException ex) {
+            Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        transport.open();
+        long result = client.tagdbSize();
+        transport.close();
+        return result;
+    }
+
+    @Override
+    public long itemtagdbSize() throws TException {
+        try {
+            init();
+        } catch (IOException ex) {
+            Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        transport.open();
+        long result = client.itemtagdbSize();
+        transport.close();
+        return result;
+    }
+
+    @Override
+    public long itemtagSize(String tagID) throws TException {
+        try {
+            init();
+        } catch (IOException ex) {
+            Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        transport.open();
+        long result = client.itemtagSize(tagID);
+        transport.close();
+        return result;
+    }
+
+    @Override
+    public long userdbSize() throws TException {
+        try {
+            init();
+        } catch (IOException ex) {
+            Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        transport.open();
+        long result = client.userdbSize();
+        transport.close();
+        return result;
+    }
+
+    @Override
+    public long itemsLikeSize(String userID) throws TException {
+        try {
+            init();
+        } catch (IOException ex) {
+            Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        transport.open();
+        long result = client.itemsLikeSize(userID);
+        transport.close();
+        return result;
+    }
+
+    @Override
+    public long itemsDislikeSize(String userID) throws TException {
+        try {
+            init();
+        } catch (IOException ex) {
+            Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        transport.open();
+        long result = client.itemsDislikeSize(userID);
+        transport.close();
+        return result;
+    }
+
+    @Override
+    public long favouriteItemsSize(String userID) throws TException {
+        try {
+            init();
+        } catch (IOException ex) {
+            Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        transport.open();
+        long result = client.favouriteItemsSize(userID);
+        transport.close();
+        return result;
+    }
+
+    @Override
+    public List<String> getAllItemsIDLike(String userID) throws TException {
+        try {
+            init();
+        } catch (IOException ex) {
+            Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        transport.open();
+        List<String> result = client.getAllItemsIDLike(userID);
+        transport.close();
+        return result;
+    }
+
+    @Override
+    public List<Item> getAllItemsLike(String userID, int number) throws TException {
+        try {
+            init();
+        } catch (IOException ex) {
+            Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        transport.open();
+        List<Item> result = client.getAllItemsLike(userID, number);
+        transport.close();
+        return result;
+    }
+
+    @Override
+    public boolean insertLikedItem(String userID, String itemID) throws TException {
+        try {
+            init();
+        } catch (IOException ex) {
+            Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        transport.open();
+        boolean result = client.insertLikedItem(userID, itemID);
+        transport.close();
+        return result;
+    }
+
+    @Override
+    public boolean deleteLikedItem(String userID, String itemID) throws TException {
+        try {
+            init();
+        } catch (IOException ex) {
+            Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        transport.open();
+        boolean result = client.deleteLikedItem(userID, itemID);
+        transport.close();
+        return result;
+    }
+
+    @Override
+    public List<String> getAllItemsIDDislike(String userID) throws TException {
+        try {
+            init();
+        } catch (IOException ex) {
+            Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        transport.open();
+        List<String> result = client.getAllItemsIDDislike(userID);
+        transport.close();
+        return result;
+    }
+
+    @Override
+    public List<Item> getAllItemsDislike(String userID, int number) throws TException {
+        try {
+            init();
+        } catch (IOException ex) {
+            Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        transport.open();
+        List<Item> result = client.getAllItemsDislike(userID, number);
+        transport.close();
+        return result;
+    }
+
+    @Override
+    public boolean insertDislikedItem(String userID, String itemID) throws TException {
+        try {
+            init();
+        } catch (IOException ex) {
+            Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        transport.open();
+        boolean result = client.insertDislikedItem(userID, itemID);
+        transport.close();
+        return result;
+    }
+
+    @Override
+    public boolean deleteDislikedItem(String userID, String itemID) throws TException {
+       try {
+            init();
+        } catch (IOException ex) {
+            Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        transport.open();
+        boolean result = client.deleteDislikedItem(userID, itemID);
+        transport.close();
+        return result;
+    }
+
+    @Override
+    public boolean userExisted(String userID) throws TException {
+        try {
+            init();
+        } catch (IOException ex) {
+            Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        transport.open();
+        boolean result = client.userExisted(userID);
+        transport.close();
+        return result;
+    }
 }

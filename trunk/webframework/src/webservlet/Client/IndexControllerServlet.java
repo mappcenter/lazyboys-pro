@@ -1,6 +1,6 @@
 package webservlet.Client;
 
-import MiddlewareFrontend.Item;
+import frontend.Item;
 import appinfo.MyAppInfo;
 import com.google.gson.Gson;
 import com.vng.jcore.common.Config;
@@ -156,39 +156,10 @@ public class IndexControllerServlet extends HttpServlet {
                 me = zm.getInfo(zdata.accessToken,"displayname");
             } catch (ZingMeApiException ex) {
                 java.util.logging.Logger.getLogger(indexServerlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-        }
-        
-        ZME_Feed feed=new ZME_Feed(MyAppInfo.getInstance().getzConfig());
-        //ZME_FeedItem feedItem=new ZME_FeedItem((int)me.get("id"), (int)me.get("id"), 1, 3, "", "attach name","http://attachHref.com", "caption vnexpress.net", "description", 1, "mediaImage", "mediaSource", "actionLinkText", "actionLinkH");
-        int id=Integer.valueOf(me.get("id").toString());
-        
-        ZME_FeedItem itemFeed=new ZME_FeedItem(5037964,
-                5037964,
-                1,
-                (short)4,
-                "",
-                "",
-                "",
-                "",
-                "abc",
-                (short)1,
-                "",
-                "",
-                "",
-                ""
-                );
-        
-        try {
-            sigKey=feed.generateSignatureKey(itemFeed);
-        } catch (ZingMeApiException ex) {
-            java.util.logging.Logger.getLogger(indexServerlet.class.getName()).log(Level.SEVERE, null, ex);
+            }            
         }
         
         
-        itemRan.setVariable("signkey", sigKey);
-        //itemRan.setVariable("usr", me.toString());
         itemRan.setVariable("userID", me.get("id").toString());
         itemRan.setVariable("userName", me.get("displayname").toString());
         
@@ -222,7 +193,8 @@ public class IndexControllerServlet extends HttpServlet {
         }
         handler = new MiddlewareHandler();
 
-        List<Item> listItem = handler.getAllItems(100);
+        List<Item> listItem = handler.getAllItems(20);        
+        //List<Item> listItem = handler.getTopItems(20);        
 
         if (profiler != null) {
             profiler.doEndLog("fresherthriftservice");

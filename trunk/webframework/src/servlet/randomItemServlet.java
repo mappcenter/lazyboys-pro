@@ -4,7 +4,7 @@
  */
 package servlet;
 
-import MiddlewareFrontend.Item;
+import frontend.Item;
 import com.google.gson.Gson;
 import frontend.MiddlewareHandler;
 import java.io.IOException;

@@ -12,7 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import MiddlewareFrontend.Tag;
+import frontend.Tag;
 import org.apache.thrift.TException;
 
 /**
@@ -30,7 +30,7 @@ public class CachingTags {
 //            temp.tagName="TagName of " + String.valueOf(i);
 //            ltags.add(temp);
 //        }
-        ltags=handler.getAllTag();
+        ltags=handler.getAllTag(); 
     }
     public boolean CachingTagsFile(){
         boolean result=true;

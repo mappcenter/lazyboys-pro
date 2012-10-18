@@ -1,18 +1,13 @@
 
 package httpservice;
 
-import java.io.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
 
+import com.vng.jcore.stats.EstimatedHistogram;
+import com.vng.jcore.stats.LatencyTracker;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import  java.text.DecimalFormat;
-import java.text.NumberFormat;
-
-import com.vng.jcore.stats.LatencyTracker;
-import com.vng.jcore.stats.EstimatedHistogram;
 
 
 public class StatsMonitor {
