@@ -237,6 +237,7 @@ bool TagDB::setViewCountTag(string tagID) {
     string jsonString = convertTagToJson(tag);
     try {
         grassDB.replace(tagID, jsonString);
+        addQueue(UPDATE, tagID, jsonString);
         return true;
     } catch (char* str) {
         //cout << "Edit error!" << endl;
@@ -274,23 +275,28 @@ bool TagDB::deleteAllTag(vector<string> tagIDs, ItemTagDB& itemTagDB) {
 
 vector<Tag> TagDB::getTopTags(int number) {
     vector<Tag> topTag;
-    if (grassDB.count() == -1) {
+    if (number == 0 || number<-1) {
+        poco_error_f1(*logger, "getTopTags: Number %d is available", number);
         return topTag;
     }
-    int arr[grassDB.count()];
+    int sizeGrassDB = grassDB.count() - 1; // trừ 1 vì trừ ra key="lastID"
+    int arr[sizeGrassDB];
     DB::Cursor* cur = grassDB.cursor();
     cur->jump();
     string ckey, cvalue;
     int count = 0;
     while (cur->get(&ckey, &cvalue, true)) {
+        if (ckey == LASTID)
+            continue;
         Tag tag = convertJsonToTag(cvalue);
         tag.tagID = ckey;
         arr[count++] = tag.viewCounts;
     }
+    delete cur;
     //sap xep viewcount
-    for (int i = 0; i < grassDB.count(); i++) {
+    for (int i = 0; i < sizeGrassDB; i++) {
         int max = arr[i];
-        for (int j = i + 1; j < grassDB.count(); j++) {
+        for (int j = i + 1; j < sizeGrassDB; j++) {
             if (max < arr[j]) {
                 int temp = max;
                 max = arr[j];
@@ -304,18 +310,18 @@ vector<Tag> TagDB::getTopTags(int number) {
         cur->jump();
         string ckey, cvalue;
         while (cur->get(&ckey, &cvalue, true)) {
-            if (ckey == Utils::convertIntToString(arr[i])) {
-                Tag tag = convertJsonToTag(cvalue);
-                tag.tagID = ckey;
+            if (ckey == LASTID)
+                continue;
+            Tag tag = convertJsonToTag(cvalue);
+            tag.tagID = ckey;
+            if (tag.viewCounts == arr[i]) {
                 topTag.push_back(tag);
                 if (topTag.size() == number) {
                     break;
                 }
             }
         }
-        if (topTag.size() == number) {
-            break;
-        }
+        delete cur;
     }
     return topTag;
 }

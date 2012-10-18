@@ -213,7 +213,7 @@ bool ItemTagDB::deleteItemIDinTag(string tagID, string itemID) {
             index = i;
             break;
         }
-    lItemID.erase(lItemID.begin() + index - 1);
+    lItemID.erase(lItemID.begin() + index);
     return editItemTag(tagID, lItemID);
 }
 

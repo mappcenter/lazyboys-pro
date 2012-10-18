@@ -63,7 +63,7 @@ public:
     void getAllItemshaveTag(std::vector<Item> & _return, const std::string& tagID, const int32_t numberItems);
     void pagingItemsTag(std::vector<Item> & _return, const std::string& tagID, const int32_t pageNumber, const int32_t numberItems);
     void getAllItemsIDhaveTag(std::vector<std::string> & _return, const std::string& tagID, const int32_t numberItemsID);
-    
+
     void getRandomItem(Item& _return);
     void getRandomItemhaveTag(Item& _return, const std::string& tagID);
 

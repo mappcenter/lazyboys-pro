@@ -53,7 +53,7 @@ public:
     bool deleteTag(Tag tag, ItemTagDB& itemTagDB);
     bool editTag(string tagID, string tagName);
     bool setViewCountTag(string tagID);
-
+    
     bool deleteAllTag(ItemTagDB& itemTagDB);
     bool deleteAllTag(vector<string> tagIDs, ItemTagDB& itemTagDB);
     vector<Tag> getTopTags(int number);
