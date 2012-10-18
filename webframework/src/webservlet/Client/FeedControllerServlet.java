@@ -1,11 +1,11 @@
 package webservlet.Client;
 
-import appinfo.MyAppInfo;
 import com.google.gson.Gson;
 import com.vng.jcore.common.Config;
 import com.vng.jcore.profiler.ProfilerLog;
 import frontend.Item;
 import frontend.MiddlewareHandler;
+import frontend.MyAppInfo;
 import hapax.Template;
 import hapax.TemplateDataDictionary;
 import hapax.TemplateDictionary;
