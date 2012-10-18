@@ -6,17 +6,11 @@ $(document).ready(function() {
         $.post("getItemPage",{
             t:tagID, 
             p:"1"
-        }, function(data){	
-                    
+        }, function(data){	                   
             $("table.pagination").html(data);	
-        });
-		
+            regen();	
+        }); 
     });
-    
-    
-	
-    
- 
     // Fix IE z-index
 
     /*var zIndexNumber = 1000;
@@ -219,17 +213,16 @@ $(document).ready(function() {
     $('.confirm > a').live('click',function() {
         $('.tooltip').fadeOut(200, function() { // Remove all tooltips
             $(this).remove();
-        });
-        var link = $(this).parent().children("a").attr('href'); // Get the requested link
-        $(this).parent().append('<div class="tooltip"><p>Are you sure?</p><a href="' + link + '">Yes</a> | <a href="#" class="close">No</a></div>'); // Adding the tooltip to the DOM
-			
+        });   
+        var itemID = $(this).parent().children("a").attr('rel');//get deleted item ID
+        $(this).parent().append('<div class="tooltip"><p>Are you sure?</p><a href="#" onclick="deleteOneItem('+itemID+');">Yes</a> | <a href="#" class="close">No</a></div>'); 		
         $('.close').click(function() { // Closing the tooltip
             $('.tooltip').fadeOut(200, function() {
                 $(this).remove();
             });
             return false;
         });
-
+        
         $(this).parent().children('.tooltip').fadeIn(200);
         return false; // Make sure it doesn't follow the link immediately
     });
@@ -252,92 +245,47 @@ $(document).ready(function() {
         $(this).fadeOut(200, function() {
             $(this).hide();
         });
-    });
-		
-		
-		
-// Awesome tables with dynamically generated pagination
-/*
-		$('table.pagination').each(function() {
-			var perPage = $(this).attr("rel"); // Number of items per page
-		
-			$(this).children("tbody").children().hide(); // Hide all table-entries
-			var childrenCount = $(this).children("tbody").children().size(); // Get total count of entries
-			var pageCount = Math.ceil(childrenCount / perPage);
-			
-			$(this).find("tfoot tr td").append('<div class="pagination" />');
-			$(this).find(".pagination").append('<a href="#first" rel="first">First</a>');
-			
-			for(var i = 0; i < pageCount; i++) {
-				$(this).find(".pagination").append('<a href="#" class="graybutton pagelink" rel="' + (i + 1) + '">' + (i + 1) + '</a>');
-			}
-			
-			$(this).find(".pagination").append('<a href="#last" rel="last">Last</a>');
-			
-			for(var i = 0; i < perPage; i++) { // Loop through entries
-				$(this).children("tbody").children("tr:nth-child(" + (i + 1) + ")").show(); // Show requested entry
-				$(this).find("tfoot .pagination a:nth-child(2)").addClass("active");
-			}
-			
-			$(this).find('tfoot .pagination a[rel="first"]').click(function() {
-				$(this).siblings().removeClass("active");
-				$(this).siblings('a:nth-child(2)').addClass("active");
-				
-				$(this).parent().parent().parent().parent().parent().children("tbody").children().hide();
-				
-				for(var i = 0; i < perPage; i++) {
-					$(this).parent().parent().parent().parent().parent().children("tbody").children("tr:nth-child(" + (i + 1) + ")").show();
-				}
-				return false;
-			});
-			
-			$(this).find('tfoot .pagination a[rel="last"]').click(function() {
-				$(this).siblings().removeClass("active");
-				$(this).siblings('a:nth-child(' + (pageCount + 1) + ')').addClass("active");
-				
-				$(this).parent().parent().parent().parent().parent().children("tbody").children().hide();
-				
-				for(var i = 0; i < perPage; i++) {
-					$(this).parent().parent().parent().parent().parent().children("tbody").children("tr:nth-child(" + (i + (pageCount - 1) * perPage + 1) + ")").show();
-				}
-				return false;
-			});
-			
-			$(this).find('tfoot .pagination a.pagelink').click(function() {
-				$(this).siblings().removeClass("active"); // Remove all .active classes
-				$(this).addClass("active"); // Add class .active
-				
-				var offset = perPage * ($(this).attr("rel") - 1); // Define offset
-			
-				$(this).parent().parent().parent().parent().parent().children("tbody").children().hide(); // Hide all other entries
-			
-				for(var i = 0; i < perPage; i++) { // Loop required entries
-					$(this).parent().parent().parent().parent().parent().children("tbody").children("tr:nth-child(" + (i + 1 + offset) + ")").show(); // Show requested entry
-				}
-				return false;
-			});
-		});
-	*/
-   
+    });		  
 });
 
-function aaa(page){
+function itemList(page){
+    
     $(document).ready(function() {  	         
         var tagID = $('#cmbTag').attr('value') ;	
 		
         $.post("getItemPage",{
             t:tagID, 
             p:page
-        }, function(data){	
-                    
+        }, function(data){	                  
             $("#table_pagination").html(data);	
-        });		
+            regen();
+        });
+        
     }); 
 }
 
+function regen(){
+    $('.confirmation').wrap('<div class="confirm" />');
+        
+    $('.confirm > a').live('click',function() {
+        $('.tooltip').fadeOut(200, function() { // Remove all tooltips
+            $(this).remove();
+        });        
+        var itemID = $(this).parent().children("a").attr('rel');//get deleted item ID
+        $(this).parent().append('<div class="tooltip"><p>Are you sure?</p><a href="#" onclick="deleteOneItem('+itemID+');">Yes</a> | <a href="#" class="close">No</a></div>'); 		
+        $('.close').click(function() { // Closing the tooltip
+            $('.tooltip').fadeOut(200, function() {
+                $(this).remove();
+            });
+            return false;
+        });
+        $(this).parent().children('.tooltip').fadeIn(200);
+        return false; // Make sure it doesn't follow the link immediately
+    });
+}
+
 function deleteItem(){
-    //var imgWaiting="<tr><td colspan='4'><img src='http://localhost:81/images/waiting.gif' hight='300' width='300'/></td></tr>";
-    //$("#table_pagination").html(imgWaiting);
+    
     var tagID = $('#cmbTag').attr('value') ;
     var page= $('#pagination > a.active').html();
     var listItemID="";
@@ -345,18 +293,37 @@ function deleteItem(){
         if($(this).attr('checked')){
             //$(this).attr('checked', false);
             var itemID=$(this).attr('alt');
-            listItemID+=itemID+",";
-            
+            listItemID+=itemID+",";      
         }                               
     });
     $.post('deleteItem',{
         listItemID:listItemID
+    },function(data){        
+        $.post("getItemPage",{
+            t:tagID, 
+            p:page
+        }, function(data){
+            $("#table_pagination").html(data);	
+            regen();
+        });
     });
-    $.post("getItemPage",{
-        t:tagID, 
-        p:page
-    }, function(data){
-        $("#table_pagination").html(data);	
+    
+}
+
+function deleteOneItem(itemID){
+    var listItemID=itemID+",";
+    var tagID = $('#cmbTag').attr('value') ;
+    var page= $('#pagination > a.active').html();
+    $.post('deleteItem',{
+        listItemID:listItemID
+    },function(){        
+        $.post("getItemPage",{
+            t:tagID, 
+            p:page
+        }, function(data){
+            $("#table_pagination").html(data);	
+            regen();
+        });
     });
 }
  
