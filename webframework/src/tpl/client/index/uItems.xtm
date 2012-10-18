@@ -1,0 +1,26 @@
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tbody>
+        <tr>
+            <td class="lz-favorited-title" width="64%">Nội dung</td>
+            <td class="lz-favorited-title" width="20%">Từ khóa</td>
+            <td class="lz-favorited-title" width="16%">Quản lý</td>
+        </tr>
+        {{#list_uItem}}
+        <tr id="wapItem{{itemID}}">
+            <td id="itemContent{{itemID}}">{{itemContent}}</td>
+            <td id="myitem{{itemID}}"></td>
+        <script>
+            var lTags="";
+            var aTagsID={{lisTagIDs}};
+            for (var k=0;k< aTagsID.length;k++) {
+                lTags+="<a href='javascript:getRandomItemOfTag2("+aTagsID[k]+");' rel='"+aTagsID[k]+"'>"+getTagName(aTagsID[k].toString())+"</a>     ";
+            }         
+            var myItem='myitem'+{{itemID}};
+            document.getElementById(myItem).innerHTML=lTags;            
+        </script>        
+        <td><a class="feedWall" href="javascript:feedWall({{itemID}});" rel="{{itemID}}">Đăng</a> | <a rel="824" class="delItem" href="javascript:delItem({{itemID}});" rel="{{itemID}}">Xóa</a></td>
+        </tr>
+{{/list_uItem}}
+</tbody>
+</table>
