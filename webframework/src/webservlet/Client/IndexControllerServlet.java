@@ -103,7 +103,7 @@ public class IndexControllerServlet extends HttpServlet {
 
     private String render(HttpServletRequest req,HttpServletResponse res) throws Exception {
         
-        List<Item> listItem = this.testCallThriftService(req);
+        List<Item> listItem = this.getTopItems(req);
         String config_host = this.testGetConfig(req);
         String productName = listItem.get(1).itemID;
 
@@ -112,9 +112,10 @@ public class IndexControllerServlet extends HttpServlet {
 
         dic.setVariable("title", "This is title of layout - config=" + config_host + " - product=" + productName);
         
-
+        int k=listItem.size();
         for (int i = 0; i < listItem.size(); i++) {
             TemplateDataDictionary listsection = dic.addSection("list_section");
+            listsection.setVariable("itemID", listItem.get(i).itemID);
             listsection.setVariable("itemContent", listItem.get(i).content);
         }
         
@@ -142,8 +143,6 @@ public class IndexControllerServlet extends HttpServlet {
             try {
                 authorCode=req.getParameter("code");
                 zdata=zme.getAccessTokenFromCode(URLDecoder.decode(authorCode,"UTF-8"));
-                //String sigRequest=req.getParameter("signed_request");
-                //zATData=zme.getAccessTokenForAppAuthentication();
                 int a=0;
             } catch (ZingMeApiException ex) {
                 java.util.logging.Logger.getLogger(indexServerlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -156,8 +155,12 @@ public class IndexControllerServlet extends HttpServlet {
                 java.util.logging.Logger.getLogger(indexServerlet.class.getName()).log(Level.SEVERE, null, ex);
             }            
         }
-        
-        
+        if(handler.userExisted(me.get("id").toString())){
+            
+        }
+        else{
+            boolean temp=handler.addUser(me.get("id").toString(), "default", 0);// normal user:0, admin:1, blockuser:-1
+        }
         itemRan.setVariable("userID", me.get("id").toString());
         itemRan.setVariable("userName", me.get("displayname").toString());
         
@@ -183,7 +186,7 @@ public class IndexControllerServlet extends HttpServlet {
         return config;
     }
 
-    private List<Item> testCallThriftService(HttpServletRequest req) throws TException {
+    private List<Item> getTopItems(HttpServletRequest req) throws TException {
 
         ProfilerLog profiler = (ProfilerLog) req.getAttribute("profiler");
         if (profiler != null) {
@@ -191,7 +194,7 @@ public class IndexControllerServlet extends HttpServlet {
         }
         handler = new MiddlewareHandler();
 
-        List<Item> listItem = handler.getAllItems(20);        
+        List<Item> listItem = handler.getTopItems(20);        
         //List<Item> listItem = handler.getTopItems(20);        
 
         if (profiler != null) {

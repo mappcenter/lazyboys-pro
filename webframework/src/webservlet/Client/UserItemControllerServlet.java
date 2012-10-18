@@ -57,83 +57,41 @@ public class UserItemControllerServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/html; charset=UTF-8");
-        System.out.println("test hello thiensuhack");
+        resp.setContentType("text/html; charset=UTF-8");        
+        doGet(req, resp);
     }
 
-    private String render(HttpServletRequest req) throws Exception {
-        
-        List<Item> listItem = this.testCallThriftService(req);
-        String config_host = this.testGetConfig(req);
-        String productName = listItem.get(1).itemID;
-
-
+    private String render(HttpServletRequest req) throws Exception {               
         TemplateDataDictionary dic = TemplateDictionary.create();
 
-        dic.setVariable("title", "This is title of layout - config=" + config_host + " - product=" + productName);
-        
-
-        for (int i = 0; i < listItem.size(); i++) {
-            TemplateDataDictionary listsection = dic.addSection("list_section");
-            listsection.setVariable("itemContent", listItem.get(i).content);
+        String userID="";                
+        if(req.getParameter("userID")!=null){
+            userID=req.getParameter("userID");
         }
-        
-         Item item = null;
-        
+        List<Item> uItems=null;
         try {
-            item = handler.getRandomItem();
+            uItems=handler.getFavouriteItems(userID, 20);
         } catch (TException ex) {
-            java.util.logging.Logger.getLogger(randomItemServlet.class.getName()).log(Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UserItemControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         Gson gson=new Gson();
-        String strItem=gson.toJson(item);
         
-        TemplateDataDictionary itemRan= dic.addSection("itemRan");
-        itemRan.setVariable("strItem", strItem);
-        
-        
+        for (int i = 0; i < uItems.size(); i++) {
+            TemplateDataDictionary list_uItem = dic.addSection("list_uItem");
+            list_uItem.setVariable("itemID", uItems.get(i).itemID);
+            list_uItem.setVariable("itemContent", uItems.get(i).content);
+            list_uItem.setVariable("lisTagIDs", gson.toJson(uItems.get(i).tagsID));
+        }
         Template template = this.getCTemplate();
         String content = template.renderToString(dic);
 
         return content;
 
 
-    }
-    public Item getRandomItem(){
-        Item item = null;
-        
-        try {
-            item = handler.getRandomItem();
-        } catch (TException ex) {
-            java.util.logging.Logger.getLogger(randomItemServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return item;
-    }
-    private String testGetConfig(HttpServletRequest req) {
-        String config = Config.getParam("sample", "host");
-        return config;
-    }
-
-    private List<Item> testCallThriftService(HttpServletRequest req) throws TException {
-
-        ProfilerLog profiler = (ProfilerLog) req.getAttribute("profiler");
-        if (profiler != null) {
-            profiler.doStartLog("fresherthriftservice");
-        }
-        MiddlewareHandler handler = new MiddlewareHandler();
-
-        List<Item> listItem = handler.getAllItems(100);
-
-        if (profiler != null) {
-            profiler.doEndLog("fresherthriftservice");
-        }
-
-        return listItem;
-    }
-
+    }    
     private Template getCTemplate() throws Exception {
         TemplateLoader templateLoader = TemplateResourceLoader.create("tpl/");
-        Template template = templateLoader.getTemplate("sample/index/index_1.xtm");
+        Template template = templateLoader.getTemplate("client/index/uItems.xtm");
         return template;
     }
 

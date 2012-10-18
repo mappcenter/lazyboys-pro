@@ -58,7 +58,25 @@ public class SaveItemControllerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html; charset=UTF-8");
-        System.out.println("test hello thiensuhack");
+        String itemID="";
+        String userID="";
+        String result="Luu Thanh Cong";
+        if(req.getParameter("itemID")!=null){
+            itemID=req.getParameter("itemID");
+        }
+        if(req.getParameter("userID")!=null){
+            userID=req.getParameter("userID");
+        }
+        try {            
+            if(!handler.insertFavouriteItem(userID, itemID))
+            {
+                result="Luu Khong Thanh Cong";
+            }
+            
+        } catch (TException ex) {
+            java.util.logging.Logger.getLogger(SaveItemControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        resp.getWriter().println(result);
     }
 
     private String render(HttpServletRequest req) throws Exception {
@@ -89,12 +107,9 @@ public class SaveItemControllerServlet extends HttpServlet {
         String strItem=gson.toJson(item);
         
         TemplateDataDictionary itemRan= dic.addSection("itemRan");
-        itemRan.setVariable("strItem", strItem);
-        
-        
+        itemRan.setVariable("strItem", strItem);        
         Template template = this.getCTemplate();
         String content = template.renderToString(dic);
-
         return content;
 
 
