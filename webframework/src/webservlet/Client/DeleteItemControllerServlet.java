@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.thrift.TException;
 import org.slf4j.Logger; 
 import org.slf4j.LoggerFactory; 
-import servlet.randomItemServlet;
+import webservlet.Admin.randomItemServlet;
 
 public class DeleteItemControllerServlet extends HttpServlet {
 
