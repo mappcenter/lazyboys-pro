@@ -17,7 +17,6 @@ function getRandomItemOfTag(tagID){
   var tagName=getTagName(tagID);
     $("#statusTag").html("<a href='javascript:getRandomItemOfTag("+tagID+");'>"+tagName+"</a>");
     $currentTagID=tagID.toString();
-    //alert($currentTagID);
     $(document).ready(function(){                
         $.post("random", {tagID:$currentTagID}, function(data) {	
                 var myJsonObj = jsonParse(data);
@@ -25,7 +24,6 @@ function getRandomItemOfTag(tagID){
                $("#lz-save-button").attr("rel", myJsonObj.itemID);
                 $("#ContentItem").html(myJsonObj.content); 
                 var listTagsID=myJsonObj.tagsID.toString().split(",");
-                //var listTagsID=listTagsID1.split(",");
                 var lTags="";
                 for (var k=0;k< listTagsID.length;k++) {
                 lTags+="<a href='javascript:getRandomItemOfTag("+listTagsID[k]+");' rel='"+listTagsID[k]+"'>"+getTagName(listTagsID[k].toString())+"</a>     ";
@@ -47,13 +45,7 @@ function getRandomItemOfTag(tagID){
                 testCurrentIndex(0,currentIndex);
             }
         else currentIndex=0;
-        //var index=queueItem.length;
-        //if(index>=0 && currentIndex>=0 && currentIndex<=index){
-            item=queueItem[currentIndex];
-        //}
-        //else{
-
-        //}
+        item=queueItem[currentIndex];
         showItemBackNext(item);
     }
     function nextItems(){
@@ -65,13 +57,7 @@ function getRandomItemOfTag(tagID){
         else{
             return;
         }
-        //var index=queueItem.length;
-        //if(index>=0 && currentIndex>=0 && currentIndex<=index){
-            item=queueItem[currentIndex];
-        //}
-        //else{         
-           // return;
-        //}
+        item=queueItem[currentIndex];
         showItemBackNext(item);
     }
     function addItemsToQueue(_item){
@@ -146,7 +132,71 @@ function fCallback(data) {
  function randomFromInterval(from,to)
     {
         return Math.floor(Math.random()*(to-from+1)+from);
-    }       
+    }  
+    function delItem(id){
+        $(document).ready(function(){   
+            //alert(id);
+            var uID=$("#usrId").val();
+            $.post("delItem", {
+                userID:uID,
+                itemID:id
+            }, function(data) {
+                    //var myJsonObj = jsonParse(data);
+                    //if(data=="1"){
+                        $.post('/userItem', {
+                            userID:uID                        
+                        }, function(data){
+                            $(".popular-data").html(data);
+                        }
+                        );
+                    //}
+                });                  
+        });
+    }
+    function feedWall(id){
+        $(document).ready(function(){                      
+            var uID=$("#usrId").val();            
+            var statusText =$('#itemContent'+id).html();            
+            var uId_to = $('#usrId').val();
+            $.post('/feedItem', {
+                userIdTo : uId_to,
+                itemContent : statusText
+            }, function(data){
+                zmf.ui(
+                    {
+                        pub_key:"eba443348315d8c27c8c070cb2a40a52",
+                        sign_key:data,
+                        action_id:1,
+                        uid_to: uId_to,
+                        object_id: "",
+                        attach_name: "",
+                        attach_href: "",
+                        attach_caption: "",
+                        attach_des: statusText,
+                        media_type:1,
+                        media_img:"http://d.f12.photo.zdn.vn/upload/original/2012/10/11/13/34/1349937282850465_574_574.jpg",
+                        media_src:"",
+                        actlink_text:"",
+                        actlink_href:"",
+                        tpl_id: 3,
+                        comment:statusText,
+                        suggestion: ["hello1","hello2"]
+                    });      
+            }
+            );               
+        });
+    }
+    function getRandomItemOfTag2(idTag){
+        $(document).ready(function(){            
+            var activeTab = "#lztab1"; 
+            //alert(activeTab);
+            $("a[href=#lztab2]").removeClass("lzactive"); 
+            $("a[href=#lztab1]").addClass("lzactive"); 
+            $(".lztabContents").hide(); 
+            $(activeTab).fadeIn(); 
+            getRandomItemOfTag(idTag);
+        });
+    }
 $(document).ready(function() {            
     //turnOnOffBackNext();
     //
@@ -154,8 +204,7 @@ $(document).ready(function() {
     $.post("http://fresher2012.live/", {alfa:123}, function(data) {	
                     var myJsonObj = jsonParse(data);                     
                     if(myJsonObj.content!=null) $("#ContentItem").html(myJsonObj.content); 
-                    $("#lz-save-button").attr("rel", myJsonObj.itemID);
-                    //$("#itemIdHidden").attr("value",myJsonObj.itemID);
+                    $("#lz-save-button").attr("rel", myJsonObj.itemID);                    
                     var aTagsID=myJsonObj.tagsID.toString().split(",");
                     addItemsToQueue(myJsonObj);
                     var lTags=""; 
@@ -184,7 +233,6 @@ $(document).ready(function() {
                    addItemsToQueue(myJsonObj);                   
                     $("#ContentItem").html(myJsonObj.content); 
                     var listTagsID=myJsonObj.tagsID.toString().split(",");
-                    //var listTagsID=listTagsID1.split(",");
                     var lTags="";
                     for (var k=0;k< listTagsID.length;k++) {
                     lTags+="<a href='javascript:getRandomItemOfTag("+listTagsID[k]+");' rel='"+listTagsID[k]+"'>"+getTagName(listTagsID[k].toString())+"</a>     ";
@@ -195,18 +243,29 @@ $(document).ready(function() {
         });     
         $("#lz-save-button").click(function (){
             var value=$(this).attr("rel");
-//            $.post("userItem", {alfa:123}, function(data) {
-//                    //var myJsonObj = jsonParse(data);
-//                    var lTags="";
-//                    for (var prop in myJsonObj) {
-//                        if (myJsonObj.hasOwnProperty(prop)) {
-//                            lTags+="<a href='javascript:getRandomItemOfTag("+myJsonObj[prop].tagID+");' rel='"+myJsonObj[prop].tagID+"'>"+myJsonObj[prop].tagName+"</a>     ";                                    
-//                        }
-//                    }
-//                  $("#lz-toptags-container").html(lTags);
-//                });
-            alert(value);
+            var uID=$("#usrId").val();
+            $.post("saveItem", {
+                userID:uID,
+                itemID:value
+            }, function(data) {
+                    //var myJsonObj = jsonParse(data);
+                    alert(data);
+                });
+            //alert(value + "userID:"+uID);
         });
+        $(".saveItem").click(function (){
+            var value=$(this).attr("rel");
+            var uID=$("#usrId").val();
+            $.post("saveItem", {
+                userID:uID,
+                itemID:value
+            }, function(data) {
+                    //var myJsonObj = jsonParse(data);
+                    alert(data);
+                });
+            //alert(value + "userID:"+uID);
+        });
+        
         $("#lz-feed-button").click(function(){            
             var statusText =$('#ContentItem').html();            
             var uId_to = $('#usrId').val();
@@ -240,26 +299,78 @@ $(document).ready(function() {
             );
         
         });
+        $(".feedItemWall").click(function(){  
+            var itemID=$(this).attr("rel");
+            var statusText =$('#itemID'+itemID).html();            
+            var uId_to = $('#usrId').val();
+            //var objId=$("#lz-save-button").attr("rel");
+            //alert(objId);
+            $.post('/feedItem', {
+                userIdTo : uId_to,
+                itemContent : statusText
+            }, function(data){
+                zmf.ui(
+                    {
+                        pub_key:"eba443348315d8c27c8c070cb2a40a52",
+                        sign_key:data,
+                        action_id:1,
+                        uid_to: uId_to,
+                        object_id: "",
+                        attach_name: "",
+                        attach_href: "",
+                        attach_caption: "",
+                        attach_des: statusText,
+                        media_type:1,
+                        media_img:"http://d.f12.photo.zdn.vn/upload/original/2012/10/11/13/34/1349937282850465_574_574.jpg",
+                        media_src:"",
+                        actlink_text:"",
+                        actlink_href:"",
+                        tpl_id: 3,
+                        comment:statusText,
+                        suggestion: ["hello1","hello2"]
+                    });      
+            }
+            );
+        
+        });
+        //tab favorite
+//        $(".feedWall").click(function(){  
+//            
+//        
+//        });
         $(".lztabContents").hide(); // Ẩn toàn bộ nội dung của tab
         $(".lztabContents:first").show(); // Mặc định sẽ hiển thị tab1
 
         $("#lztabContaier ul li a").click(function(){ //Khai báo sự kiện khi click vào một tab nào đó			
                 var activeTab = $(this).attr("href"); 
+                //alert(activeTab);
                 $("#lztabContaier ul li a").removeClass("lzactive"); 
                 $(this).addClass("lzactive"); 
                 $(".lztabContents").hide(); 
                 $(activeTab).fadeIn(); 
+                if($(this).attr("rel")=="fpage"){
+                    var uId = $('#usrId').val();
+                    $.post('/userItem', {
+                        userID:uId                        
+                    }, function(data){
+                        $(".popular-data").html(data);
+                    }
+                    );
+                }
         });
         $("#likeItem").click(function(){
             var uId = $('#usrId').val();
             var Action="like";
             var objId=$("#lz-save-button").attr("rel");
-            $.post('/feedItem', {
+            //alert("uID:"+uId +"action:"+Action+"ID:"+objId);
+            $.post('/like_unlike', {
                 userID:uId,
                 typeAction : Action,
                 itemID : objId
             }, function(data){
-                    
+                    //if(data=="1"){
+                        alert(data);
+                    //}
             }
             );
         });
