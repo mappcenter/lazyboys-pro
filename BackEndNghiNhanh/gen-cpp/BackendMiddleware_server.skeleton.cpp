@@ -302,16 +302,6 @@ class BackendMiddlewareHandler : virtual public BackendMiddlewareIf {
     printf("deleteAllUser\n");
   }
 
-  void getUser(User& _return, const std::string& userID) {
-    // Your implementation goes here
-    printf("getUser\n");
-  }
-
-  void getAllUser(std::vector<std::string> & _return) {
-    // Your implementation goes here
-    printf("getAllUser\n");
-  }
-
 };
 
 int main(int argc, char **argv) {
