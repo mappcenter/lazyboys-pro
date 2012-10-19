@@ -194,8 +194,7 @@ public class IndexControllerServlet extends HttpServlet {
         }
         handler = new MiddlewareHandler();
 
-        List<Item> listItem = handler.getTopItems(20);        
-        //List<Item> listItem = handler.getTopItems(20);        
+        List<Item> listItem = handler.getTopItems(20);              
 
         if (profiler != null) {
             profiler.doEndLog("fresherthriftservice");

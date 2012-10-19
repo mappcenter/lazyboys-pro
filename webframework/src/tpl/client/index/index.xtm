@@ -44,11 +44,13 @@
                                                         </div>
                                                         <div id="lz-like-unlike">
                                                             <div id="lz-like-button">
-                                                                <a id="likeItem" type="button" value="Like" ></a>
+                                                                <a id="likeItem"class="likeItem" type="button" value="like" ></a>
                                                             </div>
-                                                            <div id="lz-unlike-button">
-                                                                <a id="unlikeItem" type="button" value="unLike" ></a>
+                                                            <!--
+                                                            <div id="lz-unlike-button" >
+                                                                <a id="unlikeItem" class="unlikeItem" type="button" value="unLike" ></a>
                                                             </div>
+                                                            -->
                                                         </div>
                                                         <div id="lz-item-textarea">
                                                             <div class="top-textarea-content"></div>
@@ -93,7 +95,7 @@
                                                         <div style="font-size: 20px;">
                                                             ★ Nổi bật ★
                                                         </div>
-                                                        <table style="width: 96%;margin-left: 15px;">
+                                                        <table style="width: 100%;">
                                                             <tbody><tr>
                                                                     <td class="lz-favorited-title" width="71%">Nội dung</td>
                                                                     <td class="lz-favorited-title" width="17%">Quản lý</td>
@@ -152,7 +154,7 @@
                                 <script ></script>
                                 <div id="lztab2" class="lztabContents" style="display: block; "> 
                                     <div class="popular">
-                                        <h3>Ưa thích</h3>
+                                        <h1> ★ Ưa thích ★ </h1>
                                         <div class="popular-data">
                                             
                                         </div>

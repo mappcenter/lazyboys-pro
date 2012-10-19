@@ -64,10 +64,12 @@ public class WebServer {
         handler.addServletWithMapping("webservlet.Client.XcallProxyControllerServlet","/xcall.proxy-1.00.html");
         handler.addServletWithMapping("webservlet.Client.listTagsControllerServlet","/listtags.js");
         handler.addServletWithMapping("webservlet.Client.FeedControllerServlet","/feedItem");
-        handler.addServletWithMapping("webservlet.Client.TestFeedControllerServlet","/testfeed");
+        handler.addServletWithMapping("webservlet.Client.TestFeedControllerServlet","/abc/*");
         handler.addServletWithMapping("webservlet.Client.LikeUnlikeItemControllerServlet","/like_unlike");
         handler.addServletWithMapping("webservlet.Client.SaveItemControllerServlet","/saveItem");
         handler.addServletWithMapping("webservlet.Client.DeleteItemControllerServlet","/delItem");
+        handler.addServletWithMapping("webservlet.Client.UserLikesItemControllerServlet","/uLikes");
+        handler.addServletWithMapping("webservlet.Client.UserDisLikesItemControllerServlet","/uDisLikes");
         //handler.addServletWithMapping("servlet.randomItemServlet","/random");
         
         handler.addServletWithMapping("webservlet.Admin.IndexControllerServlet", "/admin");
