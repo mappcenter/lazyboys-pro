@@ -26,7 +26,7 @@ public class LikeUnlikeItemControllerServlet extends HttpServlet {
         if(req.getParameter("typeAction")==null){
             return;
         }
-        String result="0";
+        String result="Khong duoc";
         String action=req.getParameter("typeAction");
         if (req.getParameter("userID") == null || req.getParameter("userID").toString().isEmpty()) {
         } 
@@ -36,13 +36,24 @@ public class LikeUnlikeItemControllerServlet extends HttpServlet {
             if (action.compareTo("like") == 0) {
                 try {
                     if(handler.insertLikedItem(userID, itemID)){
-                        result="1";
+                        result="Thanh Cong";
+                        resp.getWriter().println(result);
+                        return;
                     }
                 } catch (TException ex) {
                     java.util.logging.Logger.getLogger(LikeUnlikeItemControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        }
+            if (action.compareTo("unlike") == 0) {
+                try {
+                    if(handler.deleteLikedItem(userID, itemID)){
+                        result="Thanh Cong";
+                    }
+                } catch (TException ex) {
+                    java.util.logging.Logger.getLogger(LikeUnlikeItemControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }        
         resp.getWriter().println(result);
     }
 }
