@@ -445,7 +445,7 @@ $(document).ready(function() {
         var Action="like";
         var objId=$("#lz-save-button").attr("rel");
         Action=$(this).attr("rel");
-        alert(Action);
+        //alert(Action);
         //alert("uID:"+uId +"action:"+Action+"ID:"+objId);
         if(Action=="like"){
             checkUserLike(objId,1);
