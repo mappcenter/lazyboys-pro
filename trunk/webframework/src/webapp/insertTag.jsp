@@ -23,16 +23,14 @@
                     alert("hello world");
                 }
             </script>
-            
+
             <h1>Hello world</h1>
             <a href="javascript:aaa()" >hello</a>
             <% 
             User user=new User();
             user.userID="chanhlt190290";
             out.println(user.userID);
-            
-            
-%>
+            %>
 
 
         </body>
