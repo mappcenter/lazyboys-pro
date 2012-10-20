@@ -6,6 +6,7 @@
  */
 
 #include "FeedBackDB.h"
+#include "synchronizeDB.h"
 
 FeedBackDB::FeedBackDB() {
     logger = &Logger::get("FeedBackDB");
@@ -130,15 +131,21 @@ vector<string> FeedBackDB::getAllItemsIDLike(string userID) {
 
 bool FeedBackDB::insertLikedItem(string userID, string itemID) {
     try {
-        UserFeedBack userFeedBack = getUserFeedBack(userID);
+        UserFeedBack userFeedBack;
+        if (grassDB.check(userID) == -1) {
+            userFeedBack.userID = userID;
+        } else
+            userFeedBack = getUserFeedBack(userID);
         vector<string>::iterator it;
         it = std::find(userFeedBack.itemsLike.begin(), userFeedBack.itemsLike.end(), itemID);
         if (it != userFeedBack.itemsLike.end()) {
-            throw;
+            return false;
+            ;
         } else {
             userFeedBack.itemsLike.push_back(itemID);
             if (updateFeedBack(userFeedBack) == false) {
-                throw;
+                return false;
+                ;
             }
         }
         return true;
@@ -156,14 +163,14 @@ bool FeedBackDB::deleteLikedItem(string userID, string itemID) {
         if (it != userFeedBack.itemsLike.end()) {
             userFeedBack.itemsLike.erase(it);
             if (updateFeedBack(userFeedBack) == false) {
-                throw;
+                return false;
             }
         } else {
-            throw;
+            return false;
         }
         return true;
     } catch (...) {
-        poco_error_f2(*logger, "deleteLikedItem: Can't delete itemID %s into userID %s", itemID, userID);
+        poco_error_f2(*logger, "deleteLikedItem: Can't delete itemID %s in userID %s", itemID, userID);
         return false;
     }
 }
@@ -185,15 +192,19 @@ vector<string> FeedBackDB::getAllItemsIDDislike(string userID) {
 
 bool FeedBackDB::insertDislikedItem(string userID, string itemID) {
     try {
-        UserFeedBack userFeedBack = getUserFeedBack(userID);
+        UserFeedBack userFeedBack;
+        if (grassDB.check(userID) == -1) {
+            userFeedBack.userID = userID;
+        } else
+            userFeedBack = getUserFeedBack(userID);
         vector<string>::iterator it;
         it = std::find(userFeedBack.itemsDislike.begin(), userFeedBack.itemsDislike.end(), itemID);
         if (it != userFeedBack.itemsDislike.end()) {
-            throw;
+            return false;
         } else {
             userFeedBack.itemsDislike.push_back(itemID);
             if (updateFeedBack(userFeedBack) == false) {
-                throw;
+                return false;
             }
         }
         return true;
@@ -211,14 +222,14 @@ bool FeedBackDB::deleteDislikedItem(string userID, string itemID) {
         if (it != userFeedBack.itemsDislike.end()) {
             userFeedBack.itemsDislike.erase(it);
             if (updateFeedBack(userFeedBack) == false) {
-                throw;
+                return false;
             }
         } else {
-            throw;
+            return false;
         }
         return true;
     } catch (...) {
-        poco_error_f2(*logger, "deleteDislikedItem: Can't delete itemID %s into userID %s", itemID, userID);
+        poco_error_f2(*logger, "deleteDislikedItem: Can't delete itemID %s in userID %s", itemID, userID);
         return false;
     }
 }
@@ -335,28 +346,45 @@ vector<string> FeedBackDB::getFavouriteItemID(string userID, int64_t number) {
 }
 
 bool FeedBackDB::insertFavouriteItem(string userID, string itemID) {
-    UserFeedBack userFeedBack = getUserFeedBack(userID);
-    userFeedBack.favouriteItems.push_back(itemID);
-    if (updateFeedBack(userFeedBack)) {
+    try {
+        UserFeedBack userFeedBack;
+        if (grassDB.check(userID) == -1) {
+            userFeedBack.userID = userID;
+        } else
+            userFeedBack = getUserFeedBack(userID);
+        vector<string>::iterator it;
+        it = std::find(userFeedBack.favouriteItems.begin(), userFeedBack.favouriteItems.end(), itemID);
+        if (it != userFeedBack.favouriteItems.end()) {
+            return false;
+        } else {
+            userFeedBack.favouriteItems.push_back(itemID);
+            if (updateFeedBack(userFeedBack) == false) {
+                return false;
+            }
+        }
         return true;
-    } else {
+    } catch (...) {
+        poco_error_f2(*logger, "insertFavouriteItem: Can't insert itemID %s into userID %s", itemID, userID);
         return false;
     }
 }
 
 bool FeedBackDB::deleteFavouriteItem(string userID, string itemID) {
-    UserFeedBack userFeedBack = getUserFeedBack(userID);
-    int64_t n = userFeedBack.favouriteItems.size();
-    for (int i = 0; i < n; i++) {
-        if (userFeedBack.favouriteItems[i] == itemID) {
-            //xoa element tai vi tri i va cap nhat lai kich thuoc vector
-            userFeedBack.favouriteItems.erase(userFeedBack.favouriteItems.begin() + i);
-            i--;
+    try {
+        UserFeedBack userFeedBack = getUserFeedBack(userID);
+        vector<string>::iterator it;
+        it = std::find(userFeedBack.favouriteItems.begin(), userFeedBack.favouriteItems.end(), itemID);
+        if (it != userFeedBack.favouriteItems.end()) {
+            userFeedBack.favouriteItems.erase(it);
+            if (updateFeedBack(userFeedBack) == false) {
+                return false;
+            }
+        } else {
+            return false;
         }
-    }
-    if (updateFeedBack(userFeedBack)) {
         return true;
-    } else {
+    } catch (...) {
+        poco_error_f2(*logger, "deleteFavouriteItem: Can't delete itemID %s in userID %s", itemID, userID);
         return false;
     }
 }

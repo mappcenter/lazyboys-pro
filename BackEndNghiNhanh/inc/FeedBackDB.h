@@ -41,8 +41,6 @@ public:
     string convertUserFeedBackToJson(UserFeedBack& userFeedBack);
     UserFeedBack convertJsonToUserFeedBack(string jsonString);
 
-    UserFeedBack getUserFeedBack(string userID);
-
     vector<string> getAllItemsIDLike(string userID); //lay tat ca ItemID da like cua user
     bool insertLikedItem(string userID, string itemID);
     bool deleteLikedItem(string userID, string itemID);
@@ -51,6 +49,7 @@ public:
     bool insertDislikedItem(string userID, string itemID);
     bool deleteDislikedItem(string userID, string itemID);
 
+    UserFeedBack getUserFeedBack(string userID);
     bool insertFeedBack(string userID, vector<string>& itemsLike, vector<string>& itemsDislike, vector<string>& favouriteItems);
     bool deleteFeedBack(string userID);
     bool editFeedBack(string userID, vector<string>& itemsLike, vector<string>& itemsDislike, vector<string>& favouriteItems);

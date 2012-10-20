@@ -30,6 +30,8 @@ int BackendMiddlewarePocoServer::main(const std::vector<std::string>& args) {
             pathItemTagDB, pathUserDB, pathFeedBackDB);
     serverMng->listenning(server);
     waitForTerminationRequest();
+
+
     return 0;
 }
 

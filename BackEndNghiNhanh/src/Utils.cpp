@@ -66,20 +66,19 @@ bool Utils::findStringInString(string str1, string str2) {
     //str1 = toLowerInPlace(str1);
     //str2 = toLowerInPlace(str2);
     size_t found = str1.find(str2);
-    if (found == string::npos) {
+    if(found == string::npos){
         return false;
-    } else {
+    }else{
         return true;
     }
 }
-
 bool Utils::findStringInStringForTag(string str1, string str2) {
     toLowerInPlace(str1);
     toLowerInPlace(str2);
     size_t found = str1.find(str2);
-    if (found == string::npos) {
+    if(found == string::npos){
         return false;
-    } else {
+    }else{
         return true;
     }
 }

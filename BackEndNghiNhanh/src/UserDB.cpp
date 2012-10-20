@@ -89,6 +89,32 @@ bool UserDB::userExisted(string userID) {
     return false;
 }
 
+User UserDB::getUser(string userID) {
+    if (userExisted(userID)) {
+        string value;
+        grassDB.get(userID, &value);
+        User user = convertJsonToUser(value);
+        user.userID = userID;
+        return user;
+    } else {
+        poco_error_f1(*logger, "getUser: Error user doesn't existed key=%s", userID);
+    }
+}
+
+vector<string> UserDB::getAllUser() {
+    vector<string> listReturn;
+    if (grassDB.count() == 0) {
+        return listReturn;
+    }
+    DB::Cursor * cur = grassDB.cursor();
+    cur->jump();
+    string ckey, cvalue;
+    while (cur->get(&ckey, &cvalue, true)) {
+        listReturn.push_back(ckey);
+    }
+    return listReturn;
+}
+
 bool UserDB::addUser(string userID, string userToken, int32_t userRole, FeedBackDB& feedBackDB) {
     if (grassDB.check(userID) != -1) {
         return false;
