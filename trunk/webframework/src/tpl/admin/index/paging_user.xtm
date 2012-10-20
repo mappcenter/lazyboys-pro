@@ -1,9 +1,11 @@
 <thead>
     <tr>
-        <th><input type="checkbox" /></th>
-        <th>ID</th>
-        <th>Status content</th>
-        <th>Actions</th>
+        <th>
+            <input type="checkbox" />
+        </th>
+        <th>UserID</th>
+        <th>UserToken</th>
+        <th>UserRole</th>
     </tr>
 </thead>
 
@@ -12,12 +14,21 @@
 <tbody id="listItems">
     {{#list_section}}
     <tr>
-        <td><input type="checkbox" /></td>
-        <td><a href="#">{{itemID}}</a></td>
-        <td>{{itemContent}}</td>
         <td>
-            <a href="#"><img src="http://localhost:81/images/icons/pencil.png" alt="Edit" /></a>
-            <a href="#" class="confirmation"><img src="http://localhost:81/images/icons/cross.png" alt="Delete" /></a><!-- to create a tooltip-style confirmation, just add .confirmation to the <a>-tag -->
+            <input type="checkbox" />
+        </td>
+        <td>
+            <a href="#">{{userID}}</a>
+        </td>
+        <td>{{userToken}}</td>
+        <td>{{userRole}}</td>
+        <td>
+            <a href="#">
+                <img src="http://localhost:81/images/icons/pencil.png" alt="Edit" />
+            </a>
+            <a href="#" class="confirmation">
+                <img src="http://localhost:81/images/icons/cross.png" alt="Delete" />
+            </a><!-- to create a tooltip-style confirmation, just add .confirmation to the <a>-tag -->
         </td>
     </tr>
     {{/list_section}}
@@ -27,11 +38,11 @@
     <tr>
         <td colspan="4">	
             <div class="pagination" id="pagination" >
-                <a href="#first" onclick="aaa(1);" rel="1">first</a>
+                <a href="#first" onclick="userList(1);" rel="1">first</a>
                 {{#listPage_section}}
                 {{page}}
                 {{/listPage_section}}
-                <a href="#last" onclick="aaa({{last}}});" rel="{{last}}">last</a>
+                <a href="#last" onclick="userList({{last}}});" rel="{{last}}">last</a>
             </div>
             <div class="bulk-actions">
 
