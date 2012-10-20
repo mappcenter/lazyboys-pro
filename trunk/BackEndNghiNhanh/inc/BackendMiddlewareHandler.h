@@ -63,7 +63,7 @@ public:
     void getAllItemshaveTag(std::vector<Item> & _return, const std::string& tagID, const int32_t numberItems);
     void pagingItemsTag(std::vector<Item> & _return, const std::string& tagID, const int32_t pageNumber, const int32_t numberItems);
     void getAllItemsIDhaveTag(std::vector<std::string> & _return, const std::string& tagID, const int32_t numberItemsID);
-
+    
     void getRandomItem(Item& _return);
     void getRandomItemhaveTag(Item& _return, const std::string& tagID);
 
@@ -104,6 +104,8 @@ public:
     bool deleteUser(const std::string& userID);
     bool editUser(const std::string& userID, const std::string& userToken, const int32_t userRole);
     bool deleteAllUser();
+    void getUser(User& _return, const std::string& userID);
+    void getAllUser(std::vector<std::string> & _return);
 private:
     Logger* logger;
     Mutex _mutex;

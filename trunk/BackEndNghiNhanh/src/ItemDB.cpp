@@ -629,8 +629,7 @@ vector<string> ItemDB::getListTopItemID(int64_t number) {
         try {
             if (ckey != LASTID) {
                 Item item = convertJsonToItem(cvalue);
-                item.itemID = ckey;
-                allItems.push_back(std::make_pair(item.likeCounts, item.itemID));
+                allItems.push_back(std::make_pair(item.likeCounts, ckey));
             }
         } catch (char* str) {
             //cout << "error make pair:" << str << endl;
@@ -670,8 +669,7 @@ vector<string> ItemDB::getListTopItemID(int64_t number, string tagID, ItemTagDB&
         try {
             grassDB.get(allItemHaveTag[i], &cvalue);
             Item item = convertJsonToItem(cvalue);
-            item.itemID = allItemHaveTag[i];
-            allItems.push_back(std::make_pair(item.likeCounts, item.itemID));
+            allItems.push_back(std::make_pair(item.likeCounts, allItemHaveTag[i]));
         } catch (char* str) {
             cout << "error make pair:" << str << endl;
         }
@@ -705,9 +703,8 @@ vector<Item> ItemDB::getListTopItem(int64_t number) {
         poco_warning_f2(*logger, "getListTopItem: number = %d > lTopItemID.size() = %d", number, sizeLTop);
         number = sizeLTop;
     }
-    for (int i = 0; i < number; i++){
+    for (int i = 0; i < number; i++)
         result.push_back(getItemFromItemID(lTopItemID[i]));
-    }
     return result;
 }
 

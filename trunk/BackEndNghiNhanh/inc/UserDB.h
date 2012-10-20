@@ -40,6 +40,8 @@ public:
     void startUserDB();
     void stopUserDB();
     bool userExisted(string userID);
+    User getUser(string userID);
+    vector<string> getAllUser();
     bool addUser(string userID, string userToken, int32_t userRole, FeedBackDB& feedBackDB);
     bool addUser(User& user, FeedBackDB& feedBackDB);
     bool deleteUser(string userID, FeedBackDB& feedBackDB);

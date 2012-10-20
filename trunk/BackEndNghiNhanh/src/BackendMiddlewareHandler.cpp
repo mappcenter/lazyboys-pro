@@ -75,7 +75,6 @@ void BackendMiddlewareHandler::getTopTags(std::vector<Tag> & _return, const int6
 }
 
 void BackendMiddlewareHandler::getTagKeyword(std::vector<Tag> & _return, const std::string& keyWord) {
-    _return = tagDB->getTagKeyword(keyWord);
 }
 
 void BackendMiddlewareHandler::getAllItems(std::vector<Item> & _return, const int64_t number) {
@@ -208,6 +207,14 @@ bool BackendMiddlewareHandler::deleteDislikedItem(const std::string& userID, con
 
 bool BackendMiddlewareHandler::userExisted(const std::string& userID) {
     return userDB->userExisted(userID);
+}
+
+void BackendMiddlewareHandler::getUser(User& _return, const std::string& userID) {
+    _return = userDB->getUser(userID);
+}
+
+void BackendMiddlewareHandler::getAllUser(std::vector<std::string> & _return) {
+    _return = userDB->getAllUser();
 }
 
 bool BackendMiddlewareHandler::blockUser(const std::string& userID) {
