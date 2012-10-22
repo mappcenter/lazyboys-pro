@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.thrift.TException;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory; 
+import org.slf4j.LoggerFactory;
 import webservlet.Admin.indexServerlet;
 import webservlet.Admin.randomItemServlet;
 import zme.api.exception.ZingMeApiException;
@@ -36,18 +36,17 @@ public class IndexControllerServlet extends HttpServlet {
 
     private static final Logger log = LoggerFactory.getLogger(IndexControllerServlet.class);
     public static MiddlewareHandler handler = new MiddlewareHandler();
-    
-     public ZME_Authentication zme;
+    public ZME_Authentication zme;
     //public ZME_GraphAPI zApi;
-    public String url=null;
-    public String authorCode=null;
-    public String token=null;
+    public String url = null;
+    public String authorCode = null;
+    public String token = null;
     public ZME_AccessTokenData zdata;
-    public String test="hello thiensuhack";
+    public String test = "hello thiensuhack";
     private ZME_Me zm;
-    HashMap<String,Object> me = null;
-    String sigKey=null;
-    
+    HashMap<String, Object> me = null;
+    String sigKey = null;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, ClientProtocolException {
 
@@ -58,10 +57,9 @@ public class IndexControllerServlet extends HttpServlet {
         profiler.doStartLog("wholereq");
 
         try {
-            String content = this.render(req,resp);
+            String content = this.render(req, resp);
             this.out(content, resp);
         } catch (Exception ex) {
-
             log.error(ex.getMessage());
             this.out("Error exception: " + ex.getMessage(), resp);
         }
@@ -71,8 +69,8 @@ public class IndexControllerServlet extends HttpServlet {
             String tmp = profiler.dumpLogHtml();
             this.out(tmp, resp);
         }
-        
-        
+
+
     }
 
     @Override
@@ -95,14 +93,14 @@ public class IndexControllerServlet extends HttpServlet {
                 java.util.logging.Logger.getLogger(randomItemServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         Gson gson = new Gson();
         String strItem = gson.toJson(item);
         resp.getWriter().println(strItem);
     }
 
-    private String render(HttpServletRequest req,HttpServletResponse res) throws Exception {
-        
+    private String render(HttpServletRequest req, HttpServletResponse res) throws Exception {
+
         List<Item> listItem = this.getTopItems(req);
         String config_host = this.testGetConfig(req);
         String productName = listItem.get(1).itemID;
@@ -111,59 +109,55 @@ public class IndexControllerServlet extends HttpServlet {
         TemplateDataDictionary dic = TemplateDictionary.create();
 
         dic.setVariable("title", "This is title of layout - config=" + config_host + " - product=" + productName);
-        
-        int k=listItem.size();
+
+        int k = listItem.size();
         for (int i = 0; i < listItem.size(); i++) {
             TemplateDataDictionary listsection = dic.addSection("list_section");
             listsection.setVariable("itemID", listItem.get(i).itemID);
             listsection.setVariable("itemContent", listItem.get(i).content);
         }
-        
-         Item item = null;
-        
+
+        Item item = null;
+
         try {
             item = handler.getRandomItem();
         } catch (TException ex) {
             java.util.logging.Logger.getLogger(randomItemServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Gson gson=new Gson();
-        String strItem=gson.toJson(item);
-        
-        TemplateDataDictionary itemRan= dic.addSection("itemRan");
+        Gson gson = new Gson();
+        String strItem = gson.toJson(item);
+
+        TemplateDataDictionary itemRan = dic.addSection("itemRan");
         itemRan.setVariable("strItem", strItem);
-        
-        zme=new ZME_Authentication(MyAppInfo.getInstance().getzConfig());
-        url= zme.getAuthorizedUrl(MyAppInfo.getInstance().getUrlToRedirect(), url);
-        
-        if(req.getParameter("code")==null || req.getParameter("code").isEmpty())
-        {
+
+        zme = new ZME_Authentication(MyAppInfo.getInstance().getzConfig());
+        url = zme.getAuthorizedUrl(MyAppInfo.getInstance().getUrlToRedirect(), url);
+
+        if (req.getParameter("code") == null || req.getParameter("code").isEmpty()) {
             res.sendRedirect(url);
-        }
-        else{
+        } else {
             try {
-                authorCode=req.getParameter("code");
-                zdata=zme.getAccessTokenFromCode(URLDecoder.decode(authorCode,"UTF-8"));
-                int a=0;
+                authorCode = req.getParameter("code");
+                zdata = zme.getAccessTokenFromCode(URLDecoder.decode(authorCode, "UTF-8"));
+                int a = 0;
             } catch (ZingMeApiException ex) {
                 java.util.logging.Logger.getLogger(indexServerlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-            zm=new ZME_Me(MyAppInfo.getInstance().getzConfig());
-            
-            try {               
-                me = zm.getInfo(zdata.accessToken,"displayname");
+            zm = new ZME_Me(MyAppInfo.getInstance().getzConfig());
+
+            try {
+                me = zm.getInfo(zdata.accessToken, "displayname");
             } catch (ZingMeApiException ex) {
                 java.util.logging.Logger.getLogger(indexServerlet.class.getName()).log(Level.SEVERE, null, ex);
-            }            
+            }
         }
-        if(handler.userExisted(me.get("id").toString())){
-            
-        }
-        else{
-            boolean temp=handler.addUser(me.get("id").toString(), "default", 0);// normal user:0, admin:1, blockuser:-1
+        if (handler.userExisted(me.get("id").toString())) {
+        } else {
+            boolean temp = handler.addUser(me.get("id").toString(), "default", 0);// normal user:0, admin:1, blockuser:-1
         }
         itemRan.setVariable("userID", me.get("id").toString());
         itemRan.setVariable("userName", me.get("displayname").toString());
-        
+
         Template template = this.getCTemplate();
         String content = template.renderToString(dic);
 
@@ -171,9 +165,10 @@ public class IndexControllerServlet extends HttpServlet {
 
 
     }
-    public Item getRandomItem(){
+
+    public Item getRandomItem() {
         Item item = null;
-        
+
         try {
             item = handler.getRandomItem();
         } catch (TException ex) {
@@ -181,6 +176,7 @@ public class IndexControllerServlet extends HttpServlet {
         }
         return item;
     }
+
     private String testGetConfig(HttpServletRequest req) {
         String config = Config.getParam("sample", "host");
         return config;
@@ -194,12 +190,10 @@ public class IndexControllerServlet extends HttpServlet {
         }
         handler = new MiddlewareHandler();
 
-        List<Item> listItem = handler.getTopItems(20);              
-
+        List<Item> listItem = handler.getTopItems(20);
         if (profiler != null) {
             profiler.doEndLog("fresherthriftservice");
         }
-
         return listItem;
     }
 

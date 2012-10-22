@@ -5,6 +5,7 @@ import com.vng.jcore.common.Config;
 import com.vng.jcore.profiler.ProfilerLog;
 import frontend.Item;
 import frontend.MiddlewareHandler;
+import frontend.UserInfo;
 import hapax.Template;
 import hapax.TemplateDataDictionary;
 import hapax.TemplateDictionary;
@@ -73,6 +74,11 @@ public class SaveItemControllerServlet extends HttpServlet {
                 result="Luu Khong Thanh Cong";
             }
             
+            Item item=handler.getItemFromItemID(itemID);
+            if(item!=null){
+                UserInfo usr=new UserInfo();
+                usr.setUserFavoriteItems(userID, item); //set User Items into memcache
+            }
         } catch (TException ex) {
             java.util.logging.Logger.getLogger(SaveItemControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -5,6 +5,7 @@ import com.vng.jcore.common.Config;
 import com.vng.jcore.profiler.ProfilerLog;
 import frontend.Item;
 import frontend.MiddlewareHandler;
+import frontend.UserInfo;
 import hapax.Template;
 import hapax.TemplateDataDictionary;
 import hapax.TemplateDictionary;
@@ -68,10 +69,14 @@ public class UserItemControllerServlet extends HttpServlet {
         if(req.getParameter("userID")!=null){
             userID=req.getParameter("userID");
         }
+        
         List<Item> uItems=null;
         try {
-            uItems=handler.getFavouriteItems(userID, 20);
-        } catch (TException ex) {
+            UserInfo usr=new UserInfo();
+            uItems=usr.getUserFavoriteItems(userID);//get from memcache
+//            if(uItems==null)
+//            uItems=handler.getFavouriteItems(userID, 20);
+        } catch (Exception ex) {
             java.util.logging.Logger.getLogger(UserItemControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         Gson gson=new Gson();
