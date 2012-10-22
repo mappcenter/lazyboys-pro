@@ -39,6 +39,7 @@ public class listAllTagServlet extends HttpServlet{
         }
         String json=gson.toJson(listTag);
         res.getWriter().println(json);
+        
     }
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse res) 

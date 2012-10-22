@@ -4,6 +4,7 @@
  */
 package webservlet.Admin;
 
+import com.google.gson.Gson;
 import com.vng.jcore.common.Config;
 import com.vng.jcore.profiler.ProfilerLog;
 import frontend.Item;
@@ -107,13 +108,13 @@ public class getItemPageServlet extends HttpServlet {
 
 
         TemplateDataDictionary dic = TemplateDictionary.create();
-        
+        Gson gson=new Gson();
 
         for (int i = 0; i < listItem.size(); i++) {
             TemplateDataDictionary listsection = dic.addSection("list_section");
             listsection.setVariable("itemContent", listItem.get(i).content);
             listsection.setVariable("itemID", listItem.get(i).itemID);
-
+            listsection.setVariable("tagIDs", gson.toJson(listItem.get(i).tagsID));
         }
     
         

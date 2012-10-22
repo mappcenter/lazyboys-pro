@@ -18,10 +18,10 @@ public class ServiceDaemon {
             if (pidFile != null) {
                 new File(pidFile).deleteOnExit();
             }
-            if (System.getProperty("foreground") == null) {
-                System.out.close();
-                System.err.close();
-            }
+//            if (System.getProperty("foreground") == null) {
+//                System.out.close();
+//                System.err.close();
+//            }
 
             webserver.start();
 

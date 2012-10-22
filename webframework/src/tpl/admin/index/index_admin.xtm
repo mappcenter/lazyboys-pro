@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <!-- Make IE8 behave like IE7, necessary for charts -->
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+
+        <title>Admin Control Panel</title>
+
+        <!-- CSS -->
+        <link rel="stylesheet" type="text/css" media="screen" href="http://localhost:81/css/reset.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="http://localhost:81/css/main.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="http://localhost:81/css/custom-theme/jquery-ui-1.8.1.custom.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="http://localhost:81/css/css3.css" />
+
+
+        <!-- JavaScript -->
+        <script type="text/javascript" src="http://localhost:81/js/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="http://localhost:81/js/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="http://localhost:81/js/jquery.wysiwyg.js"></script>
+        <script type="text/javascript" src="http://localhost:81/js/jquery.rounded.js"></script>
+        <script type="text/javascript" src="http://localhost:81/js/excanvas.js"></script>
+        <script type="text/javascript" src="http://localhost:81/js/jquery.visualize.js"></script>
+        <script type="text/javascript" src="http://localhost:81/js/script.js"></script>
+        <script type="text/javascript" src="http://localhost:81/js/json_sans_eval.js"></script>
+
+
+        <script type="text/javascript" src="http://localhost:81/js/ui.core.js"></script>
+
+
+        <script type="text/javascript" src="http://localhost:81/static/listtags.js"></script>
+
+    </head>
+
+    <body>
+        <div id="bokeh"><div id="container">
+
+                <div id="header">
+                    <h1 id="logo">Admin Control Panel </h1>
+
+                    <div id="header_buttons">
+                        <a href="/">view website</a>
+
+                    </div><!-- end #header_buttons -->
+
+                    <!-- Modal box -->
+                    <div id="modal">	
+                        <div class="modalbox">
+                            <div class="modalhead">
+                                <img src="http://localhost:81/images/modaltop.png" alt="Modal arrow" />
+                                Mailbox
+                            </div>
+
+                            <div class="modalcontent">
+                                <div class="message">
+                                    <div class="author"><a href="#">Teun</a></div>
+                                    <div class="content">This skin can be easily styled!</div>
+                                    <div class="datetime">16-05 - 08:16</div>
+                                </div>
+
+                                <div class="message">
+                                    <div class="author"><a href="#">Pieter</a></div>
+                                    <div class="content">It can also be styled very easily.</div>
+                                    <div class="datetime">11-05 - 16:27</div>
+                                </div>
+
+                                <div class="message">
+                                    <div class="author"><a href="#">Jane Doe</a></div>
+                                    <div class="content">This template uses a lot of nice CSS3 effects.</div>
+                                    <div class="datetime">10-05 - 18:42</div>
+                                </div>
+                            </div>
+
+                            <div class="modalfoot">
+                                <img src="http://localhost:81/images/icons/newmessage.png" alt="New message" /> New message
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal box 2 -->
+                    <div id="modal2">	
+                        <div class="modalbox">
+                            <div class="modalhead">
+                                <img src="http://localhost:81/images/modaltop.png" alt="Modal arrow" />
+                                Mailbox 2
+                            </div>
+
+                            <div class="modalcontent">
+                                <div class="message">
+                                    <div class="author"><a href="#">Pieter</a></div>
+                                    <div class="content">It can also be styled very easily.</div>
+                                    <div class="datetime">11-05 - 16:27</div>
+                                </div>
+
+                                <div class="message">
+                                    <div class="author"><a href="#">Jane Doe</a></div>
+                                    <div class="content">This template uses a lot of nice CSS3 effects.</div>
+                                    <div class="datetime">10-05 - 18:42</div>
+                                </div>
+                            </div>
+
+                            <div class="modalfoot">
+                                <img src="http://localhost:81/images/icons/newmessage.png" alt="New message" /> New message
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation -->
+                    <ul id="main-nav">
+
+                        <li>
+                            <a href="#" class="current">
+                                Status
+                            </a>
+
+                            <ul>
+                                <li><a href="#" class="current">Manage Status</a></li>
+                                <li><a href="#">Top Status</a></li>
+                                <li><a href="#">Add Status</a></li>
+
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">
+                                Tags
+                            </a>
+                            <ul>
+                                <li><a href="#" class="current">Manage Tags</a></li>
+                                <li><a href="#">Top Tags</a></li>
+                                <li><a href="#">Add Tags</a></li>
+
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="#"><!-- use href="#" to indicate there's a submenu -->
+                                Users
+                            </a>
+
+                            <ul>
+                                <li><a href="#" class="current">Manage Users</a></li>
+                                <li><a href="#">Top Users</a></li>
+                                <li><a href="#">Add Users</a></li>
+
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="#">
+                                Cache
+                            </a>
+
+                            <ul>
+                                <li><a href="#" class="current">Manage Cache</a></li>
+                                <li><a href="#">Edit Cache</a></li>
+                            </ul>
+                        </li>
+
+
+
+                        <li>
+                            <a href="#">
+                                Settings
+                            </a>
+
+                            <ul>
+                                <li><a href="#" class="current">Account settings</a></li>
+                                <li><a href="#">Domain settings</a></li>
+                            </ul>
+                        </li>
+                    </ul><!-- end #nav -->
+
+                </div><!-- end #header -->
+
+                <div id="content">
+
+                    <h2><img src="http://localhost:81/images/icons/tools_32.png" alt="Manage Status" /><span id="manage">Manage Status</span></h2>
+
+
+
+                    <div class="content-box" id="content-box">
+                        <div class="content-box-header">
+                            <div style="margin-top:8px; float:left;"><h2 id="task">Status</h2></div>
+                            <div style="float:right; margin-top: 5px; margin-left: 10px;">Select tag: <select id="cmbTag">
+                                    <option selected="selected" value="-1">-- All Tag --</option>
+                                    {{#listTag_section}}
+                                    <option value="{{tagID}}">{{tagName}}</option>
+                                    {{/listTag_section}}
+                                </select></div>
+                        </div><!-- end .content-box-header -->
+
+                        <div class="content-box-content">
+                            <table class="pagination" rel="10" id="table_pagination"><!-- add the class .pagination to dynamically create a working pagination! The rel-attribute will tell how many items there are per page -->
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" /></th>
+                                        <th>ID</th>
+                                        <th>Status content</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+
+
+
+                                <tbody id="listItems">
+                                    {{#list_section}}
+                                    <tr>
+                                        <td><input type="checkbox" alt="{{itemID}}"/></td>
+                                        <td><a href="#">{{itemID}}</a></td>
+                                        <td>{{itemContent}}</td>
+                                        <td>
+                                            <input type="hidden" id="hidden{{itemID}}" value='{{tagIDs}}'/>
+                                            <a href="#" rel="EditItem"><img src="http://localhost:81/images/icons/pencil.png" alt="Edit" /></a>
+                                            <a href="#" class="confirmation"><img src="http://localhost:81/images/icons/cross.png" alt="Delete" /></a>
+                                        </td>
+                                    </tr>
+                                    {{/list_section}}
+                                </tbody>
+
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="4">	
+                                            <div class="pagination" id="pagination" >
+                                                <a href="#first" onclick="itemList(1);" rel="1">first</a>
+                                                {{#listPage_section}}
+                                                {{page}}
+                                                {{/listPage_section}}
+                                                <a href="#last" onclick="itemList({{last}});" rel="{{last}}">last</a>
+                                            </div>
+                                            <div class="bulk-actions">
+
+                                                <a href="#" class="graybutton" onclick="deleteItem();">Delete selected</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+
+                        </div> 
+                    </div><!-- end .content-box-content -->
+
+                    <div class="content-box" style="display: none;" id="dialog-box">
+                        <div id="dialog" class="window">
+                            <div class="content-box-header">
+                                <h2 style="margin-top: 7px;">Edit status</h2>
+                            </div>
+
+                            <div class="content-box-content">
+                                <form action="#">
+                                    <table style="width: 100%;">
+                                        <tr>
+                                            <td style="width: 15%; vertical-align: top;">Status ID </td>
+                                            <td style="width: 85%;"><div id="status_id"></div>   
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 15%; vertical-align: top;">Status content: </td>
+                                            <td style="width: 85%;"><textarea id="status_content" type="text" class="small" style="width: 100%; height: 70px;">
+                                                </textarea>   
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 15%; vertical-align: top;">Tag list: </td>
+                                            <td><div id="tag_list_textbox"></div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td><div style="margin: 20px;">
+                                                    <a href="#submit" style="width: 50px; float: left; text-align: center;" class="graybutton"/>Update</a>
+                                                    <a href="#back" style="margin-left: 110px; width: 50px; text-align: center;" class="graybutton">Back</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </form>
+                            </div>
+                        </div>
+                        <div id="mask"></div>
+                    </div>
+
+                </div><!-- end .content-box -->
+
+
+
+            </div><!-- end #content -->
+
+        </div></div><!-- end #bokeh and #container -->
+
+    <div id="footer">
+        Admin Control Panel | Designed by <a href="http://www.bramjetten.nl/">Bram Jetten Webdesign</a> 2010
+    </div><!-- end #footer -->
+
+</div></body>
+</html>

@@ -23,23 +23,27 @@ import org.apache.thrift.TException;
 public class randomItemServlet extends HttpServlet {
 
     public static MiddlewareHandler handler = new MiddlewareHandler();
+    int count = 0;
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res)
             throws IOException, ServletException {
-        res.setContentType("text/html; charset=UTF-8"); 
+        res.setContentType("text/html; charset=UTF-8");
         Item item = null;
-        
+
         try {
+            int start = (int) System.currentTimeMillis();
             item = handler.getRandomItem();
+            int end = (int) System.currentTimeMillis();
+            res.getWriter().println("Times: " + (end - start) + " ms<br/>");
         } catch (TException ex) {
             Logger.getLogger(randomItemServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        count++;
         Gson gson = new Gson();
         String strItem = gson.toJson(item);
         res.getWriter().println(strItem);
-
+        System.out.println(item.itemID + " count= " + count);
     }
 
     @Override
@@ -62,7 +66,7 @@ public class randomItemServlet extends HttpServlet {
                 Logger.getLogger(randomItemServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         Gson gson = new Gson();
         String strItem = gson.toJson(item);
         res.getWriter().println(strItem);
