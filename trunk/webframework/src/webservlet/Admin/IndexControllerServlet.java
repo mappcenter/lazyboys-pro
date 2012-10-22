@@ -1,5 +1,6 @@
 package webservlet.Admin;
 
+import com.google.gson.Gson;
 import com.vng.jcore.common.Config;
 import com.vng.jcore.profiler.ProfilerLog;
 import hapax.Template;
@@ -102,11 +103,13 @@ public class IndexControllerServlet extends HttpServlet {
         dic.setVariable("itemPerPage", String.valueOf(itemPerPage));
         dic.setVariable("current", String.valueOf(page));
 
+        Gson gson=new Gson();
+         
         for (int i = 0; i < listItem.size(); i++) {
             TemplateDataDictionary listsection = dic.addSection("list_section");
             listsection.setVariable("itemContent", listItem.get(i).content);
             listsection.setVariable("itemID", listItem.get(i).itemID);
-
+            listsection.setVariable("tagIDs", gson.toJson(listItem.get(i).tagsID));
         }
 
         List<Tag> listTag = getAllTag();
@@ -154,7 +157,7 @@ public class IndexControllerServlet extends HttpServlet {
 
     private Template getCTemplate() throws Exception {
         TemplateLoader templateLoader = TemplateResourceLoader.create("tpl/");
-        Template template = templateLoader.getTemplate("admin/index/index_1_1.xtm");
+        Template template = templateLoader.getTemplate("admin/index/index_admin.xtm");
         return template;
     }
 

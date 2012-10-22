@@ -14,7 +14,8 @@
         <td><a href="#">{{itemID}}</a></td>
         <td>{{itemContent}}</td>
         <td>
-            <a href="#"><img src="http://localhost:81/images/icons/pencil.png" alt="Edit" /></a>
+            <input type="hidden" id="hidden{{itemID}}"  value='{{tagIDs}}'/>
+            <a href="#"  rel="EditItem"><img src="http://localhost:81/images/icons/pencil.png" alt="Edit" /></a>
             
             <a href="#" class="confirmation" rel="{{itemID}}"><img src="http://localhost:81/images/icons/cross.png" alt="Delete" /></a>
             
