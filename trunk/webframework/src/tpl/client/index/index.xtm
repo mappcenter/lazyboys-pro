@@ -5,10 +5,13 @@
             <link href="http://localhost:81/static/lzmain-style.css" media="screen" rel="stylesheet" type="text/css">
                 <link href="http://localhost:81/static/lztab-menu-css.css" media="screen" rel="stylesheet" type="text/css">
                     <link href="http://localhost:81/static/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css" />
+                    <link rel="stylesheet" href="http://localhost:81/static/jsonSuggest.css" type="text/css" />
                     <script type="text/javascript" src="http://static.me.zing.vn/feeddialog/js/zmfeeddialog-2.01.min.js" ></script>
                     <script type="text/javascript" src="http://localhost:81/static/jquery1.8.1.js"></script>
                     <script type="text/javascript" src="http://localhost:81/static/json_sans_eval.js"></script>
                     <script type="text/javascript" src="http://fresher2012.live/listtags.js"></script>
+                    <script type="text/javascript" src="http://localhost:81/static/search-js/jquery.jsonSuggest.js"></script>
+                    <script type="text/javascript" src="http://localhost:81/static/search-js/json2.js"></script>
                     <script>
                         //var signkey = "{{#itemRan}}{{signkey}}{{/itemRan}}";
                     </script>
@@ -88,7 +91,10 @@
                                                         </div>
                                                     </div>
                                                     <div id="lz2-container">
-                                                        <div id="lz-toptags-bar"></div>
+                                                        <di style="float:right;font-weight: bold;"><span style="font-weight: bold;color:white;">Search:</span>
+                                                            <span><input type="text" size="20" id="suggestBox" /></span>
+                                                        </di>
+                                                        <div id="lz-toptags-bar"></div>                                                        
                                                         <div id="lz-toptags-container"></div>
                                                     </div>
                                                     <div id="lz3-container">

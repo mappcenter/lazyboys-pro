@@ -70,6 +70,7 @@ public class WebServer {
         handler.addServletWithMapping("webservlet.Client.DeleteItemControllerServlet","/delItem");
         handler.addServletWithMapping("webservlet.Client.UserLikesItemControllerServlet","/uLikes");
         handler.addServletWithMapping("webservlet.Client.UserDisLikesItemControllerServlet","/uDisLikes");
+        handler.addServletWithMapping("webservlet.Client.CachingUserInfoControllerServlet","/uCaching");
         //handler.addServletWithMapping("servlet.randomItemServlet","/random");
         
         handler.addServletWithMapping("webservlet.Admin.IndexControllerServlet", "/admin");
