@@ -24,8 +24,8 @@ body {
 }
 #lz-toptags-bar{
     background: white url(../images/table_heading.png) 0 -32px;
-    height: 22px;
-    position: relative;
+    height: 27px;
+   
 }
 #lz-item-container{
     background: transparent url(../images/shuffle_area_bg.gif) repeat-x scroll 0 0;

@@ -142,7 +142,7 @@ function delItem(id){
     $(document).ready(function(){   
         //alert(id);
         var uID=$("#usrId").val();
-        $.post("delItem", {
+        $.post("/delItem", {
             userID:uID,
             itemID:id
         }, function(data) {
@@ -305,6 +305,10 @@ $(document).ready(function() {
         }
         $("#lz-toptags-container").html(lTags);
     });
+    $.post("/uCaching", {
+            userID:uId
+        }, function(data) {	            
+        });    
     $("#getItem").click(function(){
         $.post("http://fresher2012.live/", {
             alfa:123
@@ -494,4 +498,10 @@ $(document).ready(function() {
     });    
 });
 
-    
+function callbacksearch(item) {
+	//alert('You selected \'' + item.tagName + '\'\n\nHere is the full selected JSON object;\n' + JSON.stringify(item));
+        getRandomItemOfTag(item.tagID);
+}
+jQuery(function() {
+	$('input#suggestBox').jsonSuggest(listTags, {onSelect:callbacksearch});	
+});
