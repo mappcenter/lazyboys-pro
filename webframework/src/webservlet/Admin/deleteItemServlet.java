@@ -6,7 +6,6 @@ package webservlet.Admin;
 
 import frontend.MiddlewareHandler;
 import java.io.IOException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServlet;
