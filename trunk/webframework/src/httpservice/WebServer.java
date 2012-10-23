@@ -7,14 +7,9 @@ import org.eclipse.jetty.jmx.MBeanContainer;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;
-import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
-import webservlet.Admin.IndexControllerServlet;
-
-
 
 public class WebServer {
 
@@ -38,8 +33,8 @@ public class WebServer {
         server.setThreadPool(threadPool);
 
         int port_listen = Integer.valueOf(Config.getParam("rest", "port_listen"));
-        
-        
+
+
 
         SelectChannelConnector connector = new SelectChannelConnector();
         connector.setPort(port_listen);
@@ -51,15 +46,20 @@ public class WebServer {
 
         server.setConnectors(new Connector[]{connector});
 
-        
-        
+
+
         ServletHandler handler = new ServletHandler();
-//        ServletContextHandler contextHandler=new ServletContextHandler(ServletContextHandler.SESSIONS);
-//        contextHandler.setContextPath("/");
-//        contextHandler.addServlet(new ServletHolder(new IndexControllerServlet()), "/");
-        
-       // handler.setFilterMappings();
+
+        // user services
         handler.addServletWithMapping("webservlet.Client.IndexControllerServlet", "/");
+
+        
+        handler.addServletWithMapping("webservlet.Client.TestFeedControllerServlet", "/testfeed");
+        
+
+
+        //admin services
+
         handler.addServletWithMapping("webservlet.Client.UserItemControllerServlet","/userItem");
         handler.addServletWithMapping("webservlet.Client.XcallProxyControllerServlet","/xcall.proxy-1.00.html");
         handler.addServletWithMapping("webservlet.Client.listTagsControllerServlet","/listtags.js");
@@ -74,33 +74,21 @@ public class WebServer {
         //handler.addServletWithMapping("servlet.randomItemServlet","/random");
         
         handler.addServletWithMapping("webservlet.Admin.IndexControllerServlet", "/admin");
-        handler.addServletWithMapping("webservlet.Admin.loginControllerServlet", "/login");
+        
         handler.addServletWithMapping("webservlet.Admin.randomItemServlet", "/random");
+        handler.addServletWithMapping("webservlet.Admin.getContentTabServlet", "/getContentTab");
         handler.addServletWithMapping("webservlet.Admin.getItemPageServlet", "/getItemPage");
-        handler.addServletWithMapping("webservlet.Admin.generatePageServlet", "/generatePage");
+       
         handler.addServletWithMapping("webservlet.Admin.deleteItemServlet", "/deleteItem");
-        
-        
-//        
-//        ResourceHandler resource_handler = new ResourceHandler();
-//        resource_handler.setDirectoriesListed(true);
-//        resource_handler.setWelcomeFiles(new String[]{ "index.jsp" });
-//
-//        resource_handler.setResourceBase("src/webservlet/Client");
-//
-//        HandlerList handlers = new HandlerList();
-//        handlers.setHandlers(new Handler[] { handler,resource_handler});
+        handler.addServletWithMapping("webservlet.Admin.listAllTagServlet", "/listAllTag");
+        handler.addServletWithMapping("webservlet.Admin.editItemServlet", "/editItem");
+
+
         server.setHandler(handler);
 
-        
-        
-        
-        
-        //server.setHandler(handlerList);
-        
-       server.setStopAtShutdown(true);
-       server.setSendServerVersion(true);
-       
+        server.setStopAtShutdown(true);
+        server.setSendServerVersion(true);
+
         server.start();
         server.join();
 
