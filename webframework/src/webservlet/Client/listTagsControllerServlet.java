@@ -65,6 +65,7 @@ public class listTagsControllerServlet extends HttpServlet {
         return template;
     }
 
+    
     private void out(String content, HttpServletResponse resp) throws IOException {        
         PrintWriter out = resp.getWriter();
         out.println(content);
