@@ -12,7 +12,12 @@
 <tbody id="listItems">
     {{#tag_section}}
     <tr>
+        <td><input type="checkbox" alt="{{tagID}}"/></td>
+        <td><a href="#">{{tagID}}</a></td>
+        <td>{{tagName}}</td>
         <td>
+            <a href="#" rel="EditTag"><img src="http://localhost:81/images/icons/pencil.png" alt="Edit" /></a>
+            <a href="#" class="confirmation"><img src="http://localhost:81/images/icons/cross.png" alt="Delete" /></a>
             <input type="checkbox" alt="{{tagID}}"/>
         </td>
         <td>
