@@ -114,9 +114,9 @@
                             </a>
 
                             <ul>
-                                <li><a href="#" class="current">Manage Status</a></li>
-                                <li><a href="#">Top Status</a></li>
-                                <li><a href="#">Add Status</a></li>
+                                <li><a href="#" class="current" alt="manageStatus">Manage Status</a></li>
+                                <li><a href="#" alt="topStatus">Top Status</a></li>
+                                <li><a href="#" alt="addStatus">Add Status</a></li>
 
                             </ul>
                         </li>
@@ -181,7 +181,7 @@
                     <div class="content-box" id="content-box">
                         <div class="content-box-header">
                             <div style="margin-top:8px; float:left;"><h2 id="task">Status</h2></div>
-                            <div style="float:right; margin-top: 5px; margin-left: 10px;">Select tag: <select id="cmbTag">
+                            <div id="div_cmbTag" style="float:right; margin-top: 5px; margin-left: 10px;">Select tag: <select id="cmbTag">
                                     <option selected="selected" value="-1">-- All Tag --</option>
                                     {{#listTag_section}}
                                     <option value="{{tagID}}">{{tagName}}</option>
@@ -216,6 +216,8 @@
                                     </tr>
                                     {{/list_section}}
                                 </tbody>
+                                
+                                 
 
                                 <tfoot>
                                     <tr>
@@ -269,7 +271,7 @@
                                             <td></td>
                                             <td><div style="margin: 20px;">
                                                     <a href="#submit" style="width: 50px; float: left; text-align: center;" class="graybutton"/>Update</a>
-                                                    <a href="#back" style="margin-left: 110px; width: 50px; text-align: center;" class="graybutton">Back</a>
+                                                    <a href="#back" style="margin-left: 110px; width: 50px; text-align: center; display: none;" class="graybutton">Back</a>
                                                 </div>
                                             </td>
                                         </tr>
