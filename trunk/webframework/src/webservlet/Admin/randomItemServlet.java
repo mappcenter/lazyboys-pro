@@ -28,9 +28,9 @@ public class randomItemServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res)
             throws IOException, ServletException {
+        long t1 = System.currentTimeMillis();
         res.setContentType("text/html; charset=UTF-8");
         Item item = null;
-
         try {
             int start = (int) System.currentTimeMillis();
             item = handler.getRandomItem();
@@ -39,15 +39,15 @@ public class randomItemServlet extends HttpServlet {
         } catch (TException ex) {
             Logger.getLogger(randomItemServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        count++;
-        Gson gson = new Gson();
-        String strItem = gson.toJson(item);
-        res.getWriter().println(strItem);
-        System.out.println(item.itemID + " count= " + count);
+        long t2 = System.currentTimeMillis();
+        //Gson gson = new Gson();
+        //String strItem = gson.toJson(item);
+        res.getWriter().println("<html><head><title>Welcome!</title></head><body bgcolor=\"white\" text=\"black\"><center><h1>Welcome to LazyBoys!</h1></center><br/>Time: " + (t2 - t1) + " ms<br/>" + item.itemID + "</body></html>");
     }
 
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+        long t1 = System.currentTimeMillis();
         res.setContentType("text/html; charset=UTF-8");
         Item item = null;
         if (req.getParameter("tagID") == null) {
@@ -66,9 +66,9 @@ public class randomItemServlet extends HttpServlet {
                 Logger.getLogger(randomItemServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
-        Gson gson = new Gson();
-        String strItem = gson.toJson(item);
-        res.getWriter().println(strItem);
+        long t2 = System.currentTimeMillis();
+        //Gson gson = new Gson();
+        //String strItem = gson.toJson(item);
+        res.getWriter().println("<html><head><title>Welcome!</title></head><body bgcolor=\"white\" text=\"black\"><center><h1>Welcome to LazyBoys!</h1></center><br/>Time: " + (t2 - t1) + " ms<br/>" + item.content + "</body></html>");
     }
 }
