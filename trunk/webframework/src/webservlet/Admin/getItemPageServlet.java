@@ -139,6 +139,8 @@ public class getItemPageServlet extends HttpServlet {
                 listPageSection.setVariable("page", "<a href=\"#\" onclick='itemList("+i+");' class=\"graybutton pagelink\" rel=\"" + i + "\">" + i + "</a>");
             }
         }
+        dic.setVariable("onclick_first", "itemList(1);");
+        dic.setVariable("onclick_last", "itemList($(this).attr('rel'));");
         dic.setVariable("last", String.valueOf(pageCount));
 
         Template template = this.getCTemplate();
