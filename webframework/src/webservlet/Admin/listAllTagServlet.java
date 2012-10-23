@@ -23,6 +23,7 @@ import org.apache.thrift.TException;
  */
 public class listAllTagServlet extends HttpServlet{
     public static Gson gson=new Gson();
+    
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res) 
             throws IOException, ServletException {

@@ -140,7 +140,7 @@ public class getItemPageServlet extends HttpServlet {
             }
         }
         dic.setVariable("onclick_first", "itemList(1);");
-        dic.setVariable("onclick_last", "itemList($(this).attr('rel'));");
+        dic.setVariable("onclick_last", "itemList(" + pageCount + ");");
         dic.setVariable("last", String.valueOf(pageCount));
 
         Template template = this.getCTemplate();

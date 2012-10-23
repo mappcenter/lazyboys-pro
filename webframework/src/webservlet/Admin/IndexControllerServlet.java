@@ -30,7 +30,7 @@ public class IndexControllerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        
+
         resp.setContentType("text/html; charset=utf-8");
         boolean dbg = ("on".equals(req.getParameter("jdbg")));
         ProfilerLog profiler = new ProfilerLog(dbg);
@@ -63,7 +63,7 @@ public class IndexControllerServlet extends HttpServlet {
         int page = 1;
         String tagID = "-1";
         int itemPerPage = Integer.valueOf(Config.getParam("paging", "itemPerPage"));
-       
+
         try {
             if (req.getParameter("p") != null) {
                 page = Integer.parseInt(req.getParameter("p"));
@@ -82,7 +82,7 @@ public class IndexControllerServlet extends HttpServlet {
 
 
         TemplateDataDictionary dic = TemplateDictionary.create();
-        
+
 
         dic.setVariable("tag", tagID);
 
@@ -103,8 +103,8 @@ public class IndexControllerServlet extends HttpServlet {
         dic.setVariable("itemPerPage", String.valueOf(itemPerPage));
         dic.setVariable("current", String.valueOf(page));
 
-        Gson gson=new Gson();
-         
+        Gson gson = new Gson();
+
         for (int i = 0; i < listItem.size(); i++) {
             TemplateDataDictionary listsection = dic.addSection("list_section");
             listsection.setVariable("itemContent", listItem.get(i).content);
@@ -120,12 +120,12 @@ public class IndexControllerServlet extends HttpServlet {
             listTagSection.setVariable("tagName", listTag.get(i).tagName);
 
         }
-        
-        int itemTagSize = (int) handler.itemdbSize();
-        int pageCount = (int) Math.ceil((float)itemTagSize / itemPerPage);
 
-        int start=Math.max(page-4, 1);
-        int end=Math.min(page+4, pageCount);
+        int itemTagSize = (int) handler.itemdbSize();
+        int pageCount = (int) Math.ceil((float) itemTagSize / itemPerPage);
+
+        int start = Math.max(page - 4, 1);
+        int end = Math.min(page + 4, pageCount);
 
         for (int i = start; i <= end; i++) {
             if (i == page) {
@@ -133,9 +133,11 @@ public class IndexControllerServlet extends HttpServlet {
                 listPageSection.setVariable("page", "<a href=\"#\" class=\"graybutton pagelink active\" rel=\"" + page + "\">" + page + "</a>");
             } else {
                 TemplateDataDictionary listPageSection = dic.addSection("listPage_section");
-                listPageSection.setVariable("page", "<a href=\"#\" onclick='itemList("+i+");' class=\"graybutton pagelink\" rel=\"" + i + "\">" + i + "</a>");
+                listPageSection.setVariable("page", "<a href=\"#\" onclick='itemList(" + i + ");' class=\"graybutton pagelink\" rel=\"" + i + "\">" + i + "</a>");
             }
         }
+        dic.setVariable("onclick_first", "itemList(1);");
+        dic.setVariable("onclick_last", "itemList(" + pageCount + ");");
         dic.setVariable("last", String.valueOf(pageCount));
 
         Template template = this.getCTemplate();
