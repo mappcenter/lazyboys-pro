@@ -8,18 +8,11 @@ $(document).ready(function() {
             p:"1"
         }, function(data){	                   
             $("table.pagination").html(data);	
-            regen();	
+            regen();
+            editItem();
         }); 
     });
-    // Fix IE z-index
-
-    /*var zIndexNumber = 1000;
-		$('div').each(function() {
-			$(this).css('zIndex', zIndexNumber);
-			zIndexNumber -= 10;
-		});*/
-		
-    // Push footer down
+ 
 	
     $('#container').append('<div id="push" />');
 
@@ -245,7 +238,12 @@ $(document).ready(function() {
         $(this).fadeOut(200, function() {
             $(this).hide();
         });
-    });		  
+    });	
+   
+
+    editItem();
+    
+
 });
 
 function itemList(page){
@@ -259,12 +257,22 @@ function itemList(page){
         }, function(data){	                  
             $("#table_pagination").html(data);	
             regen();
+            editItem();
         });
         
     }); 
 }
 
 function regen(){
+    
+    $('a[rel="EditItem"]').click(function(e) { 
+        
+        $('#dialog-box').attr('style', 'dispaly: block;');
+        $('#content-box').attr('style', 'dispaly: none;');
+        
+    //Dialog.show(e); 
+    }); 
+                
     $('.confirmation').wrap('<div class="confirm" />');
         
     $('.confirm > a').live('click',function() {
@@ -305,6 +313,7 @@ function deleteItem(){
         }, function(data){
             $("#table_pagination").html(data);	
             regen();
+            editItem();
         });
     });
     
@@ -323,7 +332,85 @@ function deleteOneItem(itemID){
         }, function(data){
             $("#table_pagination").html(data);	
             regen();
+            editItem();
         });
     });
 }
+
+function editItem() { 
+    
+    $('a[rel="EditItem"]').click(function(e) {    
+        var itemID = $(this).parent().parent().find('td:nth-child(1) input').attr('alt');
+        var itemContent=$(this).parent().parent().find('td:nth-child(3)').html();
+        
+       
+        $('#dialog-box').show();
+        $('#content-box').hide();  
+        
+        $('#status_id').html(itemID);
+                      
+        var textaerea=document.getElementById('status_content');
+        textaerea.value=itemContent;   
+        var hidden_tagid=document.getElementById('hidden'+itemID);
  
+        var tagid_list=jsonParse(hidden_tagid.value);      
+        var tag_list;      
+        $.post("listAllTag", function(data){           
+            tag_list =jsonParse(data);          
+            var str="";          
+            for(var j in tag_list){		                                              
+                var result=false;
+                for(var i in tagid_list){
+                    if(tagid_list[i]==tag_list[j].tagID){
+                        result=true;
+                    }
+                }
+                if(result)
+                    str+="<div style='float:left; width:150px;'><input name='checkbox_listtag' type='checkbox' value='"+tag_list[j].tagID+"' alt='"+tag_list[j].tagID+"' checked='checked'/>"+tag_list[j].tagName+"</div>";			              
+                else
+                    str+="<div style='float:left; width:150px;'><input name='checkbox_listtag' type='checkbox' value='"+tag_list[j].tagID+"' alt='"+tag_list[j].tagID+"'/>"+tag_list[j].tagName+"</div>";
+            }   
+            var list_tag_textarea=document.getElementById('tag_list_textbox');
+            list_tag_textarea.innerHTML=str;
+        }); 
+        $('a[href="#submit"]').click(function(){
+            $(this).attr('enable', 'false');
+            $('a[href="#back"]').attr('enable', 'false');
+            var tagIDs="";
+            var arrTagID=new Array();
+            $('input[type="checkbox"]').each(function(){
+               
+                if(this.checked==true){
+                    tagIDs+=this.value+",";                  
+                }
+            });
+            
+            arrTagID=tagIDs.split(",");
+            arrTagID.splice(arrTagID.length-1, 1);
+                      
+            textaerea=document.getElementById('status_content');
+            itemContent = textaerea.value; 
+            
+            $.post('editItem',{
+                itemID:itemID, 
+                itemContent:itemContent, 
+                tagIDs:tagIDs
+            }, function(data){
+                alert(data);                              
+                $('#hidden'+itemID).parent().parent().find('td:nth-child(3)').html(itemContent);
+                $('#hidden'+itemID).attr('value', JSON.stringify(arrTagID));
+                $('#dialog-box').hide();
+                $('#content-box').show();   
+                
+            });
+        });
+        
+        $('a[href="#back"]').click(function(){
+            $('#dialog-box').hide();
+            $('#content-box').show();         
+        });
+    });           
+}
+
+
+
