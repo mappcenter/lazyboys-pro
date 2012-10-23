@@ -135,7 +135,7 @@ $(document).ready(function() {
             $("#task").html($('#main-nav > li > a.current').html());
             var tabName=$('#main-nav > li > a.current').attr('id');
             //var page=$('#pagination > a.active').attr('rel');
-            //alert(tabName, page);
+            alert(tabName);
             //return;
             $.post("getContentTab",{
                 tabName:tabName,
@@ -147,7 +147,7 @@ $(document).ready(function() {
         });
                 
     $('#main-nav > li > ul').find('a[href="#"]').click( // Click!
-        function() { 
+        function() {
             $(this).parent().siblings().children("a").removeClass('current'); // Remove .current class from all tabs
             $(this).addClass('current'); // Add class .current
             $("#manage").html($(this).html());
@@ -188,10 +188,9 @@ $(document).ready(function() {
     $('.confirm > a').live('click',function() {
         $('.tooltip').fadeOut(200, function() { // Remove all tooltips
             $(this).remove();
-        });
-        var link = $(this).parent().children("a").attr('href'); // Get the requested link
-        $(this).parent().append('<div class="tooltip"><p>Are you sure?</p><a href="' + link + '">Yes</a> | <a href="#" class="close">No</a></div>'); // Adding the tooltip to the DOM
-                        
+        });   
+        var itemID = $(this).parent().children("a").attr('rel');//get deleted item ID
+        $(this).parent().append('<div class="tooltip"><p>Are you sure?</p><a href="#" onclick="deleteOneItem('+itemID+');">Yes</a> | <a href="#" class="close">No</a></div>'); 		
         $('.close').click(function() { // Closing the tooltip
             $('.tooltip').fadeOut(200, function() {
                 $(this).remove();
