@@ -48,7 +48,8 @@ string ItemTagDB::convertItemTagToJson(ItemTag& itemtag) {
         value["itemsID"][i] = itemtag.itemsID[i];
         //cout <<value["tags"][i];
     }
-    StyledWriter writer; //not use Json::Writer because it is a virtual class
+    //StyledWriter writer; //not use Json::Writer because it is a virtual class
+    FastWriter writer;
     string jsonString = writer.write(value);
     //poco_information_f1(*logger, "convertItemToJson: Convert from Item %s to json successful", item.itemID);
     return jsonString;
