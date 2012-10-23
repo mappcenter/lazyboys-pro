@@ -2,44 +2,45 @@
 <html lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <!-- Make IE8 behave like IE7, necessary for charts -->
-        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+            <!-- Make IE8 behave like IE7, necessary for charts -->
+            <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 
-        <title>Admin Control Panel</title>
+            <title>Admin Control Panel</title>
 
-        <!-- CSS -->
-        <link rel="stylesheet" type="text/css" media="screen" href="http://localhost:81/css/reset.css" />
-        <link rel="stylesheet" type="text/css" media="screen" href="http://localhost:81/css/main.css" />
-        <link rel="stylesheet" type="text/css" media="screen" href="http://localhost:81/css/custom-theme/jquery-ui-1.8.1.custom.css" />
+            <!-- CSS -->
+            <link rel="stylesheet" type="text/css" media="screen" href="http://localhost:81/css/reset.css" />
+            <link rel="stylesheet" type="text/css" media="screen" href="http://localhost:81/css/main.css" />
+            <link rel="stylesheet" type="text/css" media="screen" href="http://localhost:81/css/custom-theme/jquery-ui-1.8.1.custom.css" />
 
-        <!-- IE specific CSS stylesheet -->
-        <!--[if IE]>
-                <link rel="stylesheet" type="text/css" media="screen" href="http://localhost:81/css/ie.css" />
-        <![endif]-->
+            <!-- IE specific CSS stylesheet -->
+            <!--[if IE]>
+                    <link rel="stylesheet" type="text/css" media="screen" href="http://localhost:81/css/ie.css" />
+            <![endif]-->
 
-        <!-- This stylesheet contains advanced CSS3 features that do not validate yet -->
-        <link rel="stylesheet" type="text/css" media="screen" href="http://localhost:81/css/css3.css" />
+            <!-- This stylesheet contains advanced CSS3 features that do not validate yet -->
+            <link rel="stylesheet" type="text/css" media="screen" href="http://localhost:81/css/css3.css" />
 
-        <!-- JavaScript -->
-        <script type="text/javascript" src="http://localhost:81/js/jquery-1.4.2.min.js"></script>
-        <script type="text/javascript" src="http://localhost:81/js/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="http://localhost:81/js/jquery.wysiwyg.js"></script>
-        <script type="text/javascript" src="http://localhost:81/js/jquery.rounded.js"></script>
-        <script type="text/javascript" src="http://localhost:81/js/excanvas.js"></script>
-        <script type="text/javascript" src="http://localhost:81/js/jquery.visualize.js"></script>
-        <script type="text/javascript" src="http://localhost:81/js/script.js"></script>
-        <script type="text/javascript" src="http://localhost:81/js/json_sans_eval.js"></script>
+            <!-- JavaScript -->
+            <script type="text/javascript" src="http://localhost:81/js/jquery-1.4.2.min.js"></script>
+            <script type="text/javascript" src="http://localhost:81/js/jquery-ui.min.js"></script>
+            <script type="text/javascript" src="http://localhost:81/js/jquery.wysiwyg.js"></script>
+            <script type="text/javascript" src="http://localhost:81/js/jquery.rounded.js"></script>
+            <script type="text/javascript" src="http://localhost:81/js/excanvas.js"></script>
+            <script type="text/javascript" src="http://localhost:81/js/jquery.visualize.js"></script>
+            <script type="text/javascript" src="http://localhost:81/js/script.js"></script>
+            <script type="text/javascript" src="http://localhost:81/js/json_sans_eval.js"></script>
 
 
-        <script type="text/javascript">
+            <script type="text/javascript">
               
-        </script>
+            </script>
 
 
     </head>
 
     <body>
-        <div id="bokeh"><div id="container">
+        <div id="bokeh">
+            <div id="container">
 
                 <div id="header">
                     <h1 id="logo">Admin Control Panel </h1>
@@ -59,19 +60,25 @@
 
                             <div class="modalcontent">
                                 <div class="message">
-                                    <div class="author"><a href="#">Teun</a></div>
+                                    <div class="author">
+                                        <a href="#">Teun</a>
+                                    </div>
                                     <div class="content">This skin can be easily styled!</div>
                                     <div class="datetime">16-05 - 08:16</div>
                                 </div>
 
                                 <div class="message">
-                                    <div class="author"><a href="#">Pieter</a></div>
+                                    <div class="author">
+                                        <a href="#">Pieter</a>
+                                    </div>
                                     <div class="content">It can also be styled very easily.</div>
                                     <div class="datetime">11-05 - 16:27</div>
                                 </div>
 
                                 <div class="message">
-                                    <div class="author"><a href="#">Jane Doe</a></div>
+                                    <div class="author">
+                                        <a href="#">Jane Doe</a>
+                                    </div>
                                     <div class="content">This template uses a lot of nice CSS3 effects.</div>
                                     <div class="datetime">10-05 - 18:42</div>
                                 </div>
@@ -93,13 +100,17 @@
 
                             <div class="modalcontent">
                                 <div class="message">
-                                    <div class="author"><a href="#">Pieter</a></div>
+                                    <div class="author">
+                                        <a href="#">Pieter</a>
+                                    </div>
                                     <div class="content">It can also be styled very easily.</div>
                                     <div class="datetime">11-05 - 16:27</div>
                                 </div>
 
                                 <div class="message">
-                                    <div class="author"><a href="#">Jane Doe</a></div>
+                                    <div class="author">
+                                        <a href="#">Jane Doe</a>
+                                    </div>
                                     <div class="content">This template uses a lot of nice CSS3 effects.</div>
                                     <div class="datetime">10-05 - 18:42</div>
                                 </div>
@@ -120,9 +131,15 @@
                             </a>
 
                             <ul>
-                                <li><a href="#" class="current">Manage Status</a></li>
-                                <li><a href="#">Top Status</a></li>
-                                <li><a href="#">Add Status</a></li>
+                                <li>
+                                    <a href="#" class="current">Manage Status</a>
+                                </li>
+                                <li>
+                                    <a href="#">Top Status</a>
+                                </li>
+                                <li>
+                                    <a href="#">Add Status</a>
+                                </li>
 
                             </ul>
                         </li>
@@ -131,9 +148,15 @@
                                 Tags
                             </a>
                             <ul>
-                                <li><a href="#" class="current">Manage Tags</a></li>
-                                <li><a href="#">Top Tags</a></li>
-                                <li><a href="#">Add Tags</a></li>
+                                <li>
+                                    <a href="#" class="current">Manage Tags</a>
+                                </li>
+                                <li>
+                                    <a href="#">Top Tags</a>
+                                </li>
+                                <li>
+                                    <a href="#">Add Tags</a>
+                                </li>
 
                             </ul>
                         </li>
@@ -144,9 +167,15 @@
                             </a>
 
                             <ul>
-                                <li><a href="#" class="current">Manage Users</a></li>
-                                <li><a href="#">Top Users</a></li>
-                                <li><a href="#">Add Users</a></li>
+                                <li>
+                                    <a href="#" class="current">Manage Users</a>
+                                </li>
+                                <li>
+                                    <a href="#">Top Users</a>
+                                </li>
+                                <li>
+                                    <a href="#">Add Users</a>
+                                </li>
 
                             </ul>
                         </li>
@@ -157,8 +186,12 @@
                             </a>
 
                             <ul>
-                                <li><a href="#" class="current">Manage Cache</a></li>
-                                <li><a href="#">Edit Cache</a></li>
+                                <li>
+                                    <a href="#" class="current">Manage Cache</a>
+                                </li>
+                                <li>
+                                    <a href="#">Edit Cache</a>
+                                </li>
                             </ul>
                         </li>
 
@@ -170,8 +203,12 @@
                             </a>
 
                             <ul>
-                                <li><a href="#" class="current">Account settings</a></li>
-                                <li><a href="#">Domain settings</a></li>
+                                <li>
+                                    <a href="#" class="current">Account settings</a>
+                                </li>
+                                <li>
+                                    <a href="#">Domain settings</a>
+                                </li>
                             </ul>
                         </li>
                     </ul><!-- end #nav -->
@@ -180,26 +217,35 @@
 
                 <div id="content">
 
-                    <h2><img src="http://localhost:81/images/icons/tools_32.png" alt="Manage Status" /><span id="manage">Manage Status</span></h2>
+                    <h2>
+                        <img src="http://localhost:81/images/icons/tools_32.png" alt="Manage Status" />
+                        <span id="manage">Manage Status</span>
+                    </h2>
 
                     
                     
                     <div class="content-box">
                         <div class="content-box-header">
-                            <div style="margin-top:8px; float:left;"><h2 id="task">Status</h2></div>
-                            <div style="float:right; margin-top: 5px; margin-left: 10px;">Select tag: <select id="cmbTag">
-                            <option selected="selected" value="-1">-- All Tag --</option>
-                            {{#listTag_section}}
-                            <option value="{{tagID}}">{{tagName}}</option>
-                            {{/listTag_section}}
-                        </select></div>
+                            <div style="margin-top:8px; float:left;">
+                                <h2 id="task">Status</h2>
+                            </div>
+                            <div style="float:right; margin-top: 5px; margin-left: 10px;">Select tag: 
+                                <select id="cmbTag">
+                                    <option selected="selected" value="-1">-- All Tag --</option>
+                                    {{#listTag_section}}
+                                    <option value="{{tagID}}">{{tagName}}</option>
+                                    {{/listTag_section}}
+                                </select>
+                            </div>
                         </div><!-- end .content-box-header -->
 
                         <div class="content-box-content">
                             <table class="pagination" rel="10" id="table_pagination"><!-- add the class .pagination to dynamically create a working pagination! The rel-attribute will tell how many items there are per page -->
                                 <thead>
                                     <tr>
-                                        <th><input type="checkbox" /></th>
+                                        <th>
+                                            <input type="checkbox" />
+                                        </th>
                                         <th>ID</th>
                                         <th>Status content</th>
                                         <th>Actions</th>
@@ -211,12 +257,20 @@
                                 <tbody id="listItems">
                                     {{#list_section}}
                                     <tr>
-                                        <td><input type="checkbox" alt="{{itemID}}"/></td>
-                                        <td><a href="#">{{itemID}}</a></td>
+                                        <td>
+                                            <input type="checkbox" alt="{{itemID}}"/>
+                                        </td>
+                                        <td>
+                                            <a href="#">{{itemID}}</a>
+                                        </td>
                                         <td>{{itemContent}}</td>
                                         <td>
-                                            <a href="#"><img src="http://localhost:81/images/icons/pencil.png" alt="Edit" /></a>
-                                            <a href="#" class="confirmation"><img src="http://localhost:81/images/icons/cross.png" alt="Delete" /></a>
+                                            <a href="#">
+                                                <img src="http://localhost:81/images/icons/pencil.png" alt="Edit" />
+                                            </a>
+                                            <a href="#" class="confirmation">
+                                                <img src="http://localhost:81/images/icons/cross.png" alt="Delete" />
+                                            </a>
                                         </td>
                                     </tr>
                                     {{/list_section}}
@@ -249,11 +303,14 @@
 
                 </div><!-- end #content -->
 
-            </div></div><!-- end #bokeh and #container -->
+            </div>
+        </div><!-- end #bokeh and #container -->
 
         <div id="footer">
-            Admin Control Panel | Designed by <a href="http://www.bramjetten.nl/">Bram Jetten Webdesign</a> 2010
+            Admin Control Panel | Designed by 
+            <a href="http://www.bramjetten.nl/">Bram Jetten Webdesign</a> 2010
         </div><!-- end #footer -->
 
-    </div></body>
+    </div>
+    </body>
 </html>
