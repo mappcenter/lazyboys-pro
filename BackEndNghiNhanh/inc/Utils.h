@@ -25,6 +25,8 @@
 #include "Poco/NumberParser.h"
 #include "Poco/Timestamp.h"
 #include "Poco/String.h"
+#include "Poco/RegularExpression.h"
+        
 
 
 using namespace std;
@@ -32,6 +34,7 @@ using namespace Poco;
 using Poco::NumberFormatter;
 using Poco::NumberParser;
 using Poco::toLower;
+using Poco::RegularExpression;
 
 const string ADD = "add";
 const string UPDATE = "update";
@@ -49,6 +52,7 @@ public:
     static string getTimeNow();
     static int64_t getRandomNumber(int64_t max);
     static bool findStringInString(string str1, string str2);
+    static bool findStringInStringRe(string str1, string str2);
     static bool findStringInStringForTag(string str1, string str2);
 private:
 

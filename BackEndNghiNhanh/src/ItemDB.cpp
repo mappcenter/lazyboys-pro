@@ -70,7 +70,8 @@ string ItemDB::convertItemToJson(Item& item) {
     value["dislikeCounts"] = static_cast<int> (item.dislikeCounts);
     value["dateAdd"] = item.dateAdd;
     value["dateUpdate"] = item.dateUpdate;
-    StyledWriter writer; //not use Json::Writer because it is a virtual class
+    //StyledWriter writer; //not use Json::Writer because it is a virtual class
+    FastWriter writer;
     string jsonString = writer.write(value);
     return jsonString;
 }
