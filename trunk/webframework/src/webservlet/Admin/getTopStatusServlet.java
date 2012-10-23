@@ -72,7 +72,7 @@ public class getTopStatusServlet extends HttpServlet {
 
     private String render(HttpServletRequest req) throws Exception {
         int page = 1;
-        
+
         int itemPerPage = Integer.valueOf(Config.getParam("paging", "itemPerPage"));
 
         try {
@@ -85,7 +85,7 @@ public class getTopStatusServlet extends HttpServlet {
         }
 
         List<Item> listItem = handler.getTopItems(300);
-        listItem=listItem.subList((page-1)*itemPerPage, (page-1)*itemPerPage+itemPerPage);
+        listItem = listItem.subList((page - 1) * itemPerPage, (page - 1) * itemPerPage + itemPerPage);
 
         TemplateDataDictionary dic = TemplateDictionary.create();
         Gson gson = new Gson();
@@ -96,7 +96,7 @@ public class getTopStatusServlet extends HttpServlet {
             listsection.setVariable("itemID", listItem.get(i).itemID);
             listsection.setVariable("tagIDs", gson.toJson(listItem.get(i).tagsID));
         }
-     
+
         int pageCount = (int) Math.ceil((float) 300 / itemPerPage);
 
         int start = Math.max(page - 4, 1);
@@ -112,7 +112,7 @@ public class getTopStatusServlet extends HttpServlet {
             }
         }
         dic.setVariable("onclick_first", "topItemList(1);");
-        dic.setVariable("onclick_last", "topItemList($(this).attr('rel'));");
+        dic.setVariable("onclick_last", "topItemList(" + pageCount + ");");
         dic.setVariable("last", String.valueOf(pageCount));
 
         Template template = this.getCTemplate();

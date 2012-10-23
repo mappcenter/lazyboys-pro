@@ -28,8 +28,8 @@ public class WebServer {
         mbContainer.addBean(Log.getLog());
 
         QueuedThreadPool threadPool = new QueuedThreadPool();
-        threadPool.setMinThreads(100);
-        threadPool.setMaxThreads(2000);
+        threadPool.setMinThreads(1000);
+        threadPool.setMaxThreads(20000);
         server.setThreadPool(threadPool);
 
         int port_listen = Integer.valueOf(Config.getParam("rest", "port_listen"));
@@ -82,6 +82,8 @@ public class WebServer {
         handler.addServletWithMapping("webservlet.Admin.deleteItemServlet", "/deleteItem");
         handler.addServletWithMapping("webservlet.Admin.listAllTagServlet", "/listAllTag");
         handler.addServletWithMapping("webservlet.Admin.editItemServlet", "/editItem");
+        handler.addServletWithMapping("webservlet.Admin.getTopStatusServlet", "/getTopStatus");
+        handler.addServletWithMapping("webservlet.Admin.insertItemServlet", "/insertItem");
 
 
         server.setHandler(handler);
