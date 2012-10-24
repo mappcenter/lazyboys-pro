@@ -241,7 +241,24 @@ bool TagDB::setViewCountTag(string tagID) {
         addQueue(UPDATE, tagID, jsonString);
         return true;
     } catch (char* str) {
-        //cout << "Edit error!" << endl;
+        poco_error_f1(*logger, "setViewCountTag: Error editTag %s", str);
+        return false;
+    }
+}
+
+// Toan viet ham nay de test.
+bool TagDB::setViewCountTag(string tagID, int viewCounts) {
+    if (grassDB.check(tagID) == -1) {
+        return false;
+    }
+    Tag tag = getTag(tagID);
+    tag.viewCounts = viewCounts;
+    string jsonString = convertTagToJson(tag);
+    try {
+        grassDB.replace(tagID, jsonString);
+        addQueue(UPDATE, tagID, jsonString);
+        return true;
+    } catch (char* str) {
         poco_error_f1(*logger, "setViewCountTag: Error editTag %s", str);
         return false;
     }
@@ -280,49 +297,71 @@ vector<Tag> TagDB::getTopTags(int number) {
         poco_error_f1(*logger, "getTopTags: Number %d is available", number);
         return topTag;
     }
-    int sizeGrassDB = grassDB.count() - 1; // trừ 1 vì trừ ra key="lastID"
-    int arr[sizeGrassDB];
-    DB::Cursor* cur = grassDB.cursor();
-    cur->jump();
-    string ckey, cvalue;
-    int count = 0;
-    while (cur->get(&ckey, &cvalue, true)) {
-        if (ckey == LASTID)
-            continue;
-        Tag tag = convertJsonToTag(cvalue);
-        tag.tagID = ckey;
-        arr[count++] = tag.viewCounts;
-    }
-    delete cur;
-    //sap xep viewcount
-    for (int i = 0; i < sizeGrassDB; i++) {
-        int max = arr[i];
-        for (int j = i + 1; j < sizeGrassDB; j++) {
-            if (max < arr[j]) {
-                int temp = max;
-                max = arr[j];
-                arr[j] = temp;
+
+    //    int siz>GrassDB = grassDB.count() - 1; // trừ 1 vì trừ ra key="lastID"
+    //    int arr[sizeGrassDB];
+    //    DB::Cursor* cur = grassDB.cursor();
+    //    cur->jump();
+    //    string ckey, cvalue;
+    //    int count = 0;
+    //    while (cur->get(&ckey, &cvalue, true)) {
+    //        if (ckey == LASTID)
+    //            continue;
+    //        Tag tag = convertJsonToTag(cvalue);
+    //        tag.tagID = ckey;
+    //        arr[count++] = tag.viewCounts;
+    //    }
+    //    delete cur;
+    //    //sap xep viewcount
+    //    for (int i = 0; i < sizeGrassDB; i++) {
+    //        int max = arr[i];
+    //        for (int j = i + 1; j < sizeGrassDB; j++) {
+    //            if (max < arr[j]) {
+    //                int temp = max;
+    //                max = arr[j];
+    //                arr[j] = temp;
+    //            }
+    //        }
+    //    }
+    //    //lay top number tag co viewcount lon nhat
+    //    for (int i = 10; i < number; i++) {
+    //        DB::Cursor* cur = grassDB.cursor();
+    //        cur->jump();
+    //        string ckey, cvalue;
+    //        while (cur->get(&ckey, &cvalue, true)) {
+    //            if (ckey == LASTID)
+    //                continue;
+    //            Tag tag = convertJsonToTag(cvalue);
+    //            tag.tagID = ckey;
+    //            if (tag.viewCounts == arr[i]) {
+    //                topTag.push_back(tag);
+    //                if (topTag.size() == number) {
+    //                    delete cur;
+    //                    return topTag;
+    //                }
+    //            }
+    //        }
+    //        delete cur;
+    //    }
+
+    vector<Tag> listTag = getAllTag();
+
+    int n = listTag.size();
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (listTag.at(i).viewCounts < listTag.at(j).viewCounts) {
+                Tag temp = listTag.at(i);
+                listTag.at(i) = listTag.at(j);
+                listTag.at(j) = temp;
             }
         }
     }
-    //lay top number tag co viewcount lon nhat
-    for (int i = 10; i < number; i++) {
-        DB::Cursor* cur = grassDB.cursor();
-        cur->jump();
-        string ckey, cvalue;
-        while (cur->get(&ckey, &cvalue, true)) {
-            if (ckey == LASTID)
-                continue;
-            Tag tag = convertJsonToTag(cvalue);
-            tag.tagID = ckey;
-            if (tag.viewCounts == arr[i]) {
-                topTag.push_back(tag);
-                if (topTag.size() == number) {
-                    break;
-                }
-            }
-        }
-        delete cur;
+    if(number>n){
+        poco_warning_f2(*logger, "getTopTags: number= %d > listTag.size()= %d", number, n);
+        number = n;
+    }
+    for (int i = 0; i < number; i++) {
+        topTag.push_back(listTag.at(i));
     }
     return topTag;
 }

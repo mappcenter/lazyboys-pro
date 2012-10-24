@@ -307,7 +307,9 @@ bool ItemDB::increaseViewCountItem(string itemID) {
         return false;
     }
     Item item = getItemInGrassDB(itemID);
+    mutex.lock();
     item.viewCounts++;
+    mutex.unlock();
     string content = convertItemToJson(item);
     addQueue(UPDATE, itemID, content);
     if (grassDB.replace(itemID, content) == false) {
@@ -323,7 +325,9 @@ bool ItemDB::increaseLikeCountItem(string itemID) {
         return false;
     }
     Item item = getItemFromItemID(itemID);
+    mutex.lock();
     item.likeCounts++;
+    mutex.unlock();
     string content = convertItemToJson(item);
     addQueue(UPDATE, itemID, content);
     if (grassDB.replace(itemID, content) == false) {
@@ -348,7 +352,9 @@ bool ItemDB::increaseDislikeCountItem(string itemID) {
         return false;
     }
     Item item = getItemFromItemID(itemID);
+    mutex.lock();
     item.dislikeCounts++;
+    mutex.unlock();
     string content = convertItemToJson(item);
     addQueue(UPDATE, itemID, content);
     if (grassDB.replace(itemID, content) == false) {
