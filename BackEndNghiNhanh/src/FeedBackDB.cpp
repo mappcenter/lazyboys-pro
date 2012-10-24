@@ -55,8 +55,7 @@ string FeedBackDB::convertUserFeedBackToJson(UserFeedBack& userFeedBack) {
     for (int i = 0; i < n; i++) {
         value["favouriteItems"][i] = userFeedBack.favouriteItems[i];
     }
-    //StyledWriter writer; //not use Json::Writer because it is a virtual class
-    FastWriter writer;
+    FastWriter writer; //not use Json::Writer because it is a virtual class
     string jsonString = writer.write(value);
     //poco_information_f1(*logger, "convertItemToJson: Convert from Item %s to json successful", item.itemID);
     return jsonString;
