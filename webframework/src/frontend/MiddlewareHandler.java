@@ -4,866 +4,775 @@
  */
 package frontend;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.thrift.TException;
-import org.apache.thrift.protocol.TBinaryProtocol;
-import org.apache.thrift.protocol.TProtocol;
-import org.apache.thrift.transport.TFramedTransport;
-import org.apache.thrift.transport.TSocket;
-import org.apache.thrift.transport.TTransport;
-import org.apache.thrift.transport.TTransportException;
 
 /**
  *
  * @author chanhlt
  */
 public class MiddlewareHandler implements MiddlewareFrontend.Iface {
-
-    static TTransport transport;
-    static MiddlewareFrontend.Client client;
-    static TFramedTransport framedTransport;
-    static TProtocol protocol;
-    static String host;
-    static int port;
-    static Map<String, Object> LocalCache = new HashMap<String, Object>();
-
-    public synchronized static void init() throws IOException, TTransportException {
-
-        host = getConfig.getInstance().getHost();
-        port = getConfig.getInstance().getPort();
-
-        transport = new TSocket(host, port);
-        framedTransport = new TFramedTransport(transport);
-        protocol = new TBinaryProtocol(framedTransport);
-        client = new MiddlewareFrontend.Client(protocol);
-        transport.open();
-    }
-
+    
+    ConnectionPool connectionPool = ConnectionPool.getInstance();
+    
     @Override
-    public synchronized List<Tag> getAllTag() throws TException {
+    public  List<Tag> getAllTag() throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            List<Tag> lisTag;
+            lisTag = connect.getClient().getAllTag();
+            connectionPool.releaseConnection(connect);
+            return lisTag;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        List<Tag> lisTag = new ArrayList<Tag>();
-        if (LocalCache.containsKey("getAllTag")) {
-            lisTag = (List<Tag>) LocalCache.get("getAllTag");
-        } else {
-            lisTag = client.getAllTag();
-            LocalCache.put("getAllTag", lisTag);
-        }
-        return lisTag;
+        return null;
     }
-
+    
     @Override
-    public synchronized boolean insertTag(String tagName) throws TException {
+    public  boolean insertTag(String tagName) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            boolean result = connect.getClient().insertTag(tagName);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        boolean result = client.insertTag(tagName);
-        return result;
+        return false;
     }
-
+    
     @Override
-    public synchronized boolean deleteTag(String tagID) throws TException {
+    public  boolean deleteTag(String tagID) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            boolean result = connect.getClient().deleteTag(tagID);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        boolean result = client.deleteTag(tagID);
-        return result;
+        return false;
     }
-
+    
     @Override
-    public synchronized boolean deleteAllTag(List<String> tagIDs) throws TException {
+    public  boolean deleteAllTag(List<String> tagIDs) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            boolean result = connect.getClient().deleteAllTag(tagIDs);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        boolean result = client.deleteAllTag(tagIDs);
-        return result;
+        return false;
     }
-
+    
     @Override
-    public synchronized boolean editTag(String tagID, String tagName) throws TException {
+    public  boolean editTag(String tagID, String tagName) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            boolean result = connect.getClient().editTag(tagID, tagName);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        boolean result = client.editTag(tagID, tagName);
-        return result;
+        return false;
     }
-
+    
     @Override
-    public synchronized Tag getTag(String tagID) throws TException {
+    public  Tag getTag(String tagID) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            Tag result = connect.getClient().getTag(tagID);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        Tag result = client.getTag(tagID);
-        return result;
+        return null;
     }
-
+    
     @Override
-    public synchronized void setViewCountTag(String tagID) throws TException {
+    public  void setViewCountTag(String tagID) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            connect.getClient().setViewCountTag(tagID);
+            connectionPool.releaseConnection(connect);
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        client.setViewCountTag(tagID);
     }
-
+    
     @Override
-    public synchronized List<Tag> getTopTags(long number) throws TException {
+    public  List<Tag> getTopTags(long number) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            List<Tag> result = connect.getClient().getTopTags(number);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        List<Tag> result = client.getTopTags(number);
-
-        return result;
+        return null;
     }
-
+    
     @Override
-    public synchronized List<Item> getAllItems(long number) throws TException {
+    public  List<Item> getAllItems(long number) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            List<Item> result = connect.getClient().getAllItems(number);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        List<Item> listItem;
-
-        listItem = client.getAllItems(number);
-
-        return listItem;
+        return null;
     }
-
+    
     @Override
-    public synchronized List<Item> getAllItemshaveTag(String tagID, int numberItems) throws TException {
+    public  List<Item> getAllItemshaveTag(String tagID, int numberItems) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            List<Item> result = connect.getClient().getAllItemshaveTag(tagID, numberItems);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        List<Item> listItem;
-        listItem = client.getAllItemshaveTag(tagID, numberItems);
-        return listItem;
+        return null;
     }
-
+    
     @Override
-    public synchronized List<Item> pagingItemsTag(String tagID, int pageNumber, int numberItems) throws TException {
+    public  List<Item> pagingItemsTag(String tagID, int pageNumber, int numberItems) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            List<Item> result = connect.getClient().pagingItemsTag(tagID, pageNumber, numberItems);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        List<Item> result = client.pagingItemsTag(tagID, pageNumber, numberItems);
-        return result;
+        return null;
     }
-
-    public synchronized List<String> getAllItemsIDhaveTag(String tagID) throws TException {
+    
+    public  List<String> getAllItemsIDhaveTag(String tagID) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            List<String> result = connect.getClient().getAllItemsIDhaveTag(tagID, 12);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        List<String> listItemID;
-
-        listItemID = client.getAllItemsIDhaveTag(tagID, 12);
-
-        return listItemID;
+        return null;
     }
-
+    
     @Override
-    public synchronized Item getRandomItem() throws TException, TTransportException {
+    public  Item getRandomItem() throws TException {
         try {
-            if (transport == null || transport.isOpen() == false) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            Item result = connect.getClient().getRandomItem();
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        Item resItem = client.getRandomItem();
-
-        return resItem;
-
+        return null;
     }
-
+    
     @Override
-    public synchronized Item getRandomItemhaveTag(String tagID) throws TException {
+    public  Item getRandomItemhaveTag(String tagID) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            Item result = connect.getClient().getRandomItemhaveTag(tagID);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        Item resItem = client.getRandomItemhaveTag(tagID);
-        return resItem;
+        return null;
     }
-
+    
     @Override
-    public synchronized void increaseViewCountItem(String itemID) throws TException {
+    public  void increaseViewCountItem(String itemID) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            connect.getClient().increaseViewCountItem(itemID);
+            connectionPool.releaseConnection(connect);
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        client.increaseViewCountItem(itemID);
     }
-
+    
     @Override
-    public synchronized boolean deleteItem(String itemID) throws TException {
+    public  boolean deleteItem(String itemID) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            boolean result = connect.getClient().deleteItem(itemID);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        boolean result = client.deleteItem(itemID);
-        return result;
+        return false;
     }
-
+    
     @Override
-    public synchronized boolean deleteAllItem(List<String> itemIDs) throws TException {
+    public  boolean deleteAllItem(List<String> itemIDs) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            boolean result = connect.getClient().deleteAllItem(itemIDs);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        boolean result = client.deleteAllItem(itemIDs);
-        return result;
+        return false;
     }
-
+    
     @Override
-    public synchronized boolean editItem(String itemID, String newItemValue, List<String> newTagIDs) throws TException {
+    public  boolean editItem(String itemID, String newItemValue, List<String> newTagIDs) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            boolean result = connect.getClient().editItem(itemID, newItemValue, newTagIDs);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        boolean result = client.editItem(itemID, newItemValue, newTagIDs);
-        return result;
+        return false;
     }
-
+    
     @Override
-    public synchronized List<Item> getItemKeyword(String keyWord) throws TException {
+    public  List<Item> getItemKeyword(String keyWord) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            List<Item> result = connect.getClient().getItemKeyword(keyWord);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        List<Item> result = client.getItemKeyword(keyWord);
-        return result;
+        return null;
     }
-
+    
     @Override
-    public synchronized List<Item> getItemKeywordTag(String keyWord, String tagID) throws TException {
+    public  List<Item> getItemKeywordTag(String keyWord, String tagID) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            List<Item> result = connect.getClient().getItemKeywordTag(keyWord, tagID);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        List<Item> result = client.getItemKeywordTag(keyWord, tagID);
-        return result;
+        return null;
     }
-
+    
     @Override
-    public synchronized List<Item> getTopItems(long number) throws TException {
+    public  List<Item> getTopItems(long number) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            List<Item> result = connect.getClient().getTopItems(number);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        List<Item> result = (List<Item>) LocalCache.get("getTopItems");
-
-        if (result == null) {
-            result = client.getTopItems(300);
-            LocalCache.put("getTopItems", result);
-        }
-        if (number < 300 && number > 0) {
-            result = result.subList(0, (int) number);
-        }
-        return result;
+        return null;
     }
-
+    
     @Override
-    public synchronized List<Item> getTopItemsofTag(long number, String tagID) throws TException {
+    public  List<Item> getTopItemsofTag(long number, String tagID) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            List<Item> result = connect.getClient().getTopItemsofTag(number, tagID);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        List<Item> result = client.getTopItemsofTag(number, tagID);
-        return result;
+        return null;
     }
-
+    
     @Override
-    public synchronized boolean blockUser(String userName) throws TException {
+    public  boolean blockUser(String userName) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            boolean result = connect.getClient().blockUser(userName);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        boolean result = client.blockUser(userName);
-        return result;
+        return false;
     }
-
+    
     @Override
-    public synchronized boolean unblockUser(String userName) throws TException {
+    public  boolean unblockUser(String userName) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            boolean result = connect.getClient().unblockUser(userName);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-
-        boolean result = client.unblockUser(userName);
-        return result;
+        return false;
     }
-
+    
     @Override
-    public synchronized boolean deleteUser(String usrName) throws TException {
+    public  boolean deleteUser(String usrName) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            boolean result = connect.getClient().deleteUser(usrName);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        boolean result = client.deleteUser(usrName);
-        return result;
+        return false;
     }
-
+    
     @Override
-    public synchronized Item getItemFromItemID(String itemID) throws TException {
+    public  Item getItemFromItemID(String itemID) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            Item result = connect.getClient().getItemFromItemID(itemID);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        Item result = client.getItemFromItemID(itemID);
-        return result;
+        return null;
     }
-
+    
     @Override
-    public synchronized List<Item> getItemsFromListItemID(List<String> itemIDs) throws TException {
+    public  List<Item> getItemsFromListItemID(List<String> itemIDs) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            List<Item> result = connect.getClient().getItemsFromListItemID(itemIDs);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        List<Item> result = client.getItemsFromListItemID(itemIDs);
-        return result;
+        return null;
     }
-
+    
     @Override
-    public synchronized void increaseLikeCountItem(String itemID) throws TException {
+    public  void increaseLikeCountItem(String itemID) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            connect.getClient().increaseLikeCountItem(itemID);
+            connectionPool.releaseConnection(connect);
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        client.increaseLikeCountItem(itemID);
     }
-
+    
     @Override
-    public synchronized void increaseDislikeCountItem(String itemID) throws TException {
+    public  void increaseDislikeCountItem(String itemID) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            connect.getClient().increaseDislikeCountItem(itemID);
+            connectionPool.releaseConnection(connect);
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        client.increaseDislikeCountItem(itemID);
     }
-
+    
     @Override
-    public synchronized String insertItem(String content, List<String> tagIDs) throws TException {
+    public  String insertItem(String content, List<String> tagIDs) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            String result = connect.getClient().insertItem(content, tagIDs);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        String result = client.insertItem(content, tagIDs);
-        return result;
+        return null;
     }
-
+    
     @Override
-    public synchronized List<Item> getItemsPage(long pageNumber, long itemNumber, String tagID) throws TException {
+    public  List<Item> getItemsPage(long pageNumber, long itemNumber, String tagID) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            List<Item> result = connect.getClient().getItemsPage(pageNumber, itemNumber, tagID);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        List<Item> result = client.getItemsPage(pageNumber, itemNumber, tagID);
-        return result;
+        return null;
     }
-
+    
     @Override
-    public synchronized boolean addUser(String userID, String userToken, int userRole) throws TException {
+    public  boolean addUser(String userID, String userToken, int userRole) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            boolean result = connect.getClient().addUser(userID, userToken, userRole);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        boolean result = client.addUser(userID, userToken, userRole);
-        return result;
+        return false;
     }
-
+    
     @Override
-    public synchronized List<String> getAllItemsIDhaveTag(String tagID, int numberItemsID) throws TException {
+    public  List<String> getAllItemsIDhaveTag(String tagID, int numberItemsID) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            List<String> result = connect.getClient().getAllItemsIDhaveTag(tagID, numberItemsID);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        List<String> result = client.getAllItemsIDhaveTag(tagID, numberItemsID);
-        return result;
+        return null;
     }
-
+    
     @Override
-    public synchronized boolean editUser(String userID, String userToken, int userRole) throws TException {
+    public  boolean editUser(String userID, String userToken, int userRole) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            boolean result = connect.getClient().editUser(userID, userToken, userRole);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-
-        boolean result = client.editUser(userID, userToken, userRole);
-        return result;
+        return false;
     }
-
+    
     @Override
-    public synchronized boolean deleteAllUser() throws TException {
+    public  boolean deleteAllUser() throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            boolean result = connect.getClient().deleteAllUser();
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        boolean result = client.deleteAllUser();
-        return result;
+        return false;
     }
-
+    
     @Override
-    public synchronized List<Tag> getTagKeyword(String keyWord) throws TException {
+    public  List<Tag> getTagKeyword(String keyWord) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            List<Tag> result = connect.getClient().getTagKeyword(keyWord);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        List<Tag> result = client.getTagKeyword(keyWord);
-        return result;
+        return null;
     }
-
+    
     @Override
-    public synchronized List<Item> getFavouriteItems(String userID, long number) throws TException {
+    public  List<Item> getFavouriteItems(String userID, long number) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            List<Item> result = connect.getClient().getFavouriteItems(userID, number);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        List<Item> result = client.getFavouriteItems(userID, number);
-        return result;
+        return null;
     }
-
+    
     @Override
-    public synchronized List<Item> getFavouriteItemsofTag(String userID, long number, String tagID) throws TException {
+    public  List<Item> getFavouriteItemsofTag(String userID, long number, String tagID) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            List<Item> result = connect.getClient().getFavouriteItemsofTag(userID, number, tagID);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        List<Item> result = client.getFavouriteItemsofTag(userID, number, tagID);
-        return result;
+        return null;
     }
-
+    
     @Override
-    public synchronized boolean insertFavouriteItem(String userID, String itemID) throws TException {
+    public  boolean insertFavouriteItem(String userID, String itemID) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            boolean result = connect.getClient().insertFavouriteItem(userID, itemID);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        boolean result = client.insertFavouriteItem(userID, itemID);
-        return result;
+        return false;
     }
-
+    
     @Override
-    public synchronized boolean deleteFavouriteItem(String userID, String itemID) throws TException {
+    public  boolean deleteFavouriteItem(String userID, String itemID) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            boolean result = connect.getClient().deleteFavouriteItem(userID, itemID);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        boolean result = client.deleteFavouriteItem(userID, itemID);
-        return result;
+        return false;
     }
-
+    
     @Override
-    public synchronized long itemdbSize() throws TException {
+    public  long itemdbSize() throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            long result = connect.getClient().itemdbSize();
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        long result = client.itemdbSize();
-        return result;
+        return 0;
     }
-
+    
     @Override
-    public synchronized long tagdbSize() throws TException {
+    public  long tagdbSize() throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            long result = connect.getClient().tagdbSize();
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        long result = client.tagdbSize();
-        return result;
+        return 0;
     }
-
+    
     @Override
-    public synchronized long itemtagdbSize() throws TException {
+    public  long itemtagdbSize() throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            long result = connect.getClient().itemtagdbSize();
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        long result = client.itemtagdbSize();
-        return result;
+        return 0;
     }
-
+    
     @Override
-    public synchronized long itemtagSize(String tagID) throws TException {
+    public  long itemtagSize(String tagID) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            long result = connect.getClient().itemtagSize(tagID);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        long result = client.itemtagSize(tagID);
-        return result;
+        return 0;
     }
-
+    
     @Override
-    public synchronized long userdbSize() throws TException {
+    public  long userdbSize() throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            long result = connect.getClient().userdbSize();
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        long result = client.userdbSize();
-        return result;
+        return 0;
     }
-
+    
     @Override
-    public synchronized long itemsLikeSize(String userID) throws TException {
+    public  long itemsLikeSize(String userID) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            long result = connect.getClient().itemsLikeSize(userID);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        long result = client.itemsLikeSize(userID);
-        return result;
+        return 0;
     }
-
+    
     @Override
-    public synchronized long itemsDislikeSize(String userID) throws TException {
+    public  long itemsDislikeSize(String userID) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            long result = connect.getClient().itemsDislikeSize(userID);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        long result = client.itemsDislikeSize(userID);
-        return result;
+        return 0;
     }
-
+    
     @Override
-    public synchronized long favouriteItemsSize(String userID) throws TException {
+    public  long favouriteItemsSize(String userID) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            long result = connect.getClient().favouriteItemsSize(userID);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        long result = client.favouriteItemsSize(userID);
-        return result;
+        return 0;
     }
-
+    
     @Override
-    public synchronized List<String> getAllItemsIDLike(String userID) throws TException {
+    public  List<String> getAllItemsIDLike(String userID) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            List<String> result = connect.getClient().getAllItemsIDLike(userID);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        List<String> result = client.getAllItemsIDLike(userID);
-        return result;
+        return null;
     }
-
+    
     @Override
-    public synchronized List<Item> getAllItemsLike(String userID, int number) throws TException {
+    public  List<Item> getAllItemsLike(String userID, int number) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            List<Item> result = connect.getClient().getAllItemsLike(userID, number);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        List<Item> result = client.getAllItemsLike(userID, number);
-        return result;
+        return null;
     }
-
+    
     @Override
-    public synchronized boolean insertLikedItem(String userID, String itemID) throws TException {
+    public  boolean insertLikedItem(String userID, String itemID) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            boolean result = connect.getClient().insertLikedItem(userID, itemID);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        boolean result = client.insertLikedItem(userID, itemID);
-        return result;
+        return false;
     }
-
+    
     @Override
-    public synchronized boolean deleteLikedItem(String userID, String itemID) throws TException {
+    public  boolean deleteLikedItem(String userID, String itemID) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            boolean result = connect.getClient().deleteLikedItem(userID, itemID);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        boolean result = client.deleteLikedItem(userID, itemID);
-        return result;
+        return false;
     }
-
+    
     @Override
-    public synchronized List<String> getAllItemsIDDislike(String userID) throws TException {
+    public  List<String> getAllItemsIDDislike(String userID) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            List<String> result = connect.getClient().getAllItemsIDDislike(userID);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        List<String> result = client.getAllItemsIDDislike(userID);
-        return result;
+        return null;
     }
-
+    
     @Override
-    public synchronized List<Item> getAllItemsDislike(String userID, int number) throws TException {
+    public  List<Item> getAllItemsDislike(String userID, int number) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            List<Item> result = connect.getClient().getAllItemsDislike(userID, number);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        List<Item> result = client.getAllItemsDislike(userID, number);
-        return result;
+        return null;
     }
-
+    
     @Override
-    public synchronized boolean insertDislikedItem(String userID, String itemID) throws TException {
+    public  boolean insertDislikedItem(String userID, String itemID) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            boolean result = connect.getClient().insertDislikedItem(userID, itemID);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        boolean result = client.insertDislikedItem(userID, itemID);
-        return result;
+        return false;
     }
-
+    
     @Override
-    public synchronized boolean deleteDislikedItem(String userID, String itemID) throws TException {
+    public  boolean deleteDislikedItem(String userID, String itemID) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            boolean result = connect.getClient().deleteDislikedItem(userID, itemID);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        boolean result = client.deleteDislikedItem(userID, itemID);
-        return result;
+        return false;
     }
-
+    
     @Override
-    public synchronized boolean userExisted(String userID) throws TException {
+    public  boolean userExisted(String userID) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            boolean result = connect.getClient().userExisted(userID);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        boolean result = client.userExisted(userID);
-        return result;
+        return false;
     }
-
+    
     @Override
-    public synchronized User getUser(String userID) throws TException {
+    public  User getUser(String userID) throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            User result = connect.getClient().getUser(userID);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        User result = client.getUser(userID);
-        return result;
+        return null;
     }
-
+    
     @Override
-    public synchronized List<String> getAllUser() throws TException {
+    public  List<String> getAllUser() throws TException {
         try {
-            if (transport == null || !transport.isOpen()) {
-                init();
-            }
-        } catch (IOException ex) {
+            Connection connect = connectionPool.getConnection();
+            List<String> result = connect.getClient().getAllUser();
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        List<String> result = client.getAllUser();
-        return result;
+        return null;
     }
 }
