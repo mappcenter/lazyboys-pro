@@ -36,7 +36,7 @@ public class MyAppInfo {
         appKey = prop.getProperty("appKey");
         secretKey = prop.getProperty("secretKey");
         String enviroment = prop.getProperty("environment");
-        ZME_Environment z = ZME_Environment.PRODUCTION;
+        ZME_Environment z = ZME_Environment.DEVELOPMENT;
         try {
             zConfig = new ZME_Config(appName, appKey, secretKey, z);
         } catch (Exception ex) {
