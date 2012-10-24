@@ -34,7 +34,6 @@ string UserDB::convertUserToJson(User& user) {
     Json::Value value;
     value["userToken"] = user.userToken;
     value["userRole"] = static_cast<int> (user.userRole);
-    //Json::StyledWriter writer;
     FastWriter writer;
     string jsonText = writer.write(value);
     //poco_information_f1(*logger, "convertUserToJson: Convert from User %s to json successful", user.userID);

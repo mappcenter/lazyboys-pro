@@ -27,7 +27,6 @@ string TagDB::convertTagToJson(Tag& tag) {
     value["viewCounts"] = static_cast<int> (tag.viewCounts);
     value["dateAdd"] = tag.dateAdd;
     value["dateUpdate"] = tag.dateUpdate;
-    //Json::StyledWriter writer;
     FastWriter writer;
     string jsonText = writer.write(value);
     //poco_information_f1(*logger, "convertTagToJson: Convert from Tag %s to json successful", tag.tagID);
