@@ -23,13 +23,27 @@ int BackendMiddlewarePocoServer::main(const std::vector<std::string>& args) {
     string pathItemTagDB = this->config().getString("pathHashDBOfItemTagDB");
     string pathUserDB = this->config().getString("pathHashDBOfUserDB");
     string pathFeedBackDB = this->config().getString("pathHashDBOfFeedBackDB");
-    std::string host = this->config().getString("host");
-    std::cout << "Port = " << port << "\n";
-    std::cout << "Host = " << host << "\n";
-    TNonblockingServer server = serverMng->createConnection(port, pathItemsDB, pathTagsDB,
-            pathItemTagDB, pathUserDB, pathFeedBackDB);
-    serverMng->listenning(server);
-    waitForTerminationRequest();
+    //    std::string host = this->config().getString("host");
+    //    std::cout << "Port = " << port << "\n";
+    //    std::cout << "Host = " << host << "\n";
+    //    TNonblockingServer server = serverMng->createConnection(port, pathItemsDB, pathTagsDB,
+    //            pathItemTagDB, pathUserDB, pathFeedBackDB);
+    //    serverMng->listenning(server);
+    //    waitForTerminationRequest();
+    TagDB tagDB(pathTagsDB);
+    tagDB.startTagDB();
+    vector<Tag> listAllTag = tagDB.getAllTag();
+    int n = listAllTag.size();
+    for(vector<Tag>::iterator it = listAllTag.begin(), iend = listAllTag.end(); it!=iend;++it){
+        tagDB.setViewCountTag(it->tagID, Utils::getRandomNumber(200));
+    }
+
+    vector<Tag> list = tagDB.getTopTags(10);
+    cout << "size " << list.size() << endl;
+    n = list.size();
+    for (int i = 0; i < n; i++) {
+        cout << list[i].tagID << ": " << list[i].viewCounts << " " << list[i].tagName << endl;
+    }
     return 0;
 }
 
