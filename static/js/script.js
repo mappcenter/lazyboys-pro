@@ -153,13 +153,24 @@ $(document).ready(function() {
             $("#task").html($('#main-nav > li > a.current').html());
             var tabName=$('#main-nav > li > a.current').attr('id');
             //var page=$('#pagination > a.active').attr('rel');
-            alert(tabName);
+            //alert(tabName);
             //return;
+            if(tabName=="Status"){
+                $("#cmbTag").val('-1');
+                $('#div_cmbTag').show();
+            }
+            else
+                $('#div_cmbTag').hide();
             $.post("getContentTab",{
                 tabName:tabName,
                 p:"1"
             },function(data){
                 $("#table_pagination").html(data);  
+                $('#dialog-box').hide();
+                $('#content-box').show();
+                editItem();
+                regen();
+                manageStatus();
             });  
             return false;
         }
@@ -300,7 +311,54 @@ function regen(){
         $('#content-box').attr('style', 'dispaly: none;');
         
     //Dialog.show(e); 
-    }); 
+    });
+    
+    $('img[alt="Edit"]').click(function(e) { 
+        var tagID=$(this).parent().parent().parent().find('td:nth-child(2) a').html();
+        var tagName = $(this).parent().parent().parent().find('td:nth-child(3)').html();
+        var name=prompt("Edit tag name",tagName);
+        var x;
+        //alert(tagID+" "+tagName);
+        //return;
+        if (name!=null)
+        {
+            //x="Hello " + name + "! How are you today?";
+            //alert(x);
+            
+            $.post("editTag",{
+                tagID:tagID, 
+                tagName:tagName
+            }, function(data){
+                var tabName=$('#main-nav > li > a.current').attr('id');
+                var page= $('#pagination > a.active').html();
+                //alert(tabName);
+               
+                $.post("getContentTab",{
+                    tabName:tabName,
+                    p:page
+                },function(data){
+                    alert(data);
+                    $("#table_pagination").html(data);
+                });
+            //$(this).parent().parent().parent().find('td:nth-child(3)').html(name);
+            });
+        }
+ 
+    //Dialog.show(e); 
+    });
+    //    $('img[alt="Delete"]').click(function(e) { 
+    //        var tagID=$(this).parent().parent().parent().parent().find('td:nth-child(2) a').html();
+    //        alert(tagID);
+    //        return;
+    //        $.post("editTag",{
+    //            tagID:tagID
+    //        }, function(data){
+    //            alert(data);
+    //        });
+    //        
+    // 
+    //    //Dialog.show(e); 
+    //    });
                 
     $('.confirmation').wrap('<div class="confirm" />');
         
@@ -323,7 +381,7 @@ function regen(){
 function tagList(page){
     $(document).ready(function() {
         var tabName=$('#main-nav > li > a.current').attr('id');
-        alert(tabName,page);
+        //alert(tabName,page);
         $.post("getContentTab",{
             tabName:tabName,
             p:page
@@ -334,50 +392,79 @@ function tagList(page){
 }
 
 function deleteItem(){
-    
-    var tagID = $('#cmbTag').attr('value') ;
+    var tabName=$('#main-nav > li > a.current').attr('id');
     var page= $('#pagination > a.active').html();
-    var listItemID="";
-    $('input[type="checkbox"]').each(function(){
-        if($(this).attr('checked')){
-            //$(this).attr('checked', false);
-            var itemID=$(this).attr('alt');
-            listItemID+=itemID+",";      
-        }                               
-    });
-    $.post('deleteItem',{
-        listItemID:listItemID
-    },function(data){        
-        $.post("getItemPage",{
-            t:tagID, 
-            p:page
-        }, function(data){
-            $("#table_pagination").html(data);	
-            regen();
-            editItem();
-            manageStatus();
+    if(tabName=="Status"){
+        var tagID = $('#cmbTag').attr('value') ;
+        //var page= $('#pagination > a.active').html();
+        var listItemID="";
+        $('input[type="checkbox"]').each(function(){
+            if($(this).attr('checked')){
+                //$(this).attr('checked', false);
+                var itemID=$(this).attr('alt');
+                listItemID+=itemID+",";      
+            }                               
         });
-    });
+        $.post('deleteItem',{
+            listItemID:listItemID
+        },function(data){        
+            $.post("getItemPage",{
+                t:tagID, 
+                p:page
+            }, function(data){
+                $("#table_pagination").html(data);	
+                regen();
+                editItem();
+                manageStatus();
+            });
+        });
+    
+    }
+    else if(tabName=="Tags"){
+        
+    }
     
 }
 
-function deleteOneItem(itemID){
-    var listItemID=itemID+",";
-    var tagID = $('#cmbTag').attr('value') ;
+function deleteOneItem( itemID){
+    var tabName=$('#main-nav > li > a.current').attr('id');
     var page= $('#pagination > a.active').html();
-    $.post('deleteItem',{
-        listItemID:listItemID
-    },function(){        
-        $.post("getItemPage",{
-            t:tagID, 
-            p:page
-        }, function(data){
-            $("#table_pagination").html(data);	
-            regen();
-            editItem();
-            manageStatus();
+    //    alert(task);
+    //    return;
+    if(tabName=="Status"){
+        var listItemID = itemID + ",";
+        var tagID = $('#cmbTag').attr('value') ;
+        
+        $.post('deleteItem',{
+            listItemID:listItemID
+        },function(){        
+            $.post("getItemPage",{
+                t:tagID, 
+                p:page
+            }, function(data){
+                $("#table_pagination").html(data);	
+                regen();
+                editItem();
+                manageStatus();
+            });
         });
-    });
+    }
+    else if(tabName=="Tags"){
+        $.post('deleteTag',{
+            tagID:itemID
+        }, function(data){
+            alert(data);
+            $.post("getContentTab",{
+                tabName:tabName,
+                p:page
+            },function(data){
+                //alert(data);
+                $("#table_pagination").html(data);
+            });
+        });
+    //alert(tabName,page);
+         
+    }
 }
 
 function editItem() { 
@@ -471,10 +558,10 @@ function manageStatus(){
         }, function(data){
             
             $('table.pagination').html(data);
-         
+            regen();
+            editItem();
         });
-        regen();
-        editItem();
+        
     }); 
     $('a[alt="manageStatus"]').click(function(){
         
@@ -489,10 +576,10 @@ function manageStatus(){
         }, function(data){
             
             $('table.pagination').html(data);
-        
+            regen();
+            editItem();
         });
-        regen();
-        editItem();
+       
     }); 
     
     $('a[alt="addStatus"]').click(function(){
@@ -544,18 +631,18 @@ function manageStatus(){
                     statusContent:statusContent                 
                 }, function(data){
                     alert(data);
+                    regen();
+                    editItem();
                 //$('#dialog-box').hide();
                 //$('#content-box').show();
                 });           
             }
         }); 
-        //        $('a[href="#back"]').click(function(){
-        //            $('#dialog-box').hide();
-        //            $('#content-box').show();
-        //        });
-        regen();
-        editItem();
+    //        $('a[href="#back"]').click(function(){
+    //            $('#dialog-box').hide();
+    //            $('#content-box').show();
+    //        });
+        
     }); 
-    regen();
-    editItem();
+    
 }
