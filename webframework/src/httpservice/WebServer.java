@@ -2,7 +2,6 @@ package httpservice;
 
 import com.vng.jcore.common.Config;
 import frontend.MiddlewareHandler;
-import frontend.MyLocalCache;
 import frontend.MyTask;
 import java.lang.management.ManagementFactory;
 import java.util.Timer;
@@ -68,6 +67,7 @@ public class WebServer {
         handler.addServletWithMapping("webservlet.Client.DeleteItemControllerServlet", "/delItem");
         handler.addServletWithMapping("webservlet.Client.UserLikesItemControllerServlet", "/uLikes");
         handler.addServletWithMapping("webservlet.Client.UserDisLikesItemControllerServlet", "/uDisLikes");
+        handler.addServletWithMapping("webservlet.Client.randomItemControllerServlet","/uRandom");
         handler.addServletWithMapping("webservlet.Client.SaveItemControllerServlet", "/saveItem");
 
         //handler.addServletWithMapping("servlet.randomItemServlet","/random");
@@ -94,17 +94,10 @@ public class WebServer {
         server.setStopAtShutdown(true);
         server.setSendServerVersion(true);
         MiddlewareHandler h=new MiddlewareHandler();
-        h.startLocalCache();        
+        h.startLocalCache();
         Timer timer=new Timer(); 
-        timer.schedule(new MyTask(), (10*60*1000), (10*60*1000));
-        
-//        MiddlewareHandler handler1=new MiddlewareHandler();
-//        boolean result = handler1.addUser("Admin1", "", 1);
-//        System.out.println(result);
-
+        timer.schedule(new MyTask(), (10*60*1000), (10*60*1000));        
         server.start();
         server.join();
-
-
     }
 }
