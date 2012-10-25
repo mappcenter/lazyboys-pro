@@ -17,6 +17,8 @@ import hapax.TemplateLoader;
 import hapax.TemplateResourceLoader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import javax.servlet.ServletException;
@@ -156,6 +158,7 @@ public class getContentTabServlet extends HttpServlet {
         }
         int size = (int) handler.itemtagdbSize();
         List<Tag> listTags = handler.getAllTag();
+        
         TemplateDataDictionary dic = TemplateDictionary.create();
         for (int i = (page - 1) * itemPerPage; i < page * itemPerPage && i < size; i++) {
             TemplateDataDictionary listTagSection = dic.addSection("tag_section");
