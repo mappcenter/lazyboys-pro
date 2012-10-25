@@ -80,8 +80,8 @@ public class IndexControllerServlet extends HttpServlet {
         resp.setContentType("text/html; charset=UTF-8");
         Item item = null;
         try {
-            item = handler.getRandomItem();
-        } catch (TException ex) {
+            item = MiddlewareHandler.myLocalCache.getFastRandom();
+        } catch (Exception ex) {
             java.util.logging.Logger.getLogger(IndexControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
         } 
         //if (req.getParameter("tagID") == null) {
@@ -109,8 +109,6 @@ public class IndexControllerServlet extends HttpServlet {
 
         List<Item> listItem = this.getTopItems(req);        
         String productName = listItem.get(1).itemID;
-
-
         TemplateDataDictionary dic = TemplateDictionary.create();
 
        //dic.setVariable("title", "This is title of layout - config=" + config_host + " - product=" + productName);
