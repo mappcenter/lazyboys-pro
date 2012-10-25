@@ -106,14 +106,14 @@ public class MyLocalCache {
         int index = getRandomIndex(ltags.size());
         return ltags.get(index).tagID;
     }
-
+    
     public String getRandomItemID(String tagID) {
         String key = itemIDTagsKey + tagID;
         List<String> itemIDs = (List<String>) LocalCache.get(key);
         int index = getRandomIndex(itemIDs.size());
         return itemIDs.get(index);
     }
-
+    
     public String getFastRandomItemID() {
         List<String> itemIDs = (List<String>) LocalCache.get(listItemIDKey);
         int index = getRandomIndex(itemIDs.size());
@@ -126,7 +126,12 @@ public class MyLocalCache {
         item = (Item) LocalCache.get("item" + itemID);
         return item;
     }
-
+    public Item getRandomItemHaveTag(String tagID){
+        String itemID=getRandomItemID(tagID);
+        Item item = null;
+        item = (Item) LocalCache.get("item" + itemID);
+        return item;        
+    }
     public Item getRandomItem() {
         String tagID = getRandomTagID();
         String itemID = getRandomItemID(tagID);
