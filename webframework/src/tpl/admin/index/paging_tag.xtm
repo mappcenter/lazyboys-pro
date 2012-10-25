@@ -21,10 +21,10 @@
         <td>{{tagName}}</td>
         <td>
             <a href="#">
-                <img src="http://localhost:81/images/icons/pencil.png" alt="Edit" />
+                <img src="http://localhost:81/images/icons/pencil.png" alt="EditTag" />
             </a>
             <a href="#" class="confirmation" rel="{{tagID}}">
-                <img src="http://localhost:81/images/icons/cross.png" alt="Delete" />
+                <img src="http://localhost:81/images/icons/cross.png" alt="DeleteTag" />
             </a>
         </td>
     </tr>
