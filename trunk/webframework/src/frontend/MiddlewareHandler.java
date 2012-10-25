@@ -48,8 +48,7 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         LocalCache.put("topTags", topTags);
         
         List<Tag> listTags=connect.getClient().getAllTag();
-        LocalCache.put("listAllTags", listTags);
-        
+        LocalCache.put("listAllTags", listTags);        
         myLocalCache.startMyLocalCache();
     }
     public Object getTopTags(){
@@ -61,10 +60,6 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
     
     @Override
     public  List<Tag> getAllTag() throws TException {
-        List<Tag> ltags=myLocalCache.getAllTags();
-        if(ltags!=null){
-            return ltags;
-        }
         try {
             Connection connect = connectionPool.getConnection();
             List<Tag> lisTag;
@@ -155,10 +150,6 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
     
     @Override
     public  List<Tag> getTopTags(long number) throws TException {
-        List<Tag> ltags=myLocalCache.getTopTags();
-        if(ltags!=null){
-            return ltags;
-        }
         try {
             Connection connect = connectionPool.getConnection();
             List<Tag> result = connect.getClient().getTopTags(number);
@@ -223,11 +214,6 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
     
     @Override
     public  Item getRandomItem() throws TException {
-        Item item=null;
-        item=myLocalCache.getRandomItem();
-        if(item!=null){
-            return item;
-        }
         try {
             Connection connect = connectionPool.getConnection();
             Item result = connect.getClient().getRandomItem();
