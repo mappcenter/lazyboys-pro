@@ -1,5 +1,6 @@
 //listTags cached in listtags.js
 var myJsonObj = jsonParse(listTags);
+var myTopTags=jsonParse(myTopTags);
 var myItemsLike="";
 //var myItemsDisLike="";
 function getTagName(tagID){
@@ -15,16 +16,16 @@ function getTagName(tagID){
     return tagName;
 }
 function getRandomItemOfTag(tagID){
-    var tagName=getTagName(tagID);
-    $("#statusTag").html("<a href='javascript:getRandomItemOfTag("+tagID+");'>"+tagName+"</a>");
+    var tagName=getTagName(tagID);    
     $currentTagID=tagID.toString();
     $(document).ready(function(){                
-        $.post("random", {
+        $.post("/uRandom", {
             tagID:$currentTagID
         }, function(data) {	
             var myJsonObj = jsonParse(data);
             addItemsToQueue(myJsonObj);
             $("#lz-save-button").attr("rel", myJsonObj.itemID);
+            $("#curTagID").attr("value", tagID);
             $("#ContentItem").html(myJsonObj.content); 
             var listTagsID=myJsonObj.tagsID.toString().split(",");
             var lTags="";
@@ -34,6 +35,7 @@ function getRandomItemOfTag(tagID){
             // alert(lTags);
             $("#listTag").html(lTags);
             $("#lztitle").attr("style","visibility: visible;");
+            $("#statusTag").html("<a href='javascript:getRandomItemOfTag("+tagID+");'>"+tagName+"</a>");
         });
     });
 }
@@ -92,23 +94,41 @@ function showItemBackNext(item){
             lTags+="<a href='javascript:getRandomItemOfTag("+aTagsID[k]+");' rel='"+aTagsID[k]+"'>"+getTagName(aTagsID[k].toString())+"</a>     ";
         }                            
         $("#listTag").html(lTags);
-        checkUserLike(item[0],0);
-        //checkUserDisLike(item[0],0);
+        checkUserLike(item[0]);
+        turnOnOffBackNext();
+    //checkUserDisLike(item[0],0);
     });
 //turnOnOffBackNext();
 //alert(currentIndex);
 }
 function turnOnOffBackNext(){
-    $(document).ready(function(){     
-        if(queueItem.length==0 || queueItem.length==currentIndex){
-            $("#nextItem").addClass("disabledButton");
+    $(document).ready(function(){ 
+        if(queueItem.length<2){            
+            $("#lz-back-button-a").addClass("disabledBack");       
+            $("#lz-next-button-a").addClass("disabledNext"); 
         }
-        else{
-            if(queueItem.length>0 && queueItem.length>currentIndex){
-                $("#nextItem").removeClass("disabledButton");
+        else{ 
+            if(currentIndex==0){
+                $("#lz-back-button-a").addClass("disabledBack");       
+                $("#lz-next-button-a").removeClass("disabledNext");
+            }
+            else{
+                if(currentIndex==queueItem.length-1){
+                    $("#lz-back-button-a").removeClass("disabledBack");       
+                    $("#lz-next-button-a").addClass("disabledNext");
+                }
+                else{
+//                    if(queueItem.length>1 && currentIndex==0){
+//                        $("#lz-back-button-a").addClass("disabledBack");       
+//                        $("#lz-next-button-a").removeClass("disabledNext"); 
+//                    }  
+                    //if(queueItem.length>1 && queueItem.length>currentIndex){
+                        $("#lz-back-button-a").removeClass("disabledBack");       
+                        $("#lz-next-button-a").removeClass("disabledNext"); 
+                    //}                
+                }
             }
         }
-
     });
 }
 function testCurrentIndex(val,index){
@@ -191,26 +211,46 @@ function feedWall(id){
         );               
     });
 }
-function checkUserLike(itemID,action){
-//action =1 is like button click; 2:unlike,  else back-Next-random-button click
-    for(var i=0;i<myItemsLike.length;i++){
+function checkUserLike(itemID){   
+    for(var i=0;i<myItemsLike.length;i++){          
+        if(itemID==myItemsLike[i]){
+            $(document).ready(function(){                   
+                $('#likeItem').removeClass("likeItem");
+                $('#likeItem').addClass("unlikeItem");               
+                $('#likeItem').attr("value","unlike");
+            });
+            return;
+        }          
+    }
+    
+    $('#likeItem').removeClass("unlikeItem");
+    $('#likeItem').addClass("likeItem");               
+    $('#likeItem').attr("value","like");
+}
+function LikeItem(itemID){
+    for(var i=0;i<myItemsLike.length;i++){          
+        if(itemID==myItemsLike[i]){  
+            return;
+        }          
+    }    
+    $('#likeItem').removeClass("likeItem");
+    $('#likeItem').addClass("unlikeItem");               
+    $('#likeItem').attr("value","unlike");
+    addUserLikeItem(itemID); 
+}
+function unLikeItem(itemID){    
+    for(var i=0;i<myItemsLike.length;i++){  
+        
         if(itemID==myItemsLike[i]){
             $(document).ready(function(){
-                //$('#likeItem').css("visibility","hidden");
-                $('#likeItem').attr("class","unlikeItem");                
-                $('#likeItem').attr("rel","unlike");
-                //$('#unlikeItem').css("visibility","visible");
+                $('#likeItem').removeClass("unlikeItem");
+                $('#likeItem').addClass("likeItem");               
+                $('#likeItem').attr("value","like");
+                removeUserLikeItem(itemID);
             });
-        }
-        else{
-            //$('#likeItem').css("visibility","visible");
-            //$('#unlikeItem').css("visibility","hidden");
-            $('#likeItem').attr("class","likeItem");
-            $('#likeItem').attr("rel","like");
-            if(action==1) addUserLikeItem(itemID);
-            if(action==2) removeUserLikeItem(itemID);
-        }
-    }
+            return;
+        }          
+    }         
 }
 function addUserLikeItem(itemID){        
     var index=myItemsLike.length;
@@ -227,7 +267,7 @@ function removeByIndex(arr, index) {
     arr.splice(index, 1);
 }
 function checkUserDisLike(itemID,action){
-//action =1 is Dislike button click; else back-Next-random-button click
+    //action =1 is Dislike button click; else back-Next-random-button click
     for(var i=0;i<myItemsDisLike.length;i++){
         if(itemID==myItemsDisLike[i]){
             $(document).ready(function(){
@@ -262,27 +302,27 @@ $(document).ready(function() {
         $.post('/uLikes', {
             userID:uId            
         }, function(data){                        
-                myItemsLike=data.toString().split(",");    
-                //alert("LIKE:"+myItemsLike);                
+            myItemsLike=data.toString().split(",");    
+        //alert("LIKE:"+myItemsLike);                
         }
         );
-//        $.post('/uDisLikes', {
-//            userID:uId            
-//        }, function(data){             
-//                myItemsDisLike=data.toString().split(",");            
-//                //alert("DisLIKE:"+myItemsDisLike);
-//        }
-//        );
+    //            $.post('/uDisLikes', {
+    //                userID:uId            
+    //            }, function(data){             
+    //                    myItemsDisLike=data.toString().split(",");            
+    //                    //alert("DisLIKE:"+myItemsDisLike);
+    //            }
+    //            );
     }
     
     
-    $.post("http://fresher2012.live/", {
+    $.post("/", {
         alfa:123
-    }, function(data) {	
+    }, function(data) {	        
         var myJsonObj = jsonParse(data);                     
         if(myJsonObj.content!=null) $("#ContentItem").html(myJsonObj.content); 
         $("#lz-save-button").attr("rel", myJsonObj.itemID);        
-        checkUserLike(myJsonObj.itemID,0);//check user like Item
+        checkUserLike(myJsonObj.itemID);//check user like Item
         //checkUserDisLike(myJsonObj.itemID,0);//check user like Item
         var aTagsID=myJsonObj.tagsID.toString().split(",");
         addItemsToQueue(myJsonObj);
@@ -298,38 +338,50 @@ $(document).ready(function() {
     }, function(data) {
         //var myJsonObj = jsonParse(data);
         var lTags="";
-        for (var prop in myJsonObj) {
-            if (myJsonObj.hasOwnProperty(prop)) {
-                lTags+="<a href='javascript:getRandomItemOfTag("+myJsonObj[prop].tagID+");' rel='"+myJsonObj[prop].tagID+"'style='font-size:"+randomFromInterval(13, 28)+"'>"+myJsonObj[prop].tagName+"</a>     ";                                    
+        for (var prop in myTopTags) {
+            if (myTopTags.hasOwnProperty(prop)) {
+                lTags+="<a href='javascript:getRandomItemOfTag("+myTopTags[prop].tagID+");' rel='"+myTopTags[prop].tagID+"'style='font-size:"+randomFromInterval(13, 28)+"'>"+myTopTags[prop].tagName+"</a>     ";                                    
             }
         }
         $("#lz-toptags-container").html(lTags);
     });
-    $.post("/uCaching", {
-            userID:uId
-        }, function(data) {	            
-        });    
+    //    $.post("/uCaching", {
+    //        userID:uId
+    //    }, function(data) {	            
+    //        }); 
+    //        
+    turnOnOffBackNext();
+        
     $("#getItem").click(function(){
-        $.post("http://fresher2012.live/", {
-            alfa:123
-        }, function(data) {	
+        
+        var tagID=$("#curTagID").attr("value");
+        if(tagID!=""){
+            getRandomItemOfTag(tagID);
+        }
+        else{
+            $.post("/", {
+                alfa:123
+            }, function(data) {	
                     
-            var myJsonObj = jsonParse(data);
-                    
-            $("#lz-save-button").attr("rel", myJsonObj.itemID);
-            checkUserLike(myJsonObj.itemID,0);//check user like Item
-            //checkUserDisLike(myJsonObj.itemID,0);//check user Dislike Item
-            addItemsToQueue(myJsonObj);                   
-            $("#ContentItem").html(myJsonObj.content); 
-            var listTagsID=myJsonObj.tagsID.toString().split(",");
-            var lTags="";
-            for (var k=0;k< listTagsID.length;k++) {
-                lTags+="<a href='javascript:getRandomItemOfTag("+listTagsID[k]+");' rel='"+listTagsID[k]+"'>"+getTagName(listTagsID[k].toString())+"</a>     ";
-            }                            
-            $("#listTag").html(lTags);
-                  //alert(myItemsLike);
+                var myJsonObj = jsonParse(data);
+                     
+                $("#lz-save-button").attr("rel", myJsonObj.itemID);
+                checkUserLike(myJsonObj.itemID);//check user like Item
+                //checkUserDisLike(myJsonObj.itemID,0);//check user Dislike Item
+                addItemsToQueue(myJsonObj);                   
+                $("#ContentItem").html(myJsonObj.content); 
+                var listTagsID=myJsonObj.tagsID.toString().split(",");
+                var lTags="";
+                for (var k=0;k< listTagsID.length;k++) {
+                    lTags+="<a href='javascript:getRandomItemOfTag("+listTagsID[k]+");' rel='"+listTagsID[k]+"'>"+getTagName(listTagsID[k].toString())+"</a>     ";
+                }                            
+                $("#listTag").html(lTags);
+                turnOnOffBackNext();
+            //alert(myItemsLike);
                   
-        });        
+            });     
+        }
+           
     });     
     $("#lz-save-button").click(function (){
         var value=$(this).attr("rel");
@@ -448,14 +500,14 @@ $(document).ready(function() {
         var uId = $('#usrId').val();
         var Action="like";
         var objId=$("#lz-save-button").attr("rel");
-        Action=$(this).attr("rel");
+        Action=$(this).attr("value");
         //alert(Action);
         //alert("uID:"+uId +"action:"+Action+"ID:"+objId);
-        if(Action=="like"){
-            checkUserLike(objId,1);
+        if(Action=="like"){      
+            LikeItem(objId);
         }        
         if(Action=="unlike"){
-            checkUserLike(objId,2);
+            unLikeItem(objId);
         }
         //checkUserDisLike(objId,0);//check user Dislike Item
         $.post('/like_unlike', {
@@ -464,44 +516,46 @@ $(document).ready(function() {
             itemID : objId
         }, function(data){            
             //if(data=="1"){
-                alert(data);
-           // }
-            //else{
-               // alert("Fail");
-            //}
+            alert(data);
+        // }
+        //else{
+        // alert("Fail");
+        //}
         }
         );
     });
-//    $("#unlikeItem").click(function(){
-//        var uId = $('#usrId').val();
-//        var Action="unlike";
-//        var objId=$("#lz-save-button").attr("rel");
-//        //alert("uID:"+uId +"action:"+Action+"ID:"+objId);
-//        checkUserLike(objId,2);
-//        //checkUserDisLike(objId,1);//check user Dislike Item
-//        $.post('/like_unlike', {
-//            userID:uId,
-//            typeAction : Action,
-//            itemID : objId
-//        }, function(data){            
-//            //if(data=="1"){
-//                alert(data);
-//            //}
-//            //else{
-//               // alert("Fail");
-//            //}
-//        }
-//        );
-//    });
+    //    $("#unlikeItem").click(function(){
+    //        var uId = $('#usrId').val();
+    //        var Action="unlike";
+    //        var objId=$("#lz-save-button").attr("rel");
+    //        //alert("uID:"+uId +"action:"+Action+"ID:"+objId);
+    //        checkUserLike(objId,2);
+    //        //checkUserDisLike(objId,1);//check user Dislike Item
+    //        $.post('/like_unlike', {
+    //            userID:uId,
+    //            typeAction : Action,
+    //            itemID : objId
+    //        }, function(data){            
+    //            //if(data=="1"){
+    //                alert(data);
+    //            //}
+    //            //else{
+    //               // alert("Fail");
+    //            //}
+    //        }
+    //        );
+    //    });
     $("#close-lztittle").click(function(){            
         $("#lztitle").attr("style","visibility: hidden;");
     });    
 });
 
 function callbacksearch(item) {
-	//alert('You selected \'' + item.tagName + '\'\n\nHere is the full selected JSON object;\n' + JSON.stringify(item));
-        getRandomItemOfTag(item.tagID);
+    //alert('You selected \'' + item.tagName + '\'\n\nHere is the full selected JSON object;\n' + JSON.stringify(item));
+    getRandomItemOfTag(item.tagID);
 }
 jQuery(function() {
-	$('input#suggestBox').jsonSuggest(listTags, {onSelect:callbacksearch});	
+    $('input#suggestBox').jsonSuggest(listTags, {
+        onSelect:callbacksearch
+    });	
 });
