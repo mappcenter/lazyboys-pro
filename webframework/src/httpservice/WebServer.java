@@ -2,7 +2,10 @@ package httpservice;
 
 import com.vng.jcore.common.Config;
 import frontend.MiddlewareHandler;
+import frontend.MyLocalCache;
+import frontend.MyTask;
 import java.lang.management.ManagementFactory;
+import java.util.Timer;
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.jmx.MBeanContainer;
 import org.eclipse.jetty.server.Connector;
@@ -90,6 +93,10 @@ public class WebServer {
 
         server.setStopAtShutdown(true);
         server.setSendServerVersion(true);
+        MiddlewareHandler h=new MiddlewareHandler();
+        h.startLocalCache();        
+        Timer timer=new Timer(); 
+        timer.schedule(new MyTask(), (10*60*1000), (10*60*1000));
         
 //        MiddlewareHandler handler1=new MiddlewareHandler();
 //        boolean result = handler1.addUser("Admin1", "", 1);
