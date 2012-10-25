@@ -24,10 +24,10 @@
         <td>{{userRole}}</td>
         <td>
             <a href="#">
-                <img src="http://localhost:81/images/icons/pencil.png" alt="Edit" />
+                <img src="http://localhost:81/images/icons/pencil.png" alt="EditUser" />
             </a>
             <a href="#" class="confirmation">
-                <img src="http://localhost:81/images/icons/cross.png" alt="Delete" />
+                <img src="http://localhost:81/images/icons/cross.png" alt="DeleteUser" />
             </a><!-- to create a tooltip-style confirmation, just add .confirmation to the <a>-tag -->
         </td>
     </tr>
