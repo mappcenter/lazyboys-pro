@@ -139,6 +139,8 @@ public class getContentTabServlet extends HttpServlet {
                 listPageSection.setVariable("page", "<a href=\"#\" onclick='itemList(" + i + ");' class=\"graybutton pagelink\" rel=\"" + i + "\">" + i + "</a>");
             }
         }
+        dic.setVariable("onclick_first", "itemList(1);");
+        dic.setVariable("onclick_last", "itemList(" + pageCount + ");");
         dic.setVariable("last", String.valueOf(pageCount));
 
         Template template = this.getItemTemplate();
@@ -175,49 +177,53 @@ public class getContentTabServlet extends HttpServlet {
                 listPageSection.setVariable("page", "<a href=\"#\" onclick='tagList(" + i + ");' class=\"graybutton pagelink\" rel=\"" + i + "\">" + i + "</a>");
             }
         }
-
+        dic.setVariable("last", String.valueOf(pageCount));
         Template template = this.getTagTemplate();
         String content = template.renderToString(dic);
         return content;
     }
 
     private String renderUsers(HttpServletRequest req) throws TException, Exception {
-        int page = 1;
-        int itemPerPage = Integer.valueOf(Config.getParam("paging", "itemPerPage"));
-        if (req.getParameter("p") != null) {
-            page = Integer.parseInt(req.getParameter("p"));
-        }
-        List<String> listUsers = handler.getAllUser();
-        int size = listUsers.size();
-
-        TemplateDataDictionary dic = TemplateDictionary.create();
-
-        for (int i = (page - 1) * itemPerPage; i < page * itemPerPage && i < size; i++) {
-            User user = handler.getUser(listUsers.get(i).toString());
-            TemplateDataDictionary listUserSection = dic.addSection("tag_section");
-            listUserSection.setVariable("userID", user.userID);
-            listUserSection.setVariable("userToken", user.userToken);
-            listUserSection.setVariable("userRole", String.valueOf(user.userRole));
-        }
-
-        int pageCount = (int) Math.ceil((float) size / itemPerPage);
-
-        int start = Math.max(page - 4, 1);
-        int end = Math.min(page + 4, pageCount);
-
-        for (int i = start; i <= end; i++) {
-            if (i == page) {
-                TemplateDataDictionary listPageSection = dic.addSection("listPage_section");
-                listPageSection.setVariable("page", "<a href=\"#\" class=\"graybutton pagelink active\" rel=\"" + page + "\">" + page + "</a>");
-            } else {
-                TemplateDataDictionary listPageSection = dic.addSection("listPage_section");
-                listPageSection.setVariable("page", "<a href=\"#\" onclick='userList(" + i + ");' class=\"graybutton pagelink\" rel=\"" + i + "\">" + i + "</a>");
-            }
-        }
-
-        Template template = this.getUserTemplate();
-        String content = template.renderToString(dic);
-        return content;
+        return null;
+//        int page = 1;
+//        int itemPerPage = Integer.valueOf(Config.getParam("paging", "itemPerPage"));
+//        if (req.getParameter("p") != null) {
+//            page = Integer.parseInt(req.getParameter("p"));
+//        }
+//        List<String> listUsers = handler.getAllUser();
+//        int size = listUsers.size();
+//        if(size==0) {
+//            return null;
+//        }
+//
+//        TemplateDataDictionary dic = TemplateDictionary.create();
+//
+//        for (int i = (page - 1) * itemPerPage; i < page * itemPerPage && i < size; i++) {
+//            User user = handler.getUser(listUsers.get(i).toString());
+//            TemplateDataDictionary listUserSection = dic.addSection("tag_section");
+//            listUserSection.setVariable("userID", user.userID);
+//            listUserSection.setVariable("userToken", user.userToken);
+//            listUserSection.setVariable("userRole", String.valueOf(user.userRole));
+//        }
+//
+//        int pageCount = (int) Math.ceil((float) size / itemPerPage);
+//
+//        int start = Math.max(page - 4, 1);
+//        int end = Math.min(page + 4, pageCount);
+//
+//        for (int i = start; i <= end; i++) {
+//            if (i == page) {
+//                TemplateDataDictionary listPageSection = dic.addSection("listPage_section");
+//                listPageSection.setVariable("page", "<a href=\"#\" class=\"graybutton pagelink active\" rel=\"" + page + "\">" + page + "</a>");
+//            } else {
+//                TemplateDataDictionary listPageSection = dic.addSection("listPage_section");
+//                listPageSection.setVariable("page", "<a href=\"#\" onclick='userList(" + i + ");' class=\"graybutton pagelink\" rel=\"" + i + "\">" + i + "</a>");
+//            }
+//        }
+//
+//        Template template = this.getUserTemplate();
+//        String content = template.renderToString(dic);
+//        return content;
     }
 
     private String renderCache(HttpServletRequest req) {
