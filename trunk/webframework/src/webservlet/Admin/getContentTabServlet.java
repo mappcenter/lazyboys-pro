@@ -156,9 +156,9 @@ public class getContentTabServlet extends HttpServlet {
         if (req.getParameter("p") != null) {
             page = Integer.parseInt(req.getParameter("p"));
         }
-        int size = (int) handler.itemtagdbSize();
+       
         List<Tag> listTags = handler.getAllTag();
-        
+        int size=listTags.size();
         TemplateDataDictionary dic = TemplateDictionary.create();
         for (int i = (page - 1) * itemPerPage; i < page * itemPerPage && i < size; i++) {
             TemplateDataDictionary listTagSection = dic.addSection("tag_section");
@@ -167,9 +167,10 @@ public class getContentTabServlet extends HttpServlet {
         }
 
         int pageCount = (int) Math.ceil((float) size / itemPerPage);
-
+        
         int start = Math.max(page - 4, 1);
         int end = Math.min(page + 4, pageCount);
+        
 
         for (int i = start; i <= end; i++) {
             if (i == page) {
@@ -179,6 +180,7 @@ public class getContentTabServlet extends HttpServlet {
                 TemplateDataDictionary listPageSection = dic.addSection("listPage_section");
                 listPageSection.setVariable("page", "<a href=\"#\" onclick='tagList(" + i + ");' class=\"graybutton pagelink\" rel=\"" + i + "\">" + i + "</a>");
             }
+            
         }
         dic.setVariable("last", String.valueOf(pageCount));
         Template template = this.getTagTemplate();
@@ -207,6 +209,18 @@ public class getContentTabServlet extends HttpServlet {
             listUserSection.setVariable("userID", user.userID);
             listUserSection.setVariable("userToken", user.userToken);
             listUserSection.setVariable("userRole", String.valueOf(user.userRole));
+            String userRoleName = null;
+            if(user.userRole==1){
+                userRoleName="Admin";
+            }
+            if(user.userRole==0){
+                userRoleName="User";
+            }
+            if(user.userRole==-1){
+                userRoleName="Blocked";
+            }
+            listUserSection.setVariable("userRoleName", userRoleName);
+            
         }
 
         int pageCount = (int) Math.ceil((float) size / itemPerPage);
