@@ -5,6 +5,7 @@
 package webservlet.Admin;
 
 import frontend.MiddlewareHandler;
+import frontend.MyLocalCache;
 import frontend.Tag;
 import java.io.IOException;
 import java.util.List;
@@ -23,7 +24,7 @@ import org.apache.thrift.TException;
 public class editTagServlet extends HttpServlet {
 
     MiddlewareHandler handler = new MiddlewareHandler();
-
+    MyLocalCache localCache=new MyLocalCache();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
         String tagID = req.getParameter("tagID");
@@ -35,7 +36,11 @@ public class editTagServlet extends HttpServlet {
             Logger.getLogger(editTagServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (result) {
-
+            try {
+                localCache.updateListTags();
+            } catch (TException ex) {
+                Logger.getLogger(editTagServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
             res.getWriter().println("Update success");
         } else {
             res.getWriter().println("Update failed");
