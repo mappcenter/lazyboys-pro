@@ -134,8 +134,16 @@ body {
     height: 32px;
 }
 #lz-back-button-a:hover{
-    background: url(../images/button-swatch.png) 0 -160px;
+    background: url(../images/button-swatch.png) 0 -96px;
     display: block;
+    float: left;
+    width: 38px;
+    margin: 2px;
+    height: 32px;
+}
+.disabledBack{
+    background: url(../images/button-swatch.png) 0 -160px !important;
+    display: block !important;
     float: left;
     width: 38px;
     margin: 2px;
@@ -155,7 +163,15 @@ body {
     transform:scaleX(-1);
 }
 #lz-next-button-a:hover{
-    background: url(../images/button-swatch.png) 0 -160px;
+    background: url(../images/button-swatch.png) 0 -96px;
+    display: block;
+    float: left;
+    width: 38px;
+    margin: 2px;
+    height: 32px;
+}
+.disabledNext{
+    background: url(../images/button-swatch.png) 0 -160px !important;
     display: block;
     float: left;
     width: 38px;
