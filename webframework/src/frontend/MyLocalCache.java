@@ -44,7 +44,13 @@ public class MyLocalCache {
        // System.out.println("End Swapping data");
     }
     public static String temp = "";
-
+    public void updateListTags() throws TException{
+        List<Tag> tem=(List<Tag>) LocalCache.get(listAllTagsKey);
+        int count=tem.size();
+        List<Tag> tags=handler.getAllTag();
+        count=tags.size();
+        LocalCache.put(listAllTagsKey, tags);
+    }   
     public void startMyLocalCache() throws TException {
         List<Tag> lTags = handler.getAllTag(); 
 
