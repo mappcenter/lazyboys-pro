@@ -5,9 +5,9 @@
 package frontend;
 
 import java.io.IOException;
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  *
@@ -15,13 +15,13 @@ import java.util.List;
  */
 public class UserInfo {
 
-    public List<Item> getUserFavoriteItems(String uID) throws IOException {
+    public List<Item> getUserFavoriteItems(String uID) throws IOException, InterruptedException, ExecutionException {
         String key = "myItems" + uID;
         List<Item> items = (List<Item>) MyCache.getInstance().get(key);
         return items;
     }
 
-    public void setUserFavoriteItems(String uID, Item _item) throws IOException {
+    public void setUserFavoriteItems(String uID, Item _item) throws IOException, InterruptedException, ExecutionException {
         String key = "myItems" + uID;
         List<Item> items = this.getUserFavoriteItems(uID);
         if (items == null) {
@@ -45,7 +45,7 @@ public class UserInfo {
         return false;
     }
 
-    public void removeUserItems(String uID, String ItemID) throws IOException {
+    public void removeUserItems(String uID, String ItemID) throws IOException, InterruptedException, ExecutionException {
         String key = "myItems" + uID;
         List<Item> items = this.getUserFavoriteItems(uID);
         if (items == null) {

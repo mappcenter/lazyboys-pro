@@ -22,12 +22,10 @@ import org.apache.thrift.TException;
  */
 public class randomItemServlet extends HttpServlet {
 
-    public static MiddlewareHandler handler = new MiddlewareHandler();
+    public static MiddlewareHandler handler = new MiddlewareHandler();    
     int count = 0;
-
     @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse res)
-            throws IOException, ServletException {
+    public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         long t1 = System.currentTimeMillis();
         res.setContentType("text/html; charset=UTF-8");
         Item item = null;

@@ -88,7 +88,7 @@ public class ConnectionPool {
 
     public Connection getConnection() throws InterruptedException {
         Connection con = queue.take();
-        con.open();
+        //con.open();
         return (con);
     }
 

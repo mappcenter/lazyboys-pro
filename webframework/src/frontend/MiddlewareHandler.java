@@ -4,21 +4,67 @@
  */
 package frontend;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.thrift.TException;
+import org.apache.thrift.transport.TTransportException;
 
 /**
  *
  * @author chanhlt
  */
 public class MiddlewareHandler implements MiddlewareFrontend.Iface {
+
+    //static TTransport transport;
+    //static MiddlewareFrontend.Client client;
+    //static TFramedTransport framedTransport;
+    //static TProtocol protocol;
+    //static String host;
+    //static int port;
+    static Map<String, Object> LocalCache = new HashMap<String, Object>();
+    public static MyLocalCache myLocalCache=new MyLocalCache();
+    public synchronized static void init() throws IOException, TTransportException, TException {
+
+       // host = getConfig.getInstance().getHost();
+        //port = getConfig.getInstance().getPort();
+
+        //transport = new TSocket(host, port);
+        //framedTransport = new TFramedTransport(transport);
+        //protocol = new TBinaryProtocol(framedTransport);
+        //client = new MiddlewareFrontend.Client(protocol);
+        //transport.open();   
+        
+        //startLocalCache();
+        
+    }
+    
+    public void startLocalCache() throws TException, InterruptedException{
+        Connection connect = connectionPool.getConnection();
+        List<Tag> topTags=connect.getClient().getTopTags(40);
+        LocalCache.put("topTags", topTags);
+        
+        List<Tag> listTags=connect.getClient().getAllTag();
+        LocalCache.put("listAllTags", listTags);
+        
+        myLocalCache.startMyLocalCache();
+    }
+    public Object getTopTags(){
+        return LocalCache.get("topTags");
+    }
+
     
     ConnectionPool connectionPool = ConnectionPool.getInstance();
     
     @Override
     public  List<Tag> getAllTag() throws TException {
+        List<Tag> ltags=myLocalCache.getAllTags();
+        if(ltags!=null){
+            return ltags;
+        }
         try {
             Connection connect = connectionPool.getConnection();
             List<Tag> lisTag;
@@ -109,6 +155,10 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
     
     @Override
     public  List<Tag> getTopTags(long number) throws TException {
+        List<Tag> ltags=myLocalCache.getTopTags();
+        if(ltags!=null){
+            return ltags;
+        }
         try {
             Connection connect = connectionPool.getConnection();
             List<Tag> result = connect.getClient().getTopTags(number);
@@ -173,6 +223,11 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
     
     @Override
     public  Item getRandomItem() throws TException {
+        Item item=null;
+        item=myLocalCache.getRandomItem();
+        if(item!=null){
+            return item;
+        }
         try {
             Connection connect = connectionPool.getConnection();
             Item result = connect.getClient().getRandomItem();

@@ -7,9 +7,14 @@ package frontend;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import net.spy.memcached.AddrUtil;
 import net.spy.memcached.BinaryConnectionFactory;
 import net.spy.memcached.MemcachedClient;
+import net.spy.memcached.internal.OperationFuture;
 
 /**
  *
@@ -57,12 +62,30 @@ public class MyCache {
         getCache().set(NAMESPACE + key, ttl, o);
     }
 
-    public Object get(String key) {
-        Object o = getCache().get(NAMESPACE + key);
+    public Object get(String key) throws InterruptedException, ExecutionException {
+//        Object o = getCache().get(NAMESPACE + key);
+//        if (o == null) {
+//            System.out.println("Cache miss from key: " + key);
+//        } else {
+//            System.out.println("Cache hit from key: " + key);
+//        }
+//        return o;
+        Object o = null;
+        Future<Object> f = getCache().asyncGet(NAMESPACE + key);
+        try {
+            o = f.get(50, TimeUnit.MILLISECONDS); 
+        } catch (TimeoutException e) {
+            // Since we don't need this, go ahead and cancel the operation.  This
+            // is not strictly necessary, but it'll save some work on the server.
+            System.out.println("Waiting get memcache to Late!!! " + key);
+            f.cancel(false);
+            // Do other timeout related stuff
+        }
+        //Object o = getCache().get(NAMESPACE + key);
         if (o == null) {
-            System.out.println("Cache miss from key: " + key);
+            System.out.println("Not in memcache key: " + key);
         } else {
-            System.out.println("Cache hit from key: " + key);
+            System.out.println("Get from memcache key: " + key);
         }
         return o;
     }
@@ -79,8 +102,11 @@ public class MyCache {
             c = m[i];
         } catch (Exception e) {
         }
-
+        
         return c;
 
+    }
+    public OperationFuture<Boolean> CleanCache(){
+        return getCache().flush();
     }
 }

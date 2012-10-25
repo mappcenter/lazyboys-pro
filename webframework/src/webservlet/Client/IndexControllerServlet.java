@@ -48,7 +48,7 @@ public class IndexControllerServlet extends HttpServlet {
     String sigKey = null;
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, ClientProtocolException {
+    protected synchronized void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, ClientProtocolException {
 
         resp.setContentType("text/html; charset=utf-8");
         boolean dbg = ("on".equals(req.getParameter("jdbg")));
@@ -65,8 +65,10 @@ public class IndexControllerServlet extends HttpServlet {
         }
 
         profiler.doEndLog("wholereq");
+        String tmp = profiler.dumpLogHtml();
         if (dbg) {
-            String tmp = profiler.dumpLogHtml();
+            tmp = profiler.dumpLogHtml();
+            System.out.print(tmp);
             this.out(tmp, resp);
         }
 
@@ -74,26 +76,30 @@ public class IndexControllerServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected synchronized void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html; charset=UTF-8");
         Item item = null;
-        if (req.getParameter("tagID") == null) {
-            System.out.println("Param Null");
-            try {
-                item = handler.getRandomItem();
-            } catch (TException ex) {
-                java.util.logging.Logger.getLogger(randomItemServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            String tagID = req.getParameter("tagID").toString();
-            System.out.println(tagID);
-            try {
-                item = handler.getRandomItemhaveTag(tagID);
-            } catch (TException ex) {
-                java.util.logging.Logger.getLogger(randomItemServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
+        try {
+            item = handler.getRandomItem();
+        } catch (TException ex) {
+            java.util.logging.Logger.getLogger(IndexControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        //if (req.getParameter("tagID") == null) {
+           // System.out.println("Param Null");
+            //try {
+                //item = handler.getRandomItem();
+          //  } catch (TException ex) {
+            //    java.util.logging.Logger.getLogger(randomItemServlet.class.getName()).log(Level.SEVERE, null, ex);
+           // }
+//        } else {
+//            String tagID = req.getParameter("tagID").toString();
+//            System.out.println(tagID);
+//            try {
+//                item = handler.getRandomItemhaveTag(tagID);
+//            } catch (TException ex) {
+//                java.util.logging.Logger.getLogger(randomItemServlet.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
         Gson gson = new Gson();
         String strItem = gson.toJson(item);
         resp.getWriter().println(strItem);
@@ -101,14 +107,13 @@ public class IndexControllerServlet extends HttpServlet {
 
     private String render(HttpServletRequest req, HttpServletResponse res) throws Exception {
 
-        List<Item> listItem = this.getTopItems(req);
-        String config_host = this.testGetConfig(req);
+        List<Item> listItem = this.getTopItems(req);        
         String productName = listItem.get(1).itemID;
 
 
         TemplateDataDictionary dic = TemplateDictionary.create();
 
-        dic.setVariable("title", "This is title of layout - config=" + config_host + " - product=" + productName);
+       //dic.setVariable("title", "This is title of layout - config=" + config_host + " - product=" + productName);
 
         int k = listItem.size();
         for (int i = 0; i < listItem.size(); i++) {
@@ -117,18 +122,20 @@ public class IndexControllerServlet extends HttpServlet {
             listsection.setVariable("itemContent", listItem.get(i).content);
         }
 
-        Item item = null;
-
-        try {
-            item = handler.getRandomItem();
-        } catch (TException ex) {
-            java.util.logging.Logger.getLogger(randomItemServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        Gson gson = new Gson();
-        String strItem = gson.toJson(item);
+//        Item item = null;
+//
+//        try {
+//            item = handler.getRandomItem();
+//        } catch (TException ex) {
+//            java.util.logging.Logger.getLogger(randomItemServlet.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        Gson gson = new Gson();
+//        String strItem = gson.toJson(item);
 
         TemplateDataDictionary itemRan = dic.addSection("itemRan");
-        itemRan.setVariable("strItem", strItem);
+//        itemRan.setVariable("strItem", strItem);
+//        itemRan.setVariable("ItemID", item.itemID);
+//        itemRan.setVariable("ItemContent", item.content);
 
         zme = new ZME_Authentication(MyAppInfo.getInstance().getzConfig());
         url = zme.getAuthorizedUrl(MyAppInfo.getInstance().getUrlToRedirect(), url);
@@ -155,6 +162,9 @@ public class IndexControllerServlet extends HttpServlet {
         } else {
             boolean temp = handler.addUser(me.get("id").toString(), "default", 0);// normal user:0, admin:1, blockuser:-1
         }
+        
+        MiddlewareHandler.myLocalCache.CacheUserItemIDLike(me.get("id").toString());
+        
         itemRan.setVariable("userID", me.get("id").toString());
         itemRan.setVariable("userName", me.get("displayname").toString());
 
@@ -168,18 +178,12 @@ public class IndexControllerServlet extends HttpServlet {
 
     public Item getRandomItem() {
         Item item = null;
-
         try {
             item = handler.getRandomItem();
         } catch (TException ex) {
             java.util.logging.Logger.getLogger(randomItemServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         return item;
-    }
-
-    private String testGetConfig(HttpServletRequest req) {
-        String config = Config.getParam("sample", "host");
-        return config;
     }
 
     private List<Item> getTopItems(HttpServletRequest req) throws TException {
@@ -190,7 +194,7 @@ public class IndexControllerServlet extends HttpServlet {
         }
         handler = new MiddlewareHandler();
 
-        List<Item> listItem = handler.getTopItems(20);
+        List<Item> listItem = handler.getTopItems(40);
         if (profiler != null) {
             profiler.doEndLog("fresherthriftservice");
         }
@@ -207,7 +211,7 @@ public class IndexControllerServlet extends HttpServlet {
 
         resp.addHeader("Content-Type", "text/html");
         PrintWriter out = resp.getWriter();
-        out.println(content);
+        out.print(content);
 
     }
 }

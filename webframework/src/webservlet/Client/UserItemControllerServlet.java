@@ -1,7 +1,6 @@
 package webservlet.Client;
 
 import com.google.gson.Gson;
-import com.vng.jcore.common.Config;
 import com.vng.jcore.profiler.ProfilerLog;
 import frontend.Item;
 import frontend.MiddlewareHandler;
@@ -19,10 +18,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.thrift.TException;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory; 
-import webservlet.Admin.randomItemServlet;
+import org.slf4j.LoggerFactory;
 
 public class UserItemControllerServlet extends HttpServlet {
 
@@ -72,10 +69,12 @@ public class UserItemControllerServlet extends HttpServlet {
         
         List<Item> uItems=null;
         try {
-            UserInfo usr=new UserInfo();
-            uItems=usr.getUserFavoriteItems(userID);//get from memcache
-//            if(uItems==null)
-//            uItems=handler.getFavouriteItems(userID, 20);
+            //UserInfo usr=new UserInfo();
+            //uItems=usr.getUserFavoriteItems(userID);//get from memcache
+           //if(uItems==null) {
+                //uItems=handler.getFavouriteItems(userID, 20);
+            uItems=(List<Item>) MiddlewareHandler.myLocalCache.getUserItemIDLike(userID);
+           // }
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(UserItemControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
