@@ -52,13 +52,9 @@ public class WebServer {
 
         // user services
         handler.addServletWithMapping("webservlet.Client.IndexControllerServlet", "/");
-
-
         handler.addServletWithMapping("webservlet.Client.TestFeedControllerServlet", "/testfeed");
 
-
-
-        //admin services
+       
 
         handler.addServletWithMapping("webservlet.Client.UserItemControllerServlet", "/userItem");
         handler.addServletWithMapping("webservlet.Client.XcallProxyControllerServlet", "/xcall.proxy-1.00.html");
@@ -72,6 +68,7 @@ public class WebServer {
         handler.addServletWithMapping("webservlet.Client.UserDisLikesItemControllerServlet", "/uDisLikes");
 
         //handler.addServletWithMapping("servlet.randomItemServlet","/random");
+         //admin services
 
         handler.addServletWithMapping("webservlet.Admin.IndexControllerServlet", "/admin");
 
@@ -84,7 +81,9 @@ public class WebServer {
         handler.addServletWithMapping("webservlet.Admin.editItemServlet", "/editItem");
         handler.addServletWithMapping("webservlet.Admin.getTopStatusServlet", "/getTopStatus");
         handler.addServletWithMapping("webservlet.Admin.insertItemServlet", "/insertItem");
-
+        handler.addServletWithMapping("webservlet.Admin.editTagServlet", "/editTag");
+        handler.addServletWithMapping("webservlet.Admin.deleteTagServlet", "/deleteTag");
+        handler.addServletWithMapping("webservlet.Admin.addTagServlet", "/addTag");
 
         server.setHandler(handler);
 
