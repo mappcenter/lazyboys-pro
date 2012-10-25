@@ -140,7 +140,7 @@
                             <ul>
                                 <li><a href="#" class="current">Manage Users</a></li>
                                 <li><a href="#">Top Users</a></li>
-                                <li><a href="#">Add Users</a></li>
+                                <li><a href="#" alt="addUser">Add Users</a></li>
 
                             </ul>
                         </li>
