@@ -6,6 +6,7 @@ package webservlet.Admin;
 
 import com.google.gson.Gson;
 import frontend.MiddlewareHandler;
+import frontend.MyLocalCache;
 import frontend.Tag;
 import java.io.IOException;
 import java.util.List;
@@ -23,7 +24,7 @@ import org.apache.thrift.TException;
  */
 public class listAllTagServlet extends HttpServlet{
     public static Gson gson=new Gson();
-    
+    public static MyLocalCache myLocalCache=new MyLocalCache();
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res) 
             throws IOException, ServletException {

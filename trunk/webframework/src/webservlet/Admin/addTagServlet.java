@@ -5,6 +5,7 @@
 package webservlet.Admin;
 
 import frontend.MiddlewareHandler;
+import frontend.MyLocalCache;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,20 +20,24 @@ import org.apache.thrift.TException;
  */
 public class addTagServlet extends HttpServlet{
     MiddlewareHandler handler=new MiddlewareHandler();
+    MyLocalCache localCache=new MyLocalCache();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException{
         String tagName=req.getParameter("tagName");
         boolean result=false;
         try {
-            if(MiddlewareHandler.LocalCache.containsKey("getAllTag")){
-                MiddlewareHandler.LocalCache.remove("getAllTag");
-            }
+            
             result = handler.insertTag(tagName);
-            MiddlewareHandler.LocalCache.put("getAllTag", handler.getAllTag());
+           
         } catch (TException ex) {
             Logger.getLogger(addTagServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         if(result){
+            try {
+                localCache.updateListTags();
+            } catch (TException ex) {
+                Logger.getLogger(addTagServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
             res.getWriter().println("Insert success");
         }
         else{

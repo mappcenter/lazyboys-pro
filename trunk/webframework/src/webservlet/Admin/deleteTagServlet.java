@@ -31,16 +31,6 @@ public class deleteTagServlet extends HttpServlet{
             Logger.getLogger(deleteTagServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         if(result){
-            if(MiddlewareHandler.LocalCache.containsKey("getAllTag")){
-                MiddlewareHandler.LocalCache.remove("getAllTag");
-                try {
-                    List<Tag> listTag=handler.getAllTag();
-                    MiddlewareHandler.LocalCache.put("getAllTag", listTag);
-                } catch (TException ex) {
-                    Logger.getLogger(deleteTagServlet.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                
-            }
             res.getWriter().println("Delete success");
         }
         else{
