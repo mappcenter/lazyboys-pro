@@ -1,8 +1,10 @@
 package webservlet.Client;
 
 import frontend.MiddlewareHandler;
+import frontend.MyLocalCache;
 import frontend.UserInfo;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,6 +18,7 @@ public class DeleteItemControllerServlet extends HttpServlet {
 
     private static final Logger log = LoggerFactory.getLogger(SaveItemControllerServlet.class);
     public static MiddlewareHandler handler = new MiddlewareHandler();
+    public static MyLocalCache myLocalCache=new MyLocalCache();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {    
     }
@@ -32,14 +35,21 @@ public class DeleteItemControllerServlet extends HttpServlet {
         if(req.getParameter("userID")!=null){
             userID=req.getParameter("userID");
         }
-        try {            
+        try {     
+            myLocalCache.removeUserItemLike(userID, itemID);
             if(!handler.deleteFavouriteItem(userID, itemID))
             {
                 result="0";
                 return;
             }
-            UserInfo usr=new UserInfo();
-            usr.removeUserItems(userID, itemID);
+//            UserInfo usr=new UserInfo();
+//            try {
+//                usr.removeUserItems(userID, itemID);
+//            } catch (InterruptedException ex) {
+//                java.util.logging.Logger.getLogger(DeleteItemControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
+//            } catch (ExecutionException ex) {
+//                java.util.logging.Logger.getLogger(DeleteItemControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
+//            }
             
         } catch (TException ex) {
             java.util.logging.Logger.getLogger(SaveItemControllerServlet.class.getName()).log(Level.SEVERE, null, ex);

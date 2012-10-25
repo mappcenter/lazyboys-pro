@@ -14,6 +14,7 @@ import hapax.TemplateResourceLoader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -75,10 +76,16 @@ public class SaveItemControllerServlet extends HttpServlet {
             }
             
             Item item=handler.getItemFromItemID(itemID);
-            if(item!=null){
-                UserInfo usr=new UserInfo();
-                usr.setUserFavoriteItems(userID, item); //set User Items into memcache
-            }
+//            if(item!=null){
+//                UserInfo usr=new UserInfo();
+//                try {
+//                    usr.setUserFavoriteItems(userID, item); //set User Items into memcache
+//                } catch (InterruptedException ex) {
+//                    java.util.logging.Logger.getLogger(SaveItemControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                } catch (ExecutionException ex) {
+//                    java.util.logging.Logger.getLogger(SaveItemControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
         } catch (TException ex) {
             java.util.logging.Logger.getLogger(SaveItemControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
         }

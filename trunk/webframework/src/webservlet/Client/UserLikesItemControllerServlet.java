@@ -1,6 +1,5 @@
 package webservlet.Client;
 
-import com.google.gson.Gson;
 import frontend.MiddlewareHandler;
 import java.io.IOException;
 import java.util.List;

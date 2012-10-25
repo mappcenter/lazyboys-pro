@@ -50,6 +50,11 @@ public class listTagsControllerServlet extends HttpServlet {
             Gson gson = new Gson();
             contentFile = "var listTags='";
             contentFile += gson.toJson(ltags) + "';";
+            
+            List<Tag> topTags=(List<Tag>)handler.getTopTags();
+            int t=topTags.size();
+            contentFile+="var myTopTags='";
+            contentFile+=gson.toJson(topTags)+"';";
         }
         TemplateDataDictionary sFile = dic.addSection("listTags");
         sFile.setVariable("contentListTags", contentFile);
