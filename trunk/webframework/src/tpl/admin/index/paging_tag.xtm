@@ -23,7 +23,7 @@
             <a href="#">
                 <img src="http://localhost:81/images/icons/pencil.png" alt="Edit" />
             </a>
-            <a href="#" class="confirmation">
+            <a href="#" class="confirmation" rel="{{tagID}}">
                 <img src="http://localhost:81/images/icons/cross.png" alt="Delete" />
             </a>
         </td>
@@ -39,7 +39,7 @@
                 {{#listPage_section}}
                 {{page}}
                 {{/listPage_section}}
-                <a href="#last" onclick="tagList($(this).attr('rel'));" rel="{{last}}">last</a>
+                <a href="#last" onclick="tagList({{last}});" rel="{{last}}">last</a>
             </div>
             <div class="bulk-actions" onclick="">
                 <a href="#" class="graybutton">Delete selected</a>
