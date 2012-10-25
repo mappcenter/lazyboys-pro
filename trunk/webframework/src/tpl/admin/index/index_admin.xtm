@@ -126,8 +126,8 @@
                             </a>
                             <ul>
                                 <li><a href="#" class="current">Manage Tags</a></li>
-                                <li><a href="#">Top Tags</a></li>
-                                <li><a href="#">Add Tags</a></li>
+<!--                                <li><a href="#">Top Tags</a></li>-->
+                                <li><a href="#" alt="addTag">Add Tags</a></li>
 
                             </ul>
                         </li>
