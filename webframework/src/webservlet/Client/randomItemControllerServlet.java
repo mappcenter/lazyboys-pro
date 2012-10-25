@@ -7,7 +7,6 @@ package webservlet.Client;
 import com.google.gson.Gson;
 import frontend.Item;
 import frontend.MiddlewareHandler;
-import frontend.MyLocalCache;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,7 +23,6 @@ import org.apache.thrift.TException;
 public class randomItemControllerServlet extends HttpServlet {
 
     public static MiddlewareHandler handler = new MiddlewareHandler();
-    public static MyLocalCache myLocalCache=new MyLocalCache();
     int count = 0;
 
     @Override
@@ -42,11 +40,8 @@ public class randomItemControllerServlet extends HttpServlet {
         } else {
             String tagID = req.getParameter("tagID").toString();
             try {
-                item=myLocalCache.getRandomItem();
-                if(item==null) {
-                    item = handler.getRandomItemhaveTag(tagID);
-                }
-            } catch (TException ex) {
+                item = MiddlewareHandler.myLocalCache.getRandomItemHaveTag(tagID);
+            } catch (Exception ex) {
                 Logger.getLogger(randomItemControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
                 return;
             }
