@@ -203,7 +203,7 @@ public class getContentTabServlet extends HttpServlet {
 
         for (int i = (page - 1) * itemPerPage; i < page * itemPerPage && i < size; i++) {
             User user = handler.getUser(listUsers.get(i).toString());
-            TemplateDataDictionary listUserSection = dic.addSection("tag_section");
+            TemplateDataDictionary listUserSection = dic.addSection("list_section");
             listUserSection.setVariable("userID", user.userID);
             listUserSection.setVariable("userToken", user.userToken);
             listUserSection.setVariable("userRole", String.valueOf(user.userRole));
