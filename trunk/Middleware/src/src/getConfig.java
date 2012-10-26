@@ -20,6 +20,11 @@ public class getConfig {
     private static int port_listen;
     private static getConfig instance;
     private static int ttl;
+    private static int number_connection;
+
+    public int getNumberConnection() {
+        return number_connection;
+    }
 
     /**
      * @return the ttl
@@ -43,6 +48,7 @@ public class getConfig {
         port = Integer.parseInt(pro.getProperty("port"));
         host = pro.getProperty("host");
         ttl = Integer.parseInt(pro.getProperty("ttl"));
+        number_connection = Integer.parseInt(pro.getProperty("number_connection"));
     }
 
     public static synchronized getConfig getInstance() throws FileNotFoundException, IOException {

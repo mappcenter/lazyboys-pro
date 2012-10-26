@@ -34,15 +34,13 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
             for (int i = 0; i < listTag.size(); i++) {
                 tagIDs.add(listTag.get(i).tagID);
                 //getAllItemshaveTag(listTag.get(i).tagID, 50);
-                String key = listTag.get(i).tagID + "listItemID";                                
-                    List<String> listItemID=new ArrayList<>();
-                    listItemID = handler.getAllItemsIDhaveTag(listTag.get(i).tagID, 100);
-                    MyCache.getInstance().set(key, 3600, listItemID); 
-                }
+                String key = listTag.get(i).tagID + "listItemID";
+                List<String> listItemID = new ArrayList<>();
+                listItemID = handler.getAllItemsIDhaveTag(listTag.get(i).tagID, 100);
+                MyCache.getInstance().set(key, 3600, listItemID);
             }
         }
-
-    
+    }
 
     public void Caching() throws TException {
         if (listTag.isEmpty()) {
@@ -339,27 +337,27 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
 
     @Override
     public long tagdbSize() throws TException {
-         return handler.tagdbSize();
+        return handler.tagdbSize();
     }
 
     @Override
     public long itemtagdbSize() throws TException {
-         return handler.itemtagdbSize();
+        return handler.itemtagdbSize();
     }
 
     @Override
     public long itemtagSize(String tagID) throws TException {
-         return handler.itemtagSize(tagID);
+        return handler.itemtagSize(tagID);
     }
 
     @Override
     public long userdbSize() throws TException {
-         return handler.userdbSize();
+        return handler.userdbSize();
     }
 
     @Override
     public long itemsLikeSize(String userID) throws TException {
-         return handler.itemsLikeSize(userID);
+        return handler.itemsLikeSize(userID);
     }
 
     @Override
@@ -369,52 +367,52 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
 
     @Override
     public long favouriteItemsSize(String userID) throws TException {
-         return handler.favouriteItemsSize(userID);
+        return handler.favouriteItemsSize(userID);
     }
 
     @Override
     public List<String> getAllItemsIDLike(String userID) throws TException {
-         return handler.getAllItemsIDLike(userID);
+        return handler.getAllItemsIDLike(userID);
     }
 
     @Override
     public List<Item> getAllItemsLike(String userID, int number) throws TException {
-         return handler.getAllItemsLike(userID, number);
+        return handler.getAllItemsLike(userID, number);
     }
 
     @Override
     public boolean insertLikedItem(String userID, String itemID) throws TException {
-         return handler.insertLikedItem(userID, itemID);
+        return handler.insertLikedItem(userID, itemID);
     }
 
     @Override
     public boolean deleteLikedItem(String userID, String itemID) throws TException {
-         return handler.deleteLikedItem(userID, itemID);
+        return handler.deleteLikedItem(userID, itemID);
     }
 
     @Override
     public List<String> getAllItemsIDDislike(String userID) throws TException {
-         return handler.getAllItemsIDDislike(userID);
+        return handler.getAllItemsIDDislike(userID);
     }
 
     @Override
     public List<Item> getAllItemsDislike(String userID, int number) throws TException {
-         return handler.getAllItemsDislike(userID, number);
+        return handler.getAllItemsDislike(userID, number);
     }
 
     @Override
     public boolean insertDislikedItem(String userID, String itemID) throws TException {
-         return handler.insertDislikedItem(userID, itemID);
+        return handler.insertDislikedItem(userID, itemID);
     }
 
     @Override
     public boolean deleteDislikedItem(String userID, String itemID) throws TException {
-         return handler.deleteDislikedItem(userID, itemID);
+        return handler.deleteDislikedItem(userID, itemID);
     }
 
     @Override
     public boolean userExisted(String userID) throws TException {
-         return handler.userExisted(userID);
+        return handler.userExisted(userID);
     }
 
     @Override
