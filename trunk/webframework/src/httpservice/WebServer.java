@@ -69,6 +69,7 @@ public class WebServer {
         handler.addServletWithMapping("webservlet.Client.UserDisLikesItemControllerServlet", "/uDisLikes");
         handler.addServletWithMapping("webservlet.Client.randomItemControllerServlet","/uRandom");
         handler.addServletWithMapping("webservlet.Client.SaveItemControllerServlet", "/saveItem");
+        handler.addServletWithMapping("webservlet.Client.CachingClientItemsControllerServlet", "/uItemsCaching");
 
         //handler.addServletWithMapping("servlet.randomItemServlet","/random");
          //admin services

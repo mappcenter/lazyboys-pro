@@ -19,7 +19,6 @@ import org.apache.thrift.TException;
  * @author root
  */
 public class MyLocalCache {
-
     MiddlewareHandler handler = new MiddlewareHandler();
     private static int capacityUser = 5000;
     private static String itemIDTagsKey = "ItemIDTags";
@@ -31,6 +30,8 @@ public class MyLocalCache {
     public static String listAllTagsKey = "listAllTags";
     public static String listTopTagsKey = "listTopTags";
     public static String listItemIDKey = "listItemID";
+    public static String listItemsClientCache = "listItemsClientCache";
+    
     public static Map<String, Object> LocalCache = new HashMap<String, Object>();
     public static LazyBoysLRUCache UserLocalCache = new LazyBoysLRUCache(capacityUser);
     
@@ -43,7 +44,7 @@ public class MyLocalCache {
         
         if (MySwapLocalCache.LocalCache.size() > 0) {
             TempCacheToSwap=LocalCache;
-            System.out.println("Start Swapping data");
+            System.out.println("Starting....! Swapping data...");
             LocalCache = MySwapLocalCache.LocalCache;
             numberFavoriteItems = MySwapLocalCache.numberFavoriteItems;
             numberItemIDTags = MySwapLocalCache.numberItemIDTags;
@@ -54,9 +55,8 @@ public class MyLocalCache {
             MySwapLocalCache.LocalCache=TempCacheToSwap;
         }
         //MySwapLocalCache.clearAllCaching();
-        System.out.println("End Swapping data");
+        System.out.println("End...! Swap data");
     }
-    public static String temp = "";
 
     public void updateListTags() throws TException {
         List<Tag> tem = (List<Tag>) LocalCache.get(listAllTagsKey);
@@ -70,8 +70,7 @@ public class MyLocalCache {
         List<Tag> lTags = handler.getAllTag();
         LocalCache.put(listAllTagsKey, lTags);
         startCacheItemIDTags(lTags, numberItemIDTags);
-        itemIDTagSize = numberItemIDTags;
-        Item item = (Item) LocalCache.get("item" + temp);
+        itemIDTagSize = numberItemIDTags;        
         List<Tag> listTopTags = handler.getTopTags(numberTopTags);
         LocalCache.put(listTopTagsKey, listTopTags);
         System.out.println("Caching Completed! ;)) ");
@@ -87,13 +86,16 @@ public class MyLocalCache {
             startCacheItem(itemIDs);
         }
         LocalCache.put(listItemIDKey, listItemIDs);
+        LocalCache.put(listItemsClientCache, itemsClientCache);
     }
-
+    public static List<Item> itemsClientCache=new ArrayList<Item>();
     private void startCacheItem(List<String> itemIDs) throws TException {
-        for (int i = 0; i < itemIDs.size(); i++) {
-            temp = itemIDs.get(i);
-            LocalCache.put("item" + itemIDs.get(i), handler.getItemFromItemID(itemIDs.get(i)));
-
+        for (int i = 0; i < itemIDs.size(); i++) {           
+            Item item=handler.getItemFromItemID(itemIDs.get(i));
+            if(i<11) { //get 10 items each tag to cache client
+                itemsClientCache.add(item);
+            }
+            LocalCache.put("item" + itemIDs.get(i),item);
         }
     }
 
@@ -150,7 +152,7 @@ public class MyLocalCache {
     public List<Tag> getAllTags() {
         return (List<Tag>) LocalCache.get(listAllTagsKey);
     }
-
+    
     public int getRandomIndex(int size) {
         return (new Random()).nextInt(size - 1);
 
@@ -205,8 +207,11 @@ public class MyLocalCache {
     public void removeAllUserItemIDLike(String uID) {
         UserLocalCache.remove(uID);
     }
-
     public void clearUserCaching() {
         //UserLocalCache.
+    }
+    public List<Item> getItemsForClientCache(){
+        List<Item> items=(List<Item>)LocalCache.get(listItemsClientCache);
+        return items;
     }
 }
