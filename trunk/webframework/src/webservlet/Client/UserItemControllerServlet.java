@@ -25,6 +25,7 @@ public class UserItemControllerServlet extends HttpServlet {
 
     private static final Logger log = LoggerFactory.getLogger(UserItemControllerServlet.class);
     public static MiddlewareHandler handler = new MiddlewareHandler();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -49,50 +50,54 @@ public class UserItemControllerServlet extends HttpServlet {
             String tmp = profiler.dumpLogHtml();
             this.out(tmp, resp);
         }
-        
-        
+
+
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/html; charset=UTF-8");        
+        resp.setContentType("text/html; charset=UTF-8");
         doGet(req, resp);
     }
 
-    private String render(HttpServletRequest req) throws Exception {               
+    private String render(HttpServletRequest req) throws Exception {
         TemplateDataDictionary dic = TemplateDictionary.create();
 
-        String userID="";                
-        if(req.getParameter("userID")!=null){
-            userID=req.getParameter("userID");
+        String userID = "";
+        if (req.getParameter("userID") != null) {
+            userID = req.getParameter("userID");
         }
-        
-        List<Item> uItems=null;
+
+        List<Item> uItems = null;
         try {
             //UserInfo usr=new UserInfo();
             //uItems=usr.getUserFavoriteItems(userID);//get from memcache
-           //if(uItems==null) {
-                //uItems=handler.getFavouriteItems(userID, 20);
-            uItems=(List<Item>) MiddlewareHandler.myLocalCache.getUserItemIDLike(userID);
-           // }
+            //if(uItems==null) {
+            //uItems=handler.getFavouriteItems(userID, 20);
+            uItems = MiddlewareHandler.myLocalCache.getUserItemsLike(userID);
+            // }
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(UserItemControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Gson gson=new Gson();
-        
-        for (int i = 0; i < uItems.size(); i++) {
-            TemplateDataDictionary list_uItem = dic.addSection("list_uItem");
-            list_uItem.setVariable("itemID", uItems.get(i).itemID);
-            list_uItem.setVariable("itemContent", uItems.get(i).content);
-            list_uItem.setVariable("lisTagIDs", gson.toJson(uItems.get(i).tagsID));
+        if (uItems != null) {
+            Gson gson = new Gson();
+
+            for (int i = 0; i < uItems.size(); i++) {
+                TemplateDataDictionary list_uItem = dic.addSection("list_uItem");
+                list_uItem.setVariable("itemID", uItems.get(i).itemID);
+                list_uItem.setVariable("itemContent", uItems.get(i).content);
+                list_uItem.setVariable("lisTagIDs", gson.toJson(uItems.get(i).tagsID));
+            }
         }
+
         Template template = this.getCTemplate();
         String content = template.renderToString(dic);
 
         return content;
 
 
-    }    
+    }
+
     private Template getCTemplate() throws Exception {
         TemplateLoader templateLoader = TemplateResourceLoader.create("tpl/");
         Template template = templateLoader.getTemplate("client/index/uItems.xtm");

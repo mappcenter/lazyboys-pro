@@ -28,32 +28,25 @@ public class DeleteItemControllerServlet extends HttpServlet {
         resp.setContentType("text/html; charset=UTF-8");
         String itemID="";
         String userID="";
-        String result="1";
-        if(req.getParameter("itemID")!=null){
+        //String result="1";
+        if(req.getParameter("itemID")!=null && req.getParameter("userID")!=null){
             itemID=req.getParameter("itemID");
-        }
-        if(req.getParameter("userID")!=null){
             userID=req.getParameter("userID");
         }
+        else{
+            return;
+        }
+//        if(req.getParameter("userID")!=null){
+//            userID=req.getParameter("userID");
+//        }
         try {     
             myLocalCache.removeUserItemLike(userID, itemID);
-            if(!handler.deleteFavouriteItem(userID, itemID))
-            {
-                result="0";
-                return;
-            }
-//            UserInfo usr=new UserInfo();
-//            try {
-//                usr.removeUserItems(userID, itemID);
-//            } catch (InterruptedException ex) {
-//                java.util.logging.Logger.getLogger(DeleteItemControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
-//            } catch (ExecutionException ex) {
-//                java.util.logging.Logger.getLogger(DeleteItemControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
-//            }
             
-        } catch (TException ex) {
+        } catch (TException ex) {            
             java.util.logging.Logger.getLogger(SaveItemControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
+            return;
         }
-        resp.getWriter().println(result);
+        return;
+        //resp.getWriter().println(result);
     }
 }
