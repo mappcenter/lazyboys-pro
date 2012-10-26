@@ -278,6 +278,14 @@ tfoot .pagination a {
     padding: 0 6px;
 }
 
+a.pagination{
+    float: left;
+    line-height: 22px;
+    margin: 0 2px;
+    padding: 0 6px;
+    
+}
+
 /********** Buttons **********/
 
 #header_buttons {
