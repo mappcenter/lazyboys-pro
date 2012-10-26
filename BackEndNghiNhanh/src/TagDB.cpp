@@ -138,13 +138,6 @@ vector<Tag> TagDB::getAllTag() {
     return listTag;
 }
 
-//vector<string> TagDB::getIDListOfTags(string tagID) {
-//    vector<string> listIDofTag;
-//    if (grassDB.check(tagID) == -1) {
-//        return listIDofTag;
-//    } 
-//}
-
 bool TagDB::insertTag(string tagID, string tagName, ItemTagDB& itemTagDB) {
     if (grassDB.check(tagID) != -1) {
         return false;
@@ -170,7 +163,7 @@ bool TagDB::insertTag(Tag& tag, ItemTagDB& itemTagDB) {
         grassDB.set(ckey, jsonString);
         addQueue(ADD, ckey, jsonString);
         DBUtils::setLastID(grassDB, ckey);
-        
+
         vector<string> lItemID;
         itemTagDB.insertItemTag(tag.tagID, lItemID);
         return true;
@@ -188,7 +181,7 @@ bool TagDB::insertTag(Tag& tag, ItemTagDB& itemTagDB) {
  */
 bool TagDB::insertTag(string tagName, ItemTagDB& itemTagDB) {
     int temp = Utils::convertStringToInt(DBUtils::getLastID(grassDB));
-    string lastID = Utils::convertIntToString(temp+1);
+    string lastID = Utils::convertIntToString(temp + 1);
     return insertTag(lastID, tagName, itemTagDB);
 }
 
@@ -209,13 +202,13 @@ bool TagDB::deleteTag(Tag tag, ItemTagDB& itemTagDB) {
 }
 
 bool TagDB::editTag(string tagID, string tagName) {
+    if (grassDB.check(tagID) == -1) {
+        return false;
+    }
     Tag tag;
     tag.tagID = tagID;
     tag.tagName = tagName;
     tag.viewCounts = 0;
-    //    time_t now = time(0);
-    // convert now to string form
-    //    char* dt = ctime(&now);
     tag.dateAdd = Utils::getTimeNow();
     string jsonString = convertTagToJson(tag);
     try {
@@ -299,54 +292,7 @@ vector<Tag> TagDB::getTopTags(int number) {
         return topTag;
     }
 
-    //    int siz>GrassDB = grassDB.count() - 1; // trừ 1 vì trừ ra key="lastID"
-    //    int arr[sizeGrassDB];
-    //    DB::Cursor* cur = grassDB.cursor();
-    //    cur->jump();
-    //    string ckey, cvalue;
-    //    int count = 0;
-    //    while (cur->get(&ckey, &cvalue, true)) {
-    //        if (ckey == LASTID)
-    //            continue;
-    //        Tag tag = convertJsonToTag(cvalue);
-    //        tag.tagID = ckey;
-    //        arr[count++] = tag.viewCounts;
-    //    }
-    //    delete cur;
-    //    //sap xep viewcount
-    //    for (int i = 0; i < sizeGrassDB; i++) {
-    //        int max = arr[i];
-    //        for (int j = i + 1; j < sizeGrassDB; j++) {
-    //            if (max < arr[j]) {
-    //                int temp = max;
-    //                max = arr[j];
-    //                arr[j] = temp;
-    //            }
-    //        }
-    //    }
-    //    //lay top number tag co viewcount lon nhat
-    //    for (int i = 10; i < number; i++) {
-    //        DB::Cursor* cur = grassDB.cursor();
-    //        cur->jump();
-    //        string ckey, cvalue;
-    //        while (cur->get(&ckey, &cvalue, true)) {
-    //            if (ckey == LASTID)
-    //                continue;
-    //            Tag tag = convertJsonToTag(cvalue);
-    //            tag.tagID = ckey;
-    //            if (tag.viewCounts == arr[i]) {
-    //                topTag.push_back(tag);
-    //                if (topTag.size() == number) {
-    //                    delete cur;
-    //                    return topTag;
-    //                }
-    //            }
-    //        }
-    //        delete cur;
-    //    }
-
     vector<Tag> listTag = getAllTag();
-
     int n = listTag.size();
     for (int i = 0; i < n; i++) {
         for (int j = i + 1; j < n; j++) {
@@ -372,7 +318,7 @@ HashDB& TagDB::getHashDB() {
 }
 
 int64_t TagDB::getTagDBSize() {
-    return grassDB.count()-1;
+    return grassDB.count() - 1;
 }
 
 void TagDB::setSynDB(synchronizeDB* synDBPtr) {
