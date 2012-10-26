@@ -87,11 +87,6 @@ public class ConnectionPool {
     }
 
     public Connection getConnection() throws InterruptedException {
-        if (queue.isEmpty()) {
-            System.out.println("No Connection found: " + count++);
-        } else {
-            System.out.println("Get Connection OK: " + count++);
-        }
         Connection con = queue.take();
         return (con);
     }

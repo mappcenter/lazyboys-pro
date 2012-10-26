@@ -30,6 +30,7 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
     public void startLocalCache() throws TException, InterruptedException {
         Connection connect = connectionPool.getConnection();
         List<Tag> topTags = connect.getClient().getTopTags(40);
+        connectionPool.releaseConnection(connect);
         LocalCache.put("topTags", topTags);
 
         List<Tag> listTags = connect.getClient().getAllTag();
