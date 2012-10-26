@@ -271,20 +271,35 @@ $(document).ready(function() {
 });
 
 function itemList(page){
-    
-    $(document).ready(function() {  	         
-        var tagID = $('#cmbTag').attr('value') ;	
-		
-        $.post("getItemPage",{
-            t:tagID, 
+    //alert(page);
+//    $(document).ready(function() {  	         
+//        var tagID = $('#cmbTag').attr('value') ;	
+//		
+//        $.post("getItemPage",{
+//            t:tagID, 
+//            p:page
+//        }, function(data){	                  
+//            $("#table_pagination").html(data);	
+//            regen();
+//            editItem();
+//            manageStatus();
+//        });
+//        
+//    }); 
+    $(document).ready(function() {
+        var tabName=$('#main-nav > li > a.current').attr('id');
+        //alert(tabName,page);
+       // alert(tabName+" "+page);
+        $.post("getContentTab",{
+            tabName:tabName,
             p:page
-        }, function(data){	                  
-            $("#table_pagination").html(data);	
+        },function(data){
+            $("#table_pagination").html(data);
+            //alert(data);
             regen();
             editItem();
             manageStatus();
-        });
-        
+        });             
     }); 
 }
 
@@ -313,14 +328,14 @@ function regen(){
     //Dialog.show(e); 
     });
     
-    $('img[alt="Edit"]').click(function(e) { 
+    $('img[alt="EditTag"]').click(function(e) { 
         var tagID=$(this).parent().parent().parent().find('td:nth-child(2) a').html();
         var tagName = $(this).parent().parent().parent().find('td:nth-child(3)').html();
-        var name=prompt("Edit tag name",tagName);
-        var x;
+        tagName=prompt("Edit tag name",tagName);
+        //var x;
         //alert(tagID+" "+tagName);
         //return;
-        if (name!=null)
+        if (tagName!=null)
         {
             //x="Hello " + name + "! How are you today?";
             //alert(x);
@@ -337,28 +352,22 @@ function regen(){
                     tabName:tabName,
                     p:page
                 },function(data){
-                    alert(data);
+                    //alert(data);
                     $("#table_pagination").html(data);
+                    regen();
+                    editItem();
+                    manageStatus();
                 });
             //$(this).parent().parent().parent().find('td:nth-child(3)').html(name);
             });
         }
  
-    //Dialog.show(e); 
+    
     });
-    //    $('img[alt="Delete"]').click(function(e) { 
-    //        var tagID=$(this).parent().parent().parent().parent().find('td:nth-child(2) a').html();
-    //        alert(tagID);
-    //        return;
-    //        $.post("editTag",{
-    //            tagID:tagID
-    //        }, function(data){
-    //            alert(data);
-    //        });
-    //        
-    // 
-    //    //Dialog.show(e); 
-    //    });
+    
+    
+    
+    
                 
     $('.confirmation').wrap('<div class="confirm" />');
         
@@ -387,6 +396,9 @@ function tagList(page){
             p:page
         },function(data){
             $("#table_pagination").html(data);
+            regen();
+            editItem();
+            manageStatus();
         });             
     }); 
 }
@@ -460,6 +472,9 @@ function deleteOneItem( itemID){
             },function(data){
                 //alert(data);
                 $("#table_pagination").html(data);
+                regen();
+                editItem();
+                manageStatus();
             });
         });
     //alert(tabName,page);
@@ -539,7 +554,40 @@ function editItem() {
             $('#dialog-box').hide();
             $('#content-box').show();         
         });
-    });           
+    });  
+    
+    
+}
+
+function addTag(){
+    //$('a[alt="addTag"]').click(function(){
+    //alert("hihi");
+    var tagName=prompt("Type tag name","");
+    //        while(tagName!=null&&tagName==""){
+    //            tagName=prompt("Type tag name","");
+    //        }
+    if(tagName!=null&&tagName!=""){
+        //alert(tagName);
+        $.post('addTag',{
+            tagName:tagName
+        }, function(data){
+            alert(data);
+            var tabName=$('#main-nav > li > a.current').attr('id');
+            var page= $('#pagination > a.active').html();
+            $.post("getContentTab",{
+                tabName:tabName,
+                p:page
+            },function(data){
+                //alert(data);
+                $("#table_pagination").html(data);
+                regen();
+                editItem();
+                manageStatus();
+            });
+        });
+    }
+        
+//});
 }
 
 
@@ -599,13 +647,7 @@ function manageStatus(){
             }
             var list_tag_textarea=document.getElementById('tag_list_textbox');
             list_tag_textarea.innerHTML=str;
-        //            $('#dialog-box').find('input[type="checkbox"]').each(function(){
-        //                $(this).click(function(){
-        //                    if($(this).attr('checked')){
-        //                        tagIDs.push($(this).attr('value'));
-        //                    }                   
-        //                });
-        //            });
+        
         });
         $('a[href="#submit"]').html("Add");
         
@@ -633,16 +675,37 @@ function manageStatus(){
                     alert(data);
                     regen();
                     editItem();
-                //$('#dialog-box').hide();
-                //$('#content-box').show();
+                
                 });           
             }
         }); 
-    //        $('a[href="#back"]').click(function(){
-    //            $('#dialog-box').hide();
-    //            $('#content-box').show();
-    //        });
+    
         
     }); 
     
+}
+
+function changeUserRole(userID, userToken, userRole){
+    var userRolename="";
+    if(userRole==-1){
+        userRole=0;
+        userRolename="User";
+    }
+    else if(userRole==0){
+        userRole=1;
+        userRolename="Admin";
+    }
+    else if(userRole==1){
+        userRole=-1;
+        userRolename="Blocked";
+    }
+    //alert(userRole);
+    $.post('changeUserRole', {userID:userID, userToken:userToken, userRole:userRole}, function(data){
+        if(data){           
+            var elem=document.getElementById(userID);
+            elem.innerHTML=userRolename
+            //alert(elem);
+            $(elem).parent().find('a').attr('href', "javascript:changeUserRole('"+userID+"', '"+userToken+"', "+userRole+");");
+        }
+    });
 }
