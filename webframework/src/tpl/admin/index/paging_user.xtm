@@ -6,6 +6,7 @@
         <th>UserID</th>
         <th>UserToken</th>
         <th>UserRole</th>
+        <th>Actions</th>
     </tr>
 </thead>
 
@@ -18,16 +19,16 @@
             <input type="checkbox" />
         </td>
         <td>
-            <a href="#">{{userID}}</a>
+            <a href="#" alt="{{userID}}">{{userID}}</a>
         </td>
         <td>{{userToken}}</td>
-        <td>{{userRole}}</td>
+        <td id="{{userID}}">{{userRoleName}}</td>
         <td>
-            <a href="#">
-                <img src="http://localhost:81/images/icons/pencil.png" alt="EditUser" />
-            </a>
-            <a href="#" class="confirmation">
-                <img src="http://localhost:81/images/icons/cross.png" alt="DeleteUser" />
+<!--            <a href="#">
+                <img src="http://localhost:81/images/icons/pencil.png" alt="EditUser" title="{{userRole}}"/>
+            </a>-->
+<a href="javascript:changeUserRole('{{userID}}', '{{userToken}}', {{userRole}});" rel="{{userRole}}">
+                <img src="http://localhost:81/images/icons/cross.png" alt="DeleteUser" title="{{userRole}}" />
             </a><!-- to create a tooltip-style confirmation, just add .confirmation to the <a>-tag -->
         </td>
     </tr>
@@ -36,7 +37,7 @@
 
 <tfoot>
     <tr>
-        <td colspan="4">	
+        <td colspan="5">	
             <div class="pagination" id="pagination" >
                 <a href="#first" onclick="userList(1);" rel="1">first</a>
                 {{#listPage_section}}
@@ -46,7 +47,7 @@
             </div>
             <div class="bulk-actions">
 
-                <a href="#" class="graybutton">Delete selected</a>
+<!--                <a href="#" class="graybutton">Delete selected</a>-->
             </div>
         </td>
     </tr>
