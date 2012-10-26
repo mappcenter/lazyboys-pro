@@ -1,0 +1,52 @@
+
+<!-- saved from url=(0067)http://www.christopherchin.com/blog/demos/jquery/jquerydialog2.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<link type="text/css" href="./index_files/jquery-ui-1.7.custom.css" rel="Stylesheet">	
+<script type="text/javascript" src="./index_files/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="./index_files/ui.core.js"></script>
+<script type="text/javascript" src="./index_files/ui.dialog.js"></script>
+<script type="text/javascript" src="./index_files/jquery-ui-1.7.custom.js"></script>
+
+
+
+<script>
+$(document).ready(function(){
+	//define config object
+   var dialogOpts = {
+		modal: true,
+		bgiframe: true,
+		autoOpen: false,
+		height: 500,
+		width: 500,
+		draggable: true,
+		resizeable: true,
+		open: function() {
+		//display correct dialog content
+		$("#example").html("hello world");}
+		};
+    $("#example").dialog(dialogOpts);	//end dialog
+	
+	$('a[rel="EditItem"]').click(
+		function (){
+			$("#example").dialog("open");
+			return false;
+		}
+	);
+	
+});
+
+
+</script>
+</head>
+
+<body>
+
+<a href="" id="showdialog">Show the Dialog</a>
+
+
+
+
+
+
+<div style="display: none; position: absolute; overflow: hidden; z-index: 1000; outline: 0px; " class="ui-dialog ui-widget ui-widget-content ui-corner-all  ui-draggable ui-resizable" tabindex="-1" role="dialog" aria-labelledby="ui-dialog-title-example"><div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix" unselectable="on"><span class="ui-dialog-title" id="ui-dialog-title-example" unselectable="on">My First Ajax Dialog</span><a href="http://www.christopherchin.com/blog/demos/jquery/jquerydialog2.html#" class="ui-dialog-titlebar-close ui-corner-all" role="button" unselectable="on"><span class="ui-icon ui-icon-closethick" unselectable="on">close</span></a></div><div style="" id="example" class="ui-dialog-content ui-widget-content"></div><div class="ui-resizable-handle ui-resizable-n" style="" unselectable="on"></div><div class="ui-resizable-handle ui-resizable-e" style="" unselectable="on"></div><div class="ui-resizable-handle ui-resizable-s" style="" unselectable="on"></div><div class="ui-resizable-handle ui-resizable-w" style="" unselectable="on"></div><div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se ui-icon-grip-diagonal-se" style="z-index: 1001; " unselectable="on"></div><div class="ui-resizable-handle ui-resizable-sw" style="z-index: 1002; " unselectable="on"></div><div class="ui-resizable-handle ui-resizable-ne" style="z-index: 1003; " unselectable="on"></div><div class="ui-resizable-handle ui-resizable-nw" style="z-index: 1004; " unselectable="on"></div></div></body></html>
