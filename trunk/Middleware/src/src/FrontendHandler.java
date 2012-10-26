@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import libs.Item;
 import libs.Tag;
+import libs.User;
 import memcache.MyCache;
 import org.apache.thrift.TException;
 
@@ -414,5 +415,15 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     @Override
     public boolean userExisted(String userID) throws TException {
          return handler.userExisted(userID);
+    }
+
+    @Override
+    public User getUser(String userID) throws TException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<String> getAllUser() throws TException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
