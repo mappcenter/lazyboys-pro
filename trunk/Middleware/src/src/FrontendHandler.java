@@ -112,7 +112,7 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
 
     @Override
     public List<Tag> getTopTags(long number) throws TException {
-        return getTopTags(number);
+        return handler.getTopTags(number);
     }
 
     /**
@@ -419,11 +419,11 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
 
     @Override
     public User getUser(String userID) throws TException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return handler.getUser(userID);
     }
 
     @Override
     public List<String> getAllUser() throws TException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return handler.getAllUser();
     }
 }

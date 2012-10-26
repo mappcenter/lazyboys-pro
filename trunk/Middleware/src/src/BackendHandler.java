@@ -27,7 +27,7 @@ public class BackendHandler implements libs.BackendMiddleware.Iface {
     libs.BackendMiddleware.Client client;
 
     void init() throws IOException {
- 
+
         String host = getConfig.getInstance().getHost();
         int port = getConfig.getInstance().getPort();
 
@@ -49,7 +49,7 @@ public class BackendHandler implements libs.BackendMiddleware.Iface {
             Logger.getLogger(BackendHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
         List<Tag> lisTag;
-       
+
         transport.open();
         lisTag = client.getAllTag();
         transport.close();
@@ -135,7 +135,15 @@ public class BackendHandler implements libs.BackendMiddleware.Iface {
 
     @Override
     public List<Tag> getTopTags(long number) throws TException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        try {
+            init();
+        } catch (IOException ex) {
+            Logger.getLogger(BackendHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        transport.open();
+        List<Tag> listag = client.getTopTags(number);
+        transport.close();
+        return listag;
     }
 
     @Override
@@ -392,9 +400,6 @@ public class BackendHandler implements libs.BackendMiddleware.Iface {
         transport.close();
         return result;
     }
-
-    
-
 
     @Override
     public boolean blockUser(String userID) throws TException {
@@ -736,7 +741,7 @@ public class BackendHandler implements libs.BackendMiddleware.Iface {
 
     @Override
     public boolean deleteDislikedItem(String userID, String itemID) throws TException {
-       try {
+        try {
             init();
         } catch (IOException ex) {
             Logger.getLogger(BackendHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -756,6 +761,32 @@ public class BackendHandler implements libs.BackendMiddleware.Iface {
         }
         transport.open();
         boolean result = client.userExisted(userID);
+        transport.close();
+        return result;
+    }
+
+    @Override
+    public User getUser(String userID) throws TException {
+        try {
+            init();
+        } catch (IOException ex) {
+            Logger.getLogger(BackendHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        transport.open();
+        User result = client.getUser(userID);
+        transport.close();
+        return result;
+    }
+
+    @Override
+    public List<String> getAllUser() throws TException {
+        try {
+            init();
+        } catch (IOException ex) {
+            Logger.getLogger(BackendHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        transport.open();
+        List<String> result = client.getAllUser();
         transport.close();
         return result;
     }

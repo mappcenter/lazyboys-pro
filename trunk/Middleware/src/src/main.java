@@ -5,10 +5,9 @@
 package src;
 
 import libs.MiddlewareFrontend;
-import org.apache.thrift.server.TNonblockingServer;
+import org.apache.thrift.server.THsHaServer;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.transport.TNonblockingServerSocket;
-import org.apache.thrift.transport.TNonblockingServerTransport;
 
 /**
  *
@@ -17,24 +16,17 @@ import org.apache.thrift.transport.TNonblockingServerTransport;
 public class main {
 
     public static void main(String[] args) throws InterruptedException, Exception {
-
-//        Server server=new Server(8080);
-//        server.setHandler(new hellohandler());
-//        server.start();
-//        server.join();
-
-       
-
         int port = getConfig.getInstance().getPortListen();
 
-        TNonblockingServerTransport serverTransport = new TNonblockingServerSocket(port);
-        libs.MiddlewareFrontend.Processor processor =
-                new MiddlewareFrontend.Processor(new FrontendHandler());
+        TNonblockingServerSocket serverTransport = new TNonblockingServerSocket(port);
+        libs.MiddlewareFrontend.Processor processor = new MiddlewareFrontend.Processor(new FrontendHandler());
 
-        TServer server = new TNonblockingServer(new TNonblockingServer.Args(serverTransport).
-                processor(processor));
+        THsHaServer.Args options = new THsHaServer.Args(serverTransport);
+        options.workerThreads(300);
+        options.processor(processor);
+
+        TServer server = new THsHaServer(options);
         System.out.println("Starting server on port " + port + " ...");
         server.serve();
-
     }
 }
