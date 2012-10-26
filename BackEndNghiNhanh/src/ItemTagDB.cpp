@@ -24,7 +24,7 @@ void ItemTagDB::startItemTagDB() {
     double sysTime1 = clock();
     DBUtils::openHashDB(hashDB, pathHashDB);
     DBUtils::openGrassDB(grassDB);
-    cout << "Copying ItemTagDB" << endl;
+    cout << "Copying ItemTagDB..." << endl;
     DBUtils::copyDBFromHashDBtoGrassDB(hashDB, grassDB);
     double sysTime2 = clock();
     //cout << "Time to search: " << (double) (sysTime2 - sysTime1) << endl;

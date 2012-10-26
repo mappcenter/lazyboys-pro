@@ -6,6 +6,7 @@
  */
 
 #include "DBUtils.h"
+#include "Utils.h"
 
 DBUtils::DBUtils() {
     logger = &Logger::get("DBUtils");
@@ -28,7 +29,7 @@ bool DBUtils::copyDBFromHashDBtoGrassDB(HashDB &hashDB, GrassDB &grassDB) {
     }
     //poco_information(*logger, "Copy complete from HashDB to GrassDB");
     if (cur != NULL)
-        cout << "Copy complete from HashDB " << " to GrassDB" << endl;
+        cout << "Copy complete." << endl;
     delete cur;
     return true;
 }
@@ -77,7 +78,26 @@ string DBUtils::getLastID(GrassDB& grassDB) {
         cerr << "getLastID: Can't open LastID in Database. GrassDB Error: " << grassDB.error().name() << endl;
         //poco_error_f1(*logger, "getLastID: Can't open LastID in Database. GrassDB: %s.", grassDB.error().name());
         return "-1";
-    } 
+    }
+}
+
+string DBUtils::initalizeLastID(GrassDB& grassDB) {
+    if (grassDB.check(LASTID) != -1) {
+        grassDB.remove(LASTID);
+    }
+    string ckey, cvalue;
+    int64_t MAXID = 0;
+    DB::Cursor* cur = grassDB.cursor();
+    cur->jump();
+    while (cur->get(&ckey, &cvalue, true)) {
+        //cout << "key :" << ckey << endl;
+        if (MAXID < Utils::convertStringToInt(ckey)) {
+            MAXID = Utils::convertStringToInt(ckey);
+        }
+    }
+    string lastID = Utils::convertIntToString(MAXID);
+    grassDB.set(LASTID, lastID);
+    return lastID;
 }
 
 /**
@@ -102,7 +122,7 @@ bool DBUtils::setLastID(GrassDB& grassDB, HashDB& hashDB, string id) {
  * @return bool
  */
 bool DBUtils::setLastID(GrassDB& grassDB, string id) {
-    if (!grassDB.set(LASTID, id)) {
+    if (!grassDB.replace(LASTID, id)) {
         cerr << "setLastID: Error to setLastID. GrassDB: " << grassDB.error().name() << endl;
         //poco_error_f2(*logger, "setLastID: Error tot setLastID. HashDB: %s. GrassDB: %s", hashDB.error().name(), grassDB.error().name());
         return false;

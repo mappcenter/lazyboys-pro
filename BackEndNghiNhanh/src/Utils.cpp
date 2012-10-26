@@ -66,26 +66,19 @@ bool Utils::findStringInString(string str1, string str2) {
     //str1 = toLowerInPlace(str1);
     //str2 = toLowerInPlace(str2);
     size_t found = str1.find(str2);
-    if (found == string::npos) {
+    if(found == string::npos){
         return false;
-    } else {
+    }else{
         return true;
     }
 }
-
-bool Utils::findStringInStringRe(string str1, string str2) {
-    string key = ".*" + str2 + ".*";
-    RegularExpression re(key, RegularExpression::RE_CASELESS && RegularExpression::RE_UTF8);
-    return re.match(str1, 0);
-}
-
 bool Utils::findStringInStringForTag(string str1, string str2) {
     toLowerInPlace(str1);
     toLowerInPlace(str2);
     size_t found = str1.find(str2);
-    if (found == string::npos) {
+    if(found == string::npos){
         return false;
-    } else {
+    }else{
         return true;
     }
 }

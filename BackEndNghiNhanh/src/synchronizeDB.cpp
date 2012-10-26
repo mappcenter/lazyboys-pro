@@ -19,13 +19,18 @@ synchronizeDB::synchronizeDB(HashDB& itemDB, HashDB& itemtagDB, HashDB& tagDB, H
 }
 
 synchronizeDB::synchronizeDB(const synchronizeDB& orig) {
+    this->itemDB = orig.itemDB;
+    this->itemtagDB = orig.itemtagDB;
+    this->tagDB = orig.tagDB;
+    this->userDB = orig.userDB;
+    this->feedbackDB = orig.feedbackDB;
 }
 
 synchronizeDB::~synchronizeDB() {
 }
 
 bool synchronizeDB::addToItemDB(string& itemID, string& stringJson) {
-    if (itemDB->check(itemID) == -1 || itemID == "lastID") {
+    if (itemDB->check(itemID) == -1) {
         itemDB->set(itemID, stringJson);
         cout << "Sucess synchronizeDB addToItemDB itemID:" << itemID << endl;
         return true;
@@ -186,6 +191,9 @@ void synchronizeDB::runQueueItemDB() {
             continue;
         } else {
             Poco::Tuple<string, string, string> &item = *itr;
+            if (item.get < 1 > () == "lastID") {
+                continue;
+            }
             string mod = item.get < 0 > ();
             // cout << "Mod = " << mod << endl;
             if (mod == "add")
@@ -210,6 +218,9 @@ void synchronizeDB::runQueueItemTagDB() {
             continue;
         } else {
             Poco::Tuple<string, string, string> &itemtag = *itr;
+            if (itemtag.get < 1 > () == "lastID") {
+                continue;
+            }
             string mod = itemtag.get < 0 > ();
             if (mod == "add")
                 addToItemTagDB(itemtag.get < 1 > (), itemtag.get < 2 > ());
@@ -233,6 +244,9 @@ void synchronizeDB::runQueueTagDB() {
             continue;
         } else {
             Poco::Tuple<string, string, string> &tag = *itr;
+            if (tag.get < 1 > () == "lastID") {
+                continue;
+            }
             string mod = tag.get < 0 > ();
             if (mod == "add")
                 addToTagDB(tag.get < 1 > (), tag.get < 2 > ());
@@ -256,6 +270,9 @@ void synchronizeDB::runQueueUserDB() {
             continue;
         } else {
             Poco::Tuple<string, string, string> &user = *itr;
+            if (user.get < 1 > () == "lastID") {
+                continue;
+            }
             string mod = user.get < 0 > ();
             if (mod == "add")
                 addToUserDB(user.get < 1 > (), user.get < 2 > ());
@@ -279,6 +296,9 @@ void synchronizeDB::runQueueFeedBackDB() {
             continue;
         } else {
             Poco::Tuple<string, string, string> &userfeedback = *itr;
+            if (userfeedback.get < 1 > () == "lastID") {
+                continue;
+            }
             string mod = userfeedback.get < 0 > ();
             if (mod == "add")
                 addToFeedBackDB(userfeedback.get < 1 > (), userfeedback.get < 2 > ());

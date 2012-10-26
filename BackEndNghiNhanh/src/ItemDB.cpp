@@ -27,7 +27,7 @@ void ItemDB::startItemDB() {
     Timestamp sysTime1 = Timestamp().utcTime();
     DBUtils::openHashDB(hashDB, pathHashDB);
     DBUtils::openGrassDB(grassDB);
-    cout << "Copying ItemDB" << endl;
+    cout << "Copying ItemDB..." << endl;
     DBUtils::copyDBFromHashDBtoGrassDB(hashDB, grassDB);
     Timestamp sysTime2 = Timestamp().utcTime();
     cout << "Start ItemDB in " << sysTime2 - sysTime1 << " milliseconds." << endl;
@@ -37,8 +37,12 @@ void ItemDB::startItemDB() {
     cout << "Getting ListTopItemID" << endl;
     // Mac dinh lTopItemID chi co 300 itemID.
     lTopItemID = getListTopItemID(n);
-    //Timestamp sysTime3 = Timestamp().utcTime();
-    //cout << "Start ItemDB in " << sysTime3 - sysTime2 << " milliseconds." << endl;
+    Timestamp sysTime3 = Timestamp().utcTime();
+    cout << "Get List Top ItemID in " << sysTime3 - sysTime2 << " milliseconds." << endl;
+
+    Timestamp sysTime4 = Timestamp().utcTime();
+    string lastID = DBUtils::initalizeLastID(grassDB);
+    cout << "Initalize LastID=" << lastID << " in " << sysTime4 - sysTime3 << " milliseconds." << endl;
     return;
 }
 
@@ -306,9 +310,7 @@ bool ItemDB::increaseViewCountItem(string itemID) {
         return false;
     }
     Item item = getItemInGrassDB(itemID);
-    mutex.lock();
     item.viewCounts++;
-    mutex.unlock();
     string content = convertItemToJson(item);
     addQueue(UPDATE, itemID, content);
     if (grassDB.replace(itemID, content) == false) {
@@ -324,9 +326,7 @@ bool ItemDB::increaseLikeCountItem(string itemID) {
         return false;
     }
     Item item = getItemFromItemID(itemID);
-    mutex.lock();
     item.likeCounts++;
-    mutex.unlock();
     string content = convertItemToJson(item);
     addQueue(UPDATE, itemID, content);
     if (grassDB.replace(itemID, content) == false) {
@@ -351,9 +351,7 @@ bool ItemDB::increaseDislikeCountItem(string itemID) {
         return false;
     }
     Item item = getItemFromItemID(itemID);
-    mutex.lock();
     item.dislikeCounts++;
-    mutex.unlock();
     string content = convertItemToJson(item);
     addQueue(UPDATE, itemID, content);
     if (grassDB.replace(itemID, content) == false) {

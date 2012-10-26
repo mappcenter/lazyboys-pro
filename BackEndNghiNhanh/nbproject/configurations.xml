@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configurationDescriptor version="84">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="f1" displayName="conf" projectFiles="true" kind="ROOT">
+      <itemPath>bin/backendnghinhanh.properties</itemPath>
+      <itemPath>bin/backendnghinhanhd.properties</itemPath>
+    </logicalFolder>
     <logicalFolder name="gen-cpp" displayName="gen-cpp" projectFiles="true">
       <itemPath>gen-cpp/BackendMiddleware.cpp</itemPath>
       <itemPath>gen-cpp/BackendMiddleware.h</itemPath>
@@ -89,8 +93,8 @@
             <linkerLibLibItem>PocoFoundationd</linkerLibLibItem>
             <linkerLibLibItem>PocoUtild</linkerLibLibItem>
             <linkerLibLibItem>kyotocabinet</linkerLibLibItem>
-            <linkerLibLibItem>json_linux-gcc-4.6_libmt</linkerLibLibItem>
             <linkerLibLibItem>boost_thread</linkerLibLibItem>
+            <linkerLibLibItem>json_linux-gcc-4.7_libmt</linkerLibLibItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
@@ -138,8 +142,8 @@
             <linkerLibLibItem>PocoFoundation</linkerLibLibItem>
             <linkerLibLibItem>PocoUtil</linkerLibLibItem>
             <linkerLibLibItem>kyotocabinet</linkerLibLibItem>
-            <linkerLibLibItem>json_linux-gcc-4.6_libmt</linkerLibLibItem>
             <linkerLibLibItem>boost_thread</linkerLibLibItem>
+            <linkerLibLibItem>json_linux-gcc-4.7_libmt</linkerLibLibItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>

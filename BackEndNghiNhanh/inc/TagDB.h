@@ -63,7 +63,6 @@ public:
     void setSynDB(synchronizeDB* synDBPtr);
     void addQueue(string command, string tagID, string jsonString);
 private:
-    string lastID; //Key co ten lastID trong DB.
     HashDB hashDB;
     GrassDB grassDB; //Key co ten lastID trong DB.
     synchronizeDB* syndb;

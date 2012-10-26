@@ -3,7 +3,6 @@
 
 ServerManager::ServerManager() {
     logger = &Logger::get("ServerManager");
-    //logger = &Logger::set
 }
 
 ServerManager::ServerManager(const ServerManager& orig) {
@@ -19,7 +18,6 @@ TNonblockingServer ServerManager::createConnection(int port, int numberThread, s
     boost::shared_ptr<TProcessor> processor(new BackendMiddlewareProcessor(handler));
     boost::shared_ptr<TProtocolFactory> protocolFactory(new TBinaryProtocolFactory());
 
-    // using thread pool with maximum 15 threads to handle incoming requests
     boost::shared_ptr<ThreadManager> threadManager = ThreadManager::newSimpleThreadManager(numberThread);
     boost::shared_ptr<PosixThreadFactory> threadFactory = boost::shared_ptr<PosixThreadFactory > (new PosixThreadFactory());
     threadManager->threadFactory(threadFactory);

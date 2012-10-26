@@ -66,7 +66,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-L/zserver/lib -Wl,-rpath,/zserver/lib -lthriftnb -levent -lthrift -lPocoFoundation -lPocoUtil -lkyotocabinet -ljson_linux-gcc-4.6_libmt -lboost_thread
+LDLIBSOPTIONS=-L/zserver/lib -Wl,-rpath,/zserver/lib -lthriftnb -levent -lthrift -lPocoFoundation -lPocoUtil -lkyotocabinet -lboost_thread -ljson_linux-gcc-4.7_libmt
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}

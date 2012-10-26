@@ -59,7 +59,6 @@ public:
     HashDB hashDB;
     GrassDB grassDB;
 private:
-    string lastID; //Key co ten lastID trong DB.
     synchronizeDB* syndb;
     Logger* logger;
     string pathHashDB;

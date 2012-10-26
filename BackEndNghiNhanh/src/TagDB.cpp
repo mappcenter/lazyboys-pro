@@ -27,6 +27,7 @@ string TagDB::convertTagToJson(Tag& tag) {
     value["viewCounts"] = static_cast<int> (tag.viewCounts);
     value["dateAdd"] = tag.dateAdd;
     value["dateUpdate"] = tag.dateUpdate;
+    //Json::StyledWriter writer;
     FastWriter writer;
     string jsonText = writer.write(value);
     //poco_information_f1(*logger, "convertTagToJson: Convert from Tag %s to json successful", tag.tagID);
@@ -65,9 +66,10 @@ void TagDB::startTagDB() {
     double sysTime1 = clock();
     DBUtils::openHashDB(hashDB, pathHashDB);
     DBUtils::openGrassDB(grassDB);
-    cout << "Copying TagDB" << endl;
+    cout << "Copying TagDB..." << endl;
     DBUtils::copyDBFromHashDBtoGrassDB(hashDB, grassDB);
     double sysTime2 = clock();
+    DBUtils::initalizeLastID(grassDB);
     //cout << "Time to search: " << (double) (sysTime2 - sysTime1) << endl;
     poco_information_f1(*logger, "startTagDB: Start TagDB in %0.0f milliseconds.", (double) (sysTime2 - sysTime1));
     return;
@@ -152,8 +154,7 @@ bool TagDB::insertTag(string tagID, string tagName, ItemTagDB& itemTagDB) {
     newTag.tagName = tagName;
     newTag.viewCounts = 0;
     newTag.dateAdd = Utils::getTimeNow();
-    newTag.dateUpdate = "";
-
+    newTag.dateUpdate = "Today";
     return insertTag(newTag, itemTagDB);
 }
 
@@ -167,11 +168,11 @@ bool TagDB::insertTag(Tag& tag, ItemTagDB& itemTagDB) {
             return false;
         }
         grassDB.set(ckey, jsonString);
-        DBUtils::setLastID(grassDB, hashDB, tag.tagID);
+        addQueue(ADD, ckey, jsonString);
+        DBUtils::setLastID(grassDB, ckey);
+        
         vector<string> lItemID;
         itemTagDB.insertItemTag(tag.tagID, lItemID);
-        addQueue(ADD, tag.tagID, jsonString);
-        addQueue(ADD, "lastID", tag.tagID);
         return true;
     } catch (char *str) {
         //cout << str << endl;
@@ -187,7 +188,7 @@ bool TagDB::insertTag(Tag& tag, ItemTagDB& itemTagDB) {
  */
 bool TagDB::insertTag(string tagName, ItemTagDB& itemTagDB) {
     int temp = Utils::convertStringToInt(DBUtils::getLastID(grassDB));
-    string lastID = Utils::convertIntToString(temp + 1);
+    string lastID = Utils::convertIntToString(temp+1);
     return insertTag(lastID, tagName, itemTagDB);
 }
 
@@ -246,6 +247,7 @@ bool TagDB::setViewCountTag(string tagID) {
 }
 
 // Toan viet ham nay de test.
+
 bool TagDB::setViewCountTag(string tagID, int viewCounts) {
     if (grassDB.check(tagID) == -1) {
         return false;
@@ -355,7 +357,7 @@ vector<Tag> TagDB::getTopTags(int number) {
             }
         }
     }
-    if(number>n){
+    if (number > n) {
         poco_warning_f2(*logger, "getTopTags: number= %d > listTag.size()= %d", number, n);
         number = n;
     }
@@ -370,7 +372,7 @@ HashDB& TagDB::getHashDB() {
 }
 
 int64_t TagDB::getTagDBSize() {
-    return grassDB.count();
+    return grassDB.count()-1;
 }
 
 void TagDB::setSynDB(synchronizeDB* synDBPtr) {
