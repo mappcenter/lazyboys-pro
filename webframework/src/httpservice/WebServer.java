@@ -62,9 +62,14 @@ public class WebServer {
         handler.addServletWithMapping("webservlet.Client.DeleteItemControllerServlet", "/delItem");
         handler.addServletWithMapping("webservlet.Client.UserLikesItemControllerServlet", "/uLikes");
         handler.addServletWithMapping("webservlet.Client.UserDisLikesItemControllerServlet", "/uDisLikes");
-        handler.addServletWithMapping("webservlet.Client.randomItemControllerServlet","/uRandom");
+        handler.addServletWithMapping("webservlet.Client.randomItemControllerServlet", "/uRandom");
         handler.addServletWithMapping("webservlet.Client.SaveItemControllerServlet", "/saveItem");
         handler.addServletWithMapping("webservlet.Client.CachingClientItemsControllerServlet", "/uItemsCaching");
+
+
+        //handler.addServletWithMapping("servlet.randomItemServlet","/random");
+        //admin services
+
 
         //Admin
         
@@ -83,15 +88,16 @@ public class WebServer {
         handler.addServletWithMapping("webservlet.Admin.deleteTagServlet", "/deleteTag");
         handler.addServletWithMapping("webservlet.Admin.addTagServlet", "/addTag");
         handler.addServletWithMapping("webservlet.Admin.addUserServlet", "/addUser");
+        handler.addServletWithMapping("webservlet.Admin.changeUserRoleServlet", "/changeUserRole");
 
         server.setHandler(handler);
 
         server.setStopAtShutdown(true);
         server.setSendServerVersion(true);
-        MiddlewareHandler h=new MiddlewareHandler();
+        MiddlewareHandler h = new MiddlewareHandler();
         h.startLocalCache();
-        Timer timer=new Timer(); 
-        timer.schedule(new MyTask(), (10*60*1000), (10*60*1000));        
+        Timer timer = new Timer();
+        timer.schedule(new MyTask(), (10 * 60 * 1000), (10 * 60 * 1000));
         server.start();
         server.join();
     }
