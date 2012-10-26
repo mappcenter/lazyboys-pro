@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.vng.jcore.common.Config;
 import com.vng.jcore.profiler.ProfilerLog;
 import frontend.Item;
+import frontend.MiddlewareFrontend;
 import frontend.MiddlewareHandler;
 import frontend.MyAppInfo;
 import hapax.Template;
@@ -71,35 +72,23 @@ public class IndexControllerServlet extends HttpServlet {
             System.out.print(tmp);
             this.out(tmp, resp);
         }
-
-
     }
-
     @Override
     protected synchronized void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html; charset=UTF-8");
-        Item item = null;
-        try {
-            item = MiddlewareHandler.myLocalCache.getFastRandom();
-        } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(IndexControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-        //if (req.getParameter("tagID") == null) {
-           // System.out.println("Param Null");
-            //try {
-                //item = handler.getRandomItem();
-          //  } catch (TException ex) {
-            //    java.util.logging.Logger.getLogger(randomItemServlet.class.getName()).log(Level.SEVERE, null, ex);
-           // }
-//        } else {
-//            String tagID = req.getParameter("tagID").toString();
-//            System.out.println(tagID);
-//            try {
-//                item = handler.getRandomItemhaveTag(tagID);
-//            } catch (TException ex) {
-//                java.util.logging.Logger.getLogger(randomItemServlet.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
+        Item item = null;                      
+        if (req.getParameter("tagID") == null) {
+            item=MiddlewareHandler.myLocalCache.getFastRandom();
+        } else {
+            String tagID = req.getParameter("tagID").toString();
+            try {
+                item = MiddlewareHandler.myLocalCache.getRandomItemHaveTag(tagID);
+            } catch (Exception ex) {
+                java.util.logging.Logger.getLogger(randomItemControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
+                return;
+            }
+        }
+        //long t2 = System.currentTimeMillis();
         Gson gson = new Gson();
         String strItem = gson.toJson(item);
         resp.getWriter().println(strItem);
@@ -108,27 +97,15 @@ public class IndexControllerServlet extends HttpServlet {
     private String render(HttpServletRequest req, HttpServletResponse res) throws Exception {
 
         List<Item> listItem = this.getTopItems(req);        
-        String productName = listItem.get(1).itemID;
         TemplateDataDictionary dic = TemplateDictionary.create();
 
        //dic.setVariable("title", "This is title of layout - config=" + config_host + " - product=" + productName);
 
-        int k = listItem.size();
         for (int i = 0; i < listItem.size(); i++) {
             TemplateDataDictionary listsection = dic.addSection("list_section");
             listsection.setVariable("itemID", listItem.get(i).itemID);
             listsection.setVariable("itemContent", listItem.get(i).content);
         }
-
-//        Item item = null;
-//
-//        try {
-//            item = handler.getRandomItem();
-//        } catch (TException ex) {
-//            java.util.logging.Logger.getLogger(randomItemServlet.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        Gson gson = new Gson();
-//        String strItem = gson.toJson(item);
 
         TemplateDataDictionary itemRan = dic.addSection("itemRan");
 //        itemRan.setVariable("strItem", strItem);
@@ -161,7 +138,7 @@ public class IndexControllerServlet extends HttpServlet {
             boolean temp = handler.addUser(me.get("id").toString(), "default", 0);// normal user:0, admin:1, blockuser:-1
         }
         
-        MiddlewareHandler.myLocalCache.CacheUserItemIDLike(me.get("id").toString());
+        //MiddlewareHandler.myLocalCache.CacheUserItemIDLike(me.get("id").toString());
         
         itemRan.setVariable("userID", me.get("id").toString());
         itemRan.setVariable("userName", me.get("displayname").toString());
@@ -172,18 +149,7 @@ public class IndexControllerServlet extends HttpServlet {
         return content;
 
 
-    }
-
-    public Item getRandomItem() {
-        Item item = null;
-        try {
-            item = handler.getRandomItem();
-        } catch (TException ex) {
-            java.util.logging.Logger.getLogger(randomItemServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return item;
-    }
-
+    }    
     private List<Item> getTopItems(HttpServletRequest req) throws TException {
 
         ProfilerLog profiler = (ProfilerLog) req.getAttribute("profiler");
@@ -192,7 +158,7 @@ public class IndexControllerServlet extends HttpServlet {
         }
         handler = new MiddlewareHandler();
 
-        List<Item> listItem = handler.getTopItems(40);
+        List<Item> listItem =MiddlewareHandler.myLocalCache.getTopItems();
         if (profiler != null) {
             profiler.doEndLog("fresherthriftservice");
         }

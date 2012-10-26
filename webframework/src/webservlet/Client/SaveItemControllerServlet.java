@@ -30,31 +30,7 @@ public class SaveItemControllerServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(SaveItemControllerServlet.class);
     public static MiddlewareHandler handler = new MiddlewareHandler();
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        resp.setContentType("text/html; charset=utf-8");
-        boolean dbg = ("on".equals(req.getParameter("jdbg")));
-        ProfilerLog profiler = new ProfilerLog(dbg);
-        req.setAttribute("profiler", profiler);
-        profiler.doStartLog("wholereq");
-
-        try {
-            String content = this.render(req);
-
-            this.out(content, resp);
-        } catch (Exception ex) {
-
-            log.error(ex.getMessage());
-            this.out("Error exception: " + ex.getMessage(), resp);
-        }
-
-        profiler.doEndLog("wholereq");
-        if (dbg) {
-            String tmp = profiler.dumpLogHtml();
-            this.out(tmp, resp);
-        }
-        
-        
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {        
     }
 
     @Override
@@ -70,106 +46,16 @@ public class SaveItemControllerServlet extends HttpServlet {
             userID=req.getParameter("userID");
         }
         try {            
-            if(!handler.insertFavouriteItem(userID, itemID))
+            if(!MiddlewareHandler.myLocalCache.setUserItemsFavorite(userID, itemID))
             {
                 result="Luu Khong Thanh Cong";
-            }
-            
-            Item item=handler.getItemFromItemID(itemID);
-//            if(item!=null){
-//                UserInfo usr=new UserInfo();
-//                try {
-//                    usr.setUserFavoriteItems(userID, item); //set User Items into memcache
-//                } catch (InterruptedException ex) {
-//                    java.util.logging.Logger.getLogger(SaveItemControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
-//                } catch (ExecutionException ex) {
-//                    java.util.logging.Logger.getLogger(SaveItemControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//            }
+            }                                  
         } catch (TException ex) {
             java.util.logging.Logger.getLogger(SaveItemControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
+            resp.getWriter().println(result);
         }
         resp.getWriter().println(result);
     }
 
-    private String render(HttpServletRequest req) throws Exception {
-        
-        List<Item> listItem = this.testCallThriftService(req);
-        String config_host = this.testGetConfig(req);
-        String productName = listItem.get(1).itemID;
-
-
-        TemplateDataDictionary dic = TemplateDictionary.create();
-
-        dic.setVariable("title", "This is title of layout - config=" + config_host + " - product=" + productName);
-        
-
-        for (int i = 0; i < listItem.size(); i++) {
-            TemplateDataDictionary listsection = dic.addSection("list_section");
-            listsection.setVariable("itemContent", listItem.get(i).content);
-        }
-        
-         Item item = null;
-        
-        try {
-            item = handler.getRandomItem();
-        } catch (TException ex) {
-            java.util.logging.Logger.getLogger(randomItemServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        Gson gson=new Gson();
-        String strItem=gson.toJson(item);
-        
-        TemplateDataDictionary itemRan= dic.addSection("itemRan");
-        itemRan.setVariable("strItem", strItem);        
-        Template template = this.getCTemplate();
-        String content = template.renderToString(dic);
-        return content;
-
-
-    }
-    public Item getRandomItem(){
-        Item item = null;
-        
-        try {
-            item = handler.getRandomItem();
-        } catch (TException ex) {
-            java.util.logging.Logger.getLogger(randomItemServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return item;
-    }
-    private String testGetConfig(HttpServletRequest req) {
-        String config = Config.getParam("sample", "host");
-        return config;
-    }
-
-    private List<Item> testCallThriftService(HttpServletRequest req) throws TException {
-
-        ProfilerLog profiler = (ProfilerLog) req.getAttribute("profiler");
-        if (profiler != null) {
-            profiler.doStartLog("fresherthriftservice");
-        }
-        MiddlewareHandler handler = new MiddlewareHandler();
-
-        List<Item> listItem = handler.getAllItems(100);
-
-        if (profiler != null) {
-            profiler.doEndLog("fresherthriftservice");
-        }
-
-        return listItem;
-    }
-
-    private Template getCTemplate() throws Exception {
-        TemplateLoader templateLoader = TemplateResourceLoader.create("tpl/");
-        Template template = templateLoader.getTemplate("sample/index/index_1.xtm");
-        return template;
-    }
-
-    private void out(String content, HttpServletResponse resp) throws IOException {
-
-        resp.addHeader("Content-Type", "text/html");
-        PrintWriter out = resp.getWriter();
-        out.println(content);
-
-    }
+    
 }
