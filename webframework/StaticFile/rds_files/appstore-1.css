@@ -1,0 +1,249 @@
+.appsprt,.app_icons a, .app_icons16x16 a,.appslide_prev,.appslide_next,.app_content h3 .arrowbullet{background-image:url(../images/app_support_btns_1.04.gif);}
+
+/* @@@@[ APP-STORE STURCTURE ]@@@@ */
+.appstore{display:block;padding:15px;background:url(../images/appstore_leftcol_border.gif) repeat-y 168px 0;}
+	.col-left, .col-center, .col-right{float:left;}
+	.col-left{width:168px;line-height:16px;margin-left:-15px}
+		.menu-A a{padding:4px 10px;display:block;color:#333;border-bottom:1px solid #fff;border-top:1px solid #fff;}
+    .menu-A a.current,.menu-A a:hover{background:url(../images/bghovermenu.gif) repeat-x 0 bottom #FFFFFF;text-decoration:none;border-bottom:1px solid #C8D4E5;border-top:1px solid #C8D4E5;}
+    .menu-A a.current{font-weight:bold;}
+    .app-list{margin:0 10px 3px 10px;}
+    .app-list a{border-top:1px solid #eaeff4;padding:4px 0 4px 24px;display:block;color:#666;}
+	.app-list li:first-child a { border-bottom:none;}
+    .app-list a .app-active.sup{background:none;width:5px;height:10px;display:block;float:left;margin-top:4px;margin-left:-15px;}
+    .app-list a:hover .app-active.sup,.app-list a.current .app-active.sup{background:url(../images/ico-sprite_1.01.gif) no-repeat 0 -279px;}
+
+    /* Nhat ky su dung */
+    .app_recent{background-color:#f7f9fb;padding:10px;margin-top:15px;border-top:1px solid #e7edf3;border-bottom:1px solid #e7edf3;}
+    .app_recent .ptitle{font-size:10px;font-weight:bold;padding:0 0 5px;color:#7a8aa1;}
+    .app_recent li a{padding:4px 0;display:block;color:#666;border-top:1px solid #eaeff4;}
+    .app_recent li .icofeed{margin-right:8px;}
+
+    /* Appmenu icons */
+    .appico{ background:url(../images/ico_appstore_1.02.gif) no-repeat; width:16px; height:16px; float:left; display:block;padding-right: 8px; font-size:0; line-height: 0;}
+		.app-home{ background-position:0 0;}
+		.app-me{ background-position:0 -18px;}
+		.app-friend{ background-position:0 -36px;}
+		.app-game{ background-position:0 -54px;}
+		.app-app{ background-position:0 -72px;}
+		.app-hot{ background-position:0 -90px;}
+		.app-history{ background-position:0 -108px;}
+    .app-mobile {background-position: 0 -256px;}
+		.ico-addok{ background-position:0 -125px;}
+		.ico-add{ background-position:0 -141px;}
+		.ico-help{ background-position:0 -156px;}
+		.ico-biz{ background-position:0 -172px;}
+    .ico_listview {background-position: 0 -208px;}
+    .ico_gridview {background-position: 0 -224px;}
+    .ico-move {background-position: 0 -240px;}
+	.ico-arrowpathstore{background-position: 0 -279px; width:5px; height:10px;margin:4px 8px 0 10px; display:inline-block;}
+
+	.col-center{ padding:0 15px; width:510px;}
+    .tit-app{font-size:14px;font-weight:bold;color:#555;border-bottom:1px solid #d9e2eb;padding-bottom:6px;margin-bottom:10px;overflow:hidden;height:18px;}
+    .tit-app .appico{margin-top:2px;}
+    .bgrp{width:340px; background-position:-35px -339px;}
+	.col-right {width:250px;}
+		.tab {background: #EDF7FD;border-bottom: 1px solid #A6C2D5;height: 19px;overflow: hidden;padding: 3px 8px 2px;}
+		.tab h3 {color: #333333;float: left !important;font-size: 12px;font-weight: bold;text-align: left;}
+		.tab a {float: right;}
+		.rowlist { height:1%; display:block;border-bottom:1px solid #d9e2eb; padding:5px 0;}
+		a.avatar{ padding-right:8px; float:left; display:inline-block;}
+		.rowlist p{ font-weight:bold; font-size:12px;line-height: 13px; margin-bottom:5px;}
+		ul.app-f li {padding: 2px 0;}
+		ul.app-f li a {padding: 0 5px;}
+		.box-top{ margin-top:8px; padding:8px; border:1px solid #d1d9e4;}
+		.box-top p{ font-size:12px; font-weight:bold; padding-bottom:8px;line-height: 13px; height:1%;}
+		.box-top ul.app-f li { padding:4px 0;}
+		.grey1{ color:#b8b8b8;}
+		.num-top{ font-weight:bold; text-align:center;line-height: 12px;float: right; padding:1px;}
+		.top3{ background:#62b4e3; border:1px solid #3e8cba; color:#fff;}
+		.top7{ color:#343434; background:#f1f1f1; border:1px solid #dfdfdf;}
+
+/* @@@@[ APP-LIST VIEW ]@@@@ */
+.app_search {padding: 10px 0 16px; overflow: auto; width:100%; margin-top: -11px; position: relative; background-color: #fff;}
+.app_search input.app_search_keyword{background-position:-35px -339px;font-size:12px !important;color:#333;border:none 0 !important;height:19px;width:307px;padding:2px 5px 4px 25px;margin-right:5px;line-height:18px !Important;}
+.app_search .btn_L1 em {font-size:12px; padding:0 12px 0 5px}
+.app_content h3{font-weight:bold;font-size:12px;border-bottom:1px solid #d9e2eb;padding:0 0 5px;margin-bottom:11px;height:20px;}
+.app_content h3 .appheader_text{float:left;}
+.app_content h3 .arrowbullet{float:left;width:6px;height:7px;background-position:-64px -32px;margin:7px 5px 0 7px;float:left;}
+.app_content h3 p{font-size:11px;font-weight:normal;}
+.app_content h3 p .verticaldiv{float:left;margin:0 3px;color:#ccc;}
+.app_content h3 p a{margin:0 4px 0;float:left;/*max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;*/}
+.app_content h3 p a.selected{font-weight:bold;color:#333;text-decoration:none;}
+.app_grid {width: 510px; overflow: hidden;}
+.app_grid ul {width: 560px;}
+.app_grid .thumb {padding-bottom: 5px;}
+.app_grid li {float:left; padding-bottom: 20px; margin-right: 23px; width:110px; overflow: hidden;}
+.app_grid li.clr{clear:both;display:block;width:100%;float:none;padding:0;margin:0;line-height:0;font-size:0;}
+.apptop_paging{float:right;}
+.apptop_paging li{display:inline;float:left;}
+.apptop_paging li a{font-weight:bold;padding:0 3px;}
+.apptop_paging li a.selected{color:#666;}
+.apptop_paging li .appslide_prev,.apptop_paging li .appslide_next{float:left;width:8px;height:12px;margin:3px 4px 0;padding:0;}
+.apptop_paging li .appslide_prev{background-position:-32px -32px;}
+.apptop_paging li .appslide_prev.disable{background-position:0 -32px;cursor:default;}
+.apptop_paging li .appslide_next{background-position:-45px -32px;}
+.apptop_paging li .appslide_next.disable{background-position:-13px -32px;cursor:default;}
+
+/* Appstore slideshow view */
+.gtypical{padding-bottom:20px;}
+.gtypical_hide{padding-bottom:20px;display: none;}
+.gamephoto{float:left;width:225px;height:150px;overflow:hidden;margin:0 10px 0 0;}
+.gamephoto img{max-width:225px;}
+.game_shortdesc{margin-left:235px;line-height:18px;}
+.game_shortdesc p{margin-bottom:4px;}
+.gname{font-size:17px;font-weight:bold;display:block;overflow:hidden;white-space:nowrap;line-height:normal}
+.gname a:hover{color:#333;text-decoration:none;}
+.gtype{color:#888;}
+.gtextdesc{font-size:12px;height:75px;overflow:hidden;}
+/* */
+.app_name {display: block; font-weight: bold; font-size:12px;}
+.app_list, .appfr_list {width: 510px; overflow: auto; margin-top: -10px;}
+.app_list li, .appfr_list li {border-bottom:1px solid #eaeff4; overflow: hidden; padding:5px 0 10px 0; width: 510px;}
+.app_list li .thumb, .appfr_list li .thumb {margin-right:10px; overflow: hidden; display:block}
+.app_list li .thumb{width:64px;height:64px;margin-top:5px;}
+.appfr_list li .thumb{width:80px;height:80px;margin-top:5px;}
+.app_list .btn_L3{margin-top:5px;}
+.app_row_text{width:345px;position:relative;}
+.app_rowlist_desc{color:#666;clear:both;display:block;}
+.appfr_userdetail {width: 418px;}
+  .appfr_userdetail p { margin-bottom: 4px;}
+  .appfr_username {font-weight: bold; font-size:12px;}
+.view_type {width: 50px; margin-right: -9px;}
+.tit-app .app-active {float:none; margin: 0 5px !important; width: 5px; height:10px; display:inline-block; vertical-align: 2\px; _vertical-align:-4px; line-height: 0;}
+.app_highlight {background-color: #f6f9fc;}
+.app_move_row{position:absolute;top:20px;left:200px;font-size:12px;}
+.app_row_close{text-indent:-9999em;display:inline;background:url(../images/boxy-close.gif) no-repeat top;width:14px;height:14px;display:block;margin:5px 5px 0;}
+
+/* App-user counter */
+.app_useravt{border-top:1px solid #eee;margin-top:15px;height:48px;display:inline-block}
+.app_useravt .appuser_counter{margin-top:-12px;background-color:#fff;padding:3px 3px;display:block;color:#555;float:left;line-height:normal;margin-bottom:5px;}
+.app_useravt .appuser_avtthumb{display:block;clear:both;}
+.app_useravt .appuser_avtthumb img{width:30px;height:30px;float:left;margin-right:4px;}
+
+/*Edit struction vo app*/
+.app_ctntmain{height:1%; overflow:hidden;}
+.app_iframe{width:836px; padding:0 10px 10px; float:left;}
+
+/* 3 buttons: Bookmark, FAQs, Fan page */
+.app_icons{height:20px;padding-top:5px;}
+.app_icons a, .app_icons16x16 a{float:left;height:20px;text-indent:-99999em;margin-right:5px;outline:none;}
+.app_icons a.app_bookmark{background-position:0 0;width:70px;}
+.app_icons a.app_bookmarked{background-position:-241px 0;width:89px;}
+.app_icons a.app_faqs{background-position:-78px 0;width:72px;}
+.app_icons a.app_fanpage{background-position:-158px 0;width:76px;}
+.app_icons a.btninvite{background-position:-336px 0;width:86px; margin-right:0;}
+.app_icons a.btnappbookmark{background-position:-413px 0;width:116px;}
+.app_icons a.app_support{background-position:0 -30px;width:70px;}
+.app_icons a.app_other{background-position:-124px -30px; width:20px;}
+.app_icons a.app_facebook{background-position:-101px -30px; width:20px;}
+.app_icons a.app_zingme{background-position:-78px -30px; width:20px; margin-left:5px;}
+
+.app_ctnparstore{position:relative;}
+.app_icons a.sharestore{width:22px;height:17px;}
+.app_icons a.sharestore.zingme{background-position:-148px -28px;}
+.app_icons a.sharestore.facebook{background-position:-176px -28px;}
+.app_icons a.sharestore.linkhay{background-position:-205px -28px;}
+.app_icons a.sharestore.google{background-position:-233px -28px;}
+.app_icons a.sharestore.twitter{background-position:-261px -28px;}
+.app_icons a.sharestore.digg{background-position:-290px -28px;}
+.app_icons a.sharestore.linkedin{background-position:-319px -28px;}
+
+.app_icons16x16{height:16px; padding-top:5px;}
+.app_icons16x16 a{height:16px; width:16px;}
+.app_icons16x16 a.app_bookmark{background-position:-2px -2px;}
+.app_icons16x16 a.app_bookmarked{background-position:-244px -2px;}
+.app_icons16x16 a.app_faqs{background-position:-80px -2px;}
+.app_icons16x16 a.app_fanpage{background-position:-160px -2px;}
+
+/* @@@@[ MOBILE VERSION ]@@@@ */
+.mobfeat{background:url("../images/Temp_data/bgd_m_ntvv1.jpg") no-repeat scroll 0 0 transparent;height:168px;margin-bottom:25px;position:relative;width:510px;}
+.mobfeattxt{color:#3E617C;font-size:12px;left:190px;line-height:16px;position:absolute;top:17px;width:320px;}
+.mobfeattxt p{line-height:18px;margin:0 0 10px;}
+.mhead1{font-size:18px;font-weight:bold;line-height:25px !important;}
+.m_hot_notice{padding:0 0 25px;}
+.hot_icon{background-position:-282px -564px;width:39px;height:39px;display:block;float:left;margin:0 10px 0 0;}
+.lk_fan_zing{color:#E13272;font-weight:bold;}
+.mobwebguide{padding:0 0 10px;}
+.mobwebguide h3{border-bottom:1px solid #F37800;color:#F37800;font-weight:bold;margin-bottom:10px;padding-bottom:3px;text-transform:uppercase;}
+.stepnum{background-position:0 -272px;color:#FFFFFF;float:left;font-size:12px;font-weight:bold;height:16px;text-align:center;width:16px;line-height:14px;margin-top:2px;}
+.mobstep{clear:both;padding-bottom:10px;}
+.steptxt{padding-left:25px;}
+.download_m_app{display:block;background:url(../images/btn_downloadv1.gif);width:250px;height:52px;text-indent:-9999em;}
+
+/* Added by Thaotlh 18.08.2011 */
+.using_apps{!position:relative;!z-index:100;}
+.apps_recent_use{background-color:#fff;border:1px solid #bfbfbf;color:#486FA6;font-weight:bold;position:absolute;z-index:999;padding:0 5px;width:140px;margin:20px 0 0 130px;!left:0;!top:0;}
+.apps_recent_use li{margin:3px 0;overflow:hidden;}
+.apps_recent_use li .icofeed{margin-left:-20px;}
+.apps_recent_use li a{color:#486FA6;display:block;font-size:11px;font-weight:bold;margin:0;padding:2px 0 2px 20px;}
+.apps_recent_use li a:hover{text-decoration:underline;}
+.reset{height:20px !important;margin-left:8px;padding:0 8px !important;}
+.infogame{width:190px;overflow:hidden;}
+.infogame p{height:15px;overflow:hidden;}
+
+/* App - appright-newgame - Namnt*/
+.appcenter-friend {margin-top:10px;}
+ul.app_game {margin:0}
+ul.app_game li {margin: 10px 0 0 0;position:relative}
+ul.app_game li img {position:absolute;z-index:900;left:0px;_left:-55px;_top:-3px;*top:-3px;}
+ul.app_game li a {padding: 0 1px;font-weight:bold;}
+ul.app_game h1 {padding-left:55px;padding-bottom:22px;}
+ul.app_game h3 {padding-left:55px;}
+ul.app_game li span.newgame img {position:absolute;z-index:100;}
+.icohot {height:48px;width:48px;margin-right: 4px;float: left;font-size:0}
+.ficon_sieuthi,.ficon_nhahang,.ficon_cuocchien,.ficon_gamevui {background:url(../images/hot_game.gif) no-repeat;}
+.ficon_nhahang{background-position: -48px 0px;}
+.ficon_cuocchien{background-position: -96px 0px;}
+.ficon_gamevui{background-position: -144px 0px;}
+
+/* App - Diary Box - Namnt*/
+.diary_box {-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;background:#f3fbff;border:1px solid #add3ed;padding:7px 10px 5px 10px;margin-top:15px}
+.diary_box .headtxt {font-size:11px;font-weight:bold;}
+.diary_box ul {margin-top:11px}
+.diary_box ul li {margin-top:5px;border-bottom:1px dotted #dcdcdc;padding-bottom:5px}
+.diary_box ul li.end{border:0 none}
+
+/* App Detail page - Thaotlh 22.05.2012 */
+.appdetail_top,.app_screenshot,.appdetail_desc{width:100%;overflow:auto;}
+.appdetail_top{padding-bottom:11px;}
+.appdetail_top .app_thumbnail img{float:left;margin-right:15px;width:64px;height:64px;}
+.appdetail_top .app_text p{padding:0 0 4px;height:19px;}
+.appdetail_top .rating_star strong{float:left; margin-right:5px;}
+.app_screenshot{background-color:#eaeff3;border-width:1px 0;border-style:solid;border-color:#dae1e9;margin-bottom:15px;padding:20px 0;}
+.app_screenshot li{width:200px;height:150px;display:inline;float:left;padding:0 26px;}
+.app_screenshot li.firstcol{border-right:1px solid #dce0ec;}
+.app_screenshot li.secondcol{border-left:1px solid #fff;}
+.app_screenshot li img{vertical-align:bottom;}
+.appdetail_desc{font-size:12px;padding:13px 0 15px;border-top:1px dashed #dae1e9;}
+.appdetail_desc p{padding:0 0 10px;}
+.app_playnowbtn{display:block;width:97px;height:26px;margin:0 auto;text-indent:-9999em;background: url(../images/playnow_btn.jpg) ;}
+.appdetail_top .app_playnowbtn{float:right;margin:37px 0 0;}
+
+/* Appstore login Yahoo @ Zme */
+.app_logingate{margin-bottom:8px;}
+.app_logingate p{padding-bottom:8px;text-align:center;font-weight:bold;color:#888;font-size:12px;}
+.app_logingate ul{height:33px;}
+.app_logingate li{float:left;width:124px;}
+.app_logingate li.div_line{width:1px;background-color:#ccc;margin:7px 0;height:19px}
+.app_logingate li a{display:block;width:107px;height:33px;text-indent:-9999em;}
+.app_logingate li.zmebtn a{background: url(../images/app_zmelogin.jpg);}
+.app_logingate li.yahoobtn a{background: url(../images/app_yahoologin.jpg);float:right}
+.appstore_warning_msg {
+    background: url("../images/bg_warning.gif") repeat scroll 0 0 transparent;
+    display: block;
+    font-size: 12px;
+    height: 150px;
+    line-height: 20px;
+    margin: 0 auto;
+    padding: 245px 0 0 15px;
+    text-align: center;
+    width: 392px;
+}
+
+.classDispActive{
+    display: block;
+}
+.classHideActive{
+    display: none;
+}

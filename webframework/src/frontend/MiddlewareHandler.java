@@ -19,47 +19,30 @@ import org.apache.thrift.transport.TTransportException;
  */
 public class MiddlewareHandler implements MiddlewareFrontend.Iface {
 
-    //static TTransport transport;
-    //static MiddlewareFrontend.Client client;
-    //static TFramedTransport framedTransport;
-    //static TProtocol protocol;
-    //static String host;
-    //static int port;
+    ConnectionPool connectionPool = ConnectionPool.getInstance();
     static Map<String, Object> LocalCache = new HashMap<String, Object>();
-    public static MyLocalCache myLocalCache=new MyLocalCache();
+    public static MyLocalCache myLocalCache = new MyLocalCache();
+
     public synchronized static void init() throws IOException, TTransportException, TException {
-
-       // host = getConfig.getInstance().getHost();
-        //port = getConfig.getInstance().getPort();
-
-        //transport = new TSocket(host, port);
-        //framedTransport = new TFramedTransport(transport);
-        //protocol = new TBinaryProtocol(framedTransport);
-        //client = new MiddlewareFrontend.Client(protocol);
-        //transport.open();   
-        
         //startLocalCache();
-        
     }
-    
-    public void startLocalCache() throws TException, InterruptedException{
+
+    public void startLocalCache() throws TException, InterruptedException {
         Connection connect = connectionPool.getConnection();
-        List<Tag> topTags=connect.getClient().getTopTags(40);
+        List<Tag> topTags = connect.getClient().getTopTags(40);
         LocalCache.put("topTags", topTags);
-        
-        List<Tag> listTags=connect.getClient().getAllTag();
-        LocalCache.put("listAllTags", listTags);        
+
+        List<Tag> listTags = connect.getClient().getAllTag();
+        LocalCache.put("listAllTags", listTags);
         myLocalCache.startMyLocalCache();
     }
-    public Object getTopTags(){
+
+    public Object getTopTags() {
         return LocalCache.get("topTags");
     }
 
-    
-    ConnectionPool connectionPool = ConnectionPool.getInstance();
-    
     @Override
-    public  List<Tag> getAllTag() throws TException {
+    public List<Tag> getAllTag() throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             List<Tag> lisTag;
@@ -71,9 +54,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return null;
     }
-    
+
     @Override
-    public  boolean insertTag(String tagName) throws TException {
+    public boolean insertTag(String tagName) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             boolean result = connect.getClient().insertTag(tagName);
@@ -84,9 +67,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return false;
     }
-    
+
     @Override
-    public  boolean deleteTag(String tagID) throws TException {
+    public boolean deleteTag(String tagID) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             boolean result = connect.getClient().deleteTag(tagID);
@@ -97,9 +80,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return false;
     }
-    
+
     @Override
-    public  boolean deleteAllTag(List<String> tagIDs) throws TException {
+    public boolean deleteAllTag(List<String> tagIDs) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             boolean result = connect.getClient().deleteAllTag(tagIDs);
@@ -110,9 +93,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return false;
     }
-    
+
     @Override
-    public  boolean editTag(String tagID, String tagName) throws TException {
+    public boolean editTag(String tagID, String tagName) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             boolean result = connect.getClient().editTag(tagID, tagName);
@@ -123,9 +106,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return false;
     }
-    
+
     @Override
-    public  Tag getTag(String tagID) throws TException {
+    public Tag getTag(String tagID) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             Tag result = connect.getClient().getTag(tagID);
@@ -136,9 +119,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return null;
     }
-    
+
     @Override
-    public  void setViewCountTag(String tagID) throws TException {
+    public void setViewCountTag(String tagID) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             connect.getClient().setViewCountTag(tagID);
@@ -147,9 +130,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     @Override
-    public  List<Tag> getTopTags(long number) throws TException {
+    public List<Tag> getTopTags(long number) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             List<Tag> result = connect.getClient().getTopTags(number);
@@ -160,9 +143,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return null;
     }
-    
+
     @Override
-    public  List<Item> getAllItems(long number) throws TException {
+    public List<Item> getAllItems(long number) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             List<Item> result = connect.getClient().getAllItems(number);
@@ -173,9 +156,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return null;
     }
-    
+
     @Override
-    public  List<Item> getAllItemshaveTag(String tagID, int numberItems) throws TException {
+    public List<Item> getAllItemshaveTag(String tagID, int numberItems) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             List<Item> result = connect.getClient().getAllItemshaveTag(tagID, numberItems);
@@ -186,9 +169,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return null;
     }
-    
+
     @Override
-    public  List<Item> pagingItemsTag(String tagID, int pageNumber, int numberItems) throws TException {
+    public List<Item> pagingItemsTag(String tagID, int pageNumber, int numberItems) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             List<Item> result = connect.getClient().pagingItemsTag(tagID, pageNumber, numberItems);
@@ -199,8 +182,8 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return null;
     }
-    
-    public  List<String> getAllItemsIDhaveTag(String tagID) throws TException {
+
+    public List<String> getAllItemsIDhaveTag(String tagID) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             List<String> result = connect.getClient().getAllItemsIDhaveTag(tagID, 12);
@@ -211,9 +194,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return null;
     }
-    
+
     @Override
-    public  Item getRandomItem() throws TException {
+    public Item getRandomItem() throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             Item result = connect.getClient().getRandomItem();
@@ -224,9 +207,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return null;
     }
-    
+
     @Override
-    public  Item getRandomItemhaveTag(String tagID) throws TException {
+    public Item getRandomItemhaveTag(String tagID) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             Item result = connect.getClient().getRandomItemhaveTag(tagID);
@@ -237,9 +220,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return null;
     }
-    
+
     @Override
-    public  void increaseViewCountItem(String itemID) throws TException {
+    public void increaseViewCountItem(String itemID) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             connect.getClient().increaseViewCountItem(itemID);
@@ -248,9 +231,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     @Override
-    public  boolean deleteItem(String itemID) throws TException {
+    public boolean deleteItem(String itemID) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             boolean result = connect.getClient().deleteItem(itemID);
@@ -261,9 +244,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return false;
     }
-    
+
     @Override
-    public  boolean deleteAllItem(List<String> itemIDs) throws TException {
+    public boolean deleteAllItem(List<String> itemIDs) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             boolean result = connect.getClient().deleteAllItem(itemIDs);
@@ -274,9 +257,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return false;
     }
-    
+
     @Override
-    public  boolean editItem(String itemID, String newItemValue, List<String> newTagIDs) throws TException {
+    public boolean editItem(String itemID, String newItemValue, List<String> newTagIDs) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             boolean result = connect.getClient().editItem(itemID, newItemValue, newTagIDs);
@@ -287,9 +270,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return false;
     }
-    
+
     @Override
-    public  List<Item> getItemKeyword(String keyWord) throws TException {
+    public List<Item> getItemKeyword(String keyWord) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             List<Item> result = connect.getClient().getItemKeyword(keyWord);
@@ -300,9 +283,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return null;
     }
-    
+
     @Override
-    public  List<Item> getItemKeywordTag(String keyWord, String tagID) throws TException {
+    public List<Item> getItemKeywordTag(String keyWord, String tagID) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             List<Item> result = connect.getClient().getItemKeywordTag(keyWord, tagID);
@@ -313,9 +296,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return null;
     }
-    
+
     @Override
-    public  List<Item> getTopItems(long number) throws TException {
+    public List<Item> getTopItems(long number) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             List<Item> result = connect.getClient().getTopItems(number);
@@ -326,9 +309,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return null;
     }
-    
+
     @Override
-    public  List<Item> getTopItemsofTag(long number, String tagID) throws TException {
+    public List<Item> getTopItemsofTag(long number, String tagID) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             List<Item> result = connect.getClient().getTopItemsofTag(number, tagID);
@@ -339,9 +322,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return null;
     }
-    
+
     @Override
-    public  boolean blockUser(String userName) throws TException {
+    public boolean blockUser(String userName) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             boolean result = connect.getClient().blockUser(userName);
@@ -352,9 +335,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return false;
     }
-    
+
     @Override
-    public  boolean unblockUser(String userName) throws TException {
+    public boolean unblockUser(String userName) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             boolean result = connect.getClient().unblockUser(userName);
@@ -365,9 +348,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return false;
     }
-    
+
     @Override
-    public  boolean deleteUser(String usrName) throws TException {
+    public boolean deleteUser(String usrName) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             boolean result = connect.getClient().deleteUser(usrName);
@@ -378,9 +361,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return false;
     }
-    
+
     @Override
-    public  Item getItemFromItemID(String itemID) throws TException {
+    public Item getItemFromItemID(String itemID) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             Item result = connect.getClient().getItemFromItemID(itemID);
@@ -391,9 +374,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return null;
     }
-    
+
     @Override
-    public  List<Item> getItemsFromListItemID(List<String> itemIDs) throws TException {
+    public List<Item> getItemsFromListItemID(List<String> itemIDs) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             List<Item> result = connect.getClient().getItemsFromListItemID(itemIDs);
@@ -404,9 +387,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return null;
     }
-    
+
     @Override
-    public  void increaseLikeCountItem(String itemID) throws TException {
+    public void increaseLikeCountItem(String itemID) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             connect.getClient().increaseLikeCountItem(itemID);
@@ -415,9 +398,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     @Override
-    public  void increaseDislikeCountItem(String itemID) throws TException {
+    public void increaseDislikeCountItem(String itemID) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             connect.getClient().increaseDislikeCountItem(itemID);
@@ -426,9 +409,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
             Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     @Override
-    public  String insertItem(String content, List<String> tagIDs) throws TException {
+    public String insertItem(String content, List<String> tagIDs) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             String result = connect.getClient().insertItem(content, tagIDs);
@@ -439,9 +422,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return null;
     }
-    
+
     @Override
-    public  List<Item> getItemsPage(long pageNumber, long itemNumber, String tagID) throws TException {
+    public List<Item> getItemsPage(long pageNumber, long itemNumber, String tagID) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             List<Item> result = connect.getClient().getItemsPage(pageNumber, itemNumber, tagID);
@@ -452,9 +435,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return null;
     }
-    
+
     @Override
-    public  boolean addUser(String userID, String userToken, int userRole) throws TException {
+    public boolean addUser(String userID, String userToken, int userRole) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             boolean result = connect.getClient().addUser(userID, userToken, userRole);
@@ -465,9 +448,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return false;
     }
-    
+
     @Override
-    public  List<String> getAllItemsIDhaveTag(String tagID, int numberItemsID) throws TException {
+    public List<String> getAllItemsIDhaveTag(String tagID, int numberItemsID) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             List<String> result = connect.getClient().getAllItemsIDhaveTag(tagID, numberItemsID);
@@ -478,9 +461,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return null;
     }
-    
+
     @Override
-    public  boolean editUser(String userID, String userToken, int userRole) throws TException {
+    public boolean editUser(String userID, String userToken, int userRole) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             boolean result = connect.getClient().editUser(userID, userToken, userRole);
@@ -491,9 +474,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return false;
     }
-    
+
     @Override
-    public  boolean deleteAllUser() throws TException {
+    public boolean deleteAllUser() throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             boolean result = connect.getClient().deleteAllUser();
@@ -504,9 +487,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return false;
     }
-    
+
     @Override
-    public  List<Tag> getTagKeyword(String keyWord) throws TException {
+    public List<Tag> getTagKeyword(String keyWord) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             List<Tag> result = connect.getClient().getTagKeyword(keyWord);
@@ -517,9 +500,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return null;
     }
-    
+
     @Override
-    public  List<Item> getFavouriteItems(String userID, long number) throws TException {
+    public List<Item> getFavouriteItems(String userID, long number) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             List<Item> result = connect.getClient().getFavouriteItems(userID, number);
@@ -530,9 +513,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return null;
     }
-    
+
     @Override
-    public  List<Item> getFavouriteItemsofTag(String userID, long number, String tagID) throws TException {
+    public List<Item> getFavouriteItemsofTag(String userID, long number, String tagID) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             List<Item> result = connect.getClient().getFavouriteItemsofTag(userID, number, tagID);
@@ -543,9 +526,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return null;
     }
-    
+
     @Override
-    public  boolean insertFavouriteItem(String userID, String itemID) throws TException {
+    public boolean insertFavouriteItem(String userID, String itemID) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             boolean result = connect.getClient().insertFavouriteItem(userID, itemID);
@@ -556,9 +539,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return false;
     }
-    
+
     @Override
-    public  boolean deleteFavouriteItem(String userID, String itemID) throws TException {
+    public boolean deleteFavouriteItem(String userID, String itemID) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             boolean result = connect.getClient().deleteFavouriteItem(userID, itemID);
@@ -569,9 +552,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return false;
     }
-    
+
     @Override
-    public  long itemdbSize() throws TException {
+    public long itemdbSize() throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             long result = connect.getClient().itemdbSize();
@@ -582,9 +565,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return 0;
     }
-    
+
     @Override
-    public  long tagdbSize() throws TException {
+    public long tagdbSize() throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             long result = connect.getClient().tagdbSize();
@@ -595,9 +578,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return 0;
     }
-    
+
     @Override
-    public  long itemtagdbSize() throws TException {
+    public long itemtagdbSize() throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             long result = connect.getClient().itemtagdbSize();
@@ -608,9 +591,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return 0;
     }
-    
+
     @Override
-    public  long itemtagSize(String tagID) throws TException {
+    public long itemtagSize(String tagID) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             long result = connect.getClient().itemtagSize(tagID);
@@ -621,9 +604,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return 0;
     }
-    
+
     @Override
-    public  long userdbSize() throws TException {
+    public long userdbSize() throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             long result = connect.getClient().userdbSize();
@@ -634,9 +617,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return 0;
     }
-    
+
     @Override
-    public  long itemsLikeSize(String userID) throws TException {
+    public long itemsLikeSize(String userID) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             long result = connect.getClient().itemsLikeSize(userID);
@@ -647,9 +630,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return 0;
     }
-    
+
     @Override
-    public  long itemsDislikeSize(String userID) throws TException {
+    public long itemsDislikeSize(String userID) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             long result = connect.getClient().itemsDislikeSize(userID);
@@ -660,9 +643,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return 0;
     }
-    
+
     @Override
-    public  long favouriteItemsSize(String userID) throws TException {
+    public long favouriteItemsSize(String userID) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             long result = connect.getClient().favouriteItemsSize(userID);
@@ -673,9 +656,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return 0;
     }
-    
+
     @Override
-    public  List<String> getAllItemsIDLike(String userID) throws TException {
+    public List<String> getAllItemsIDLike(String userID) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             List<String> result = connect.getClient().getAllItemsIDLike(userID);
@@ -686,9 +669,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return null;
     }
-    
+
     @Override
-    public  List<Item> getAllItemsLike(String userID, int number) throws TException {
+    public List<Item> getAllItemsLike(String userID, int number) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             List<Item> result = connect.getClient().getAllItemsLike(userID, number);
@@ -699,9 +682,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return null;
     }
-    
+
     @Override
-    public  boolean insertLikedItem(String userID, String itemID) throws TException {
+    public boolean insertLikedItem(String userID, String itemID) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             boolean result = connect.getClient().insertLikedItem(userID, itemID);
@@ -712,9 +695,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return false;
     }
-    
+
     @Override
-    public  boolean deleteLikedItem(String userID, String itemID) throws TException {
+    public boolean deleteLikedItem(String userID, String itemID) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             boolean result = connect.getClient().deleteLikedItem(userID, itemID);
@@ -725,9 +708,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return false;
     }
-    
+
     @Override
-    public  List<String> getAllItemsIDDislike(String userID) throws TException {
+    public List<String> getAllItemsIDDislike(String userID) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             List<String> result = connect.getClient().getAllItemsIDDislike(userID);
@@ -738,9 +721,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return null;
     }
-    
+
     @Override
-    public  List<Item> getAllItemsDislike(String userID, int number) throws TException {
+    public List<Item> getAllItemsDislike(String userID, int number) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             List<Item> result = connect.getClient().getAllItemsDislike(userID, number);
@@ -751,9 +734,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return null;
     }
-    
+
     @Override
-    public  boolean insertDislikedItem(String userID, String itemID) throws TException {
+    public boolean insertDislikedItem(String userID, String itemID) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             boolean result = connect.getClient().insertDislikedItem(userID, itemID);
@@ -764,9 +747,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return false;
     }
-    
+
     @Override
-    public  boolean deleteDislikedItem(String userID, String itemID) throws TException {
+    public boolean deleteDislikedItem(String userID, String itemID) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             boolean result = connect.getClient().deleteDislikedItem(userID, itemID);
@@ -777,9 +760,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return false;
     }
-    
+
     @Override
-    public  boolean userExisted(String userID) throws TException {
+    public boolean userExisted(String userID) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             boolean result = connect.getClient().userExisted(userID);
@@ -790,9 +773,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return false;
     }
-    
+
     @Override
-    public  User getUser(String userID) throws TException {
+    public User getUser(String userID) throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             User result = connect.getClient().getUser(userID);
@@ -803,9 +786,9 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return null;
     }
-    
+
     @Override
-    public  List<String> getAllUser() throws TException {
+    public List<String> getAllUser() throws TException {
         try {
             Connection connect = connectionPool.getConnection();
             List<String> result = connect.getClient().getAllUser();

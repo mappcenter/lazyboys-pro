@@ -156,9 +156,8 @@ public class getContentTabServlet extends HttpServlet {
         if (req.getParameter("p") != null) {
             page = Integer.parseInt(req.getParameter("p"));
         }
-       
+        int size = (int) handler.tagdbSize();
         List<Tag> listTags = handler.getAllTag();
-        int size=listTags.size();
         TemplateDataDictionary dic = TemplateDictionary.create();
         for (int i = (page - 1) * itemPerPage; i < page * itemPerPage && i < size; i++) {
             TemplateDataDictionary listTagSection = dic.addSection("tag_section");
@@ -170,7 +169,6 @@ public class getContentTabServlet extends HttpServlet {
         
         int start = Math.max(page - 4, 1);
         int end = Math.min(page + 4, pageCount);
-        
 
         for (int i = start; i <= end; i++) {
             if (i == page) {
@@ -180,7 +178,6 @@ public class getContentTabServlet extends HttpServlet {
                 TemplateDataDictionary listPageSection = dic.addSection("listPage_section");
                 listPageSection.setVariable("page", "<a href=\"#\" onclick='tagList(" + i + ");' class=\"graybutton pagelink\" rel=\"" + i + "\">" + i + "</a>");
             }
-            
         }
         dic.setVariable("last", String.valueOf(pageCount));
         Template template = this.getTagTemplate();
@@ -189,7 +186,6 @@ public class getContentTabServlet extends HttpServlet {
     }
 
     private String renderUsers(HttpServletRequest req) throws TException, Exception {
-        //return null;
         int page = 1;
         int itemPerPage = Integer.valueOf(Config.getParam("paging", "itemPerPage"));
         if (req.getParameter("p") != null) {

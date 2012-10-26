@@ -3,12 +3,14 @@ package httpservice;
 import com.vng.jcore.common.LogUtil;
 import java.io.File;
 import org.apache.log4j.Logger;
+import test.Test;
 
 public class ServiceDaemon {
 
     private static Logger logger_ = Logger.getLogger(ServiceDaemon.class);
 
     public static void main(String[] args) throws Exception {
+        //Test test = new Test();
         LogUtil.init();
         WebServer webserver = new WebServer();
 
@@ -35,7 +37,5 @@ public class ServiceDaemon {
 
             System.exit(3);
         }
-
-
     }
 }

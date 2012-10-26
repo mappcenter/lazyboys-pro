@@ -216,8 +216,6 @@
                                     </tr>
                                     {{/list_section}}
                                 </tbody>
-                                
-                                 
 
                                 <tfoot>
                                     <tr>
