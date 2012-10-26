@@ -17,6 +17,8 @@ import hapax.TemplateLoader;
 import hapax.TemplateResourceLoader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -126,7 +128,12 @@ public class getContentTabServlet extends HttpServlet {
             listsection.setVariable("itemID", listItem.get(i).itemID);
         }
 
-        int itemTagSize = (int) handler.itemdbSize();
+        int itemTagSize;
+        if ("-1".equals(tagID)) {
+            itemTagSize = (int) handler.itemdbSize();
+        } else {
+            itemTagSize = (int) handler.itemtagSize(tagID);
+        }
         int pageCount = (int) Math.ceil((float) itemTagSize / itemPerPage);
 
         int start = Math.max(page - 4, 1);
@@ -156,17 +163,32 @@ public class getContentTabServlet extends HttpServlet {
         if (req.getParameter("p") != null) {
             page = Integer.parseInt(req.getParameter("p"));
         }
-        int size = (int) handler.tagdbSize();
+
         List<Tag> listTags = handler.getAllTag();
+        int size = listTags.size();
+
+        //Tags[] tagArray = null;
+        List<Tags> lTags = new ArrayList<Tags>();
+
+        for (int i = 0; i < size; i++) {
+            lTags.add(new Tags(listTags.get(i).tagID, listTags.get(i).tagName));
+            //tagArray[i] = new Tags(listTags.get(i).tagID, listTags.get(i).tagName);
+        }
+        //tagArray=(Tags[]) lTags.toArray();
+        Collections.sort(lTags);
+
+
+        //System.out.println(lTags);
+
         TemplateDataDictionary dic = TemplateDictionary.create();
         for (int i = (page - 1) * itemPerPage; i < page * itemPerPage && i < size; i++) {
             TemplateDataDictionary listTagSection = dic.addSection("tag_section");
-            listTagSection.setVariable("tagID", listTags.get(i).tagID);
-            listTagSection.setVariable("tagName", listTags.get(i).tagName);
+            listTagSection.setVariable("tagID", lTags.get(i).tagID());
+            listTagSection.setVariable("tagName", lTags.get(i).tagName());
         }
 
         int pageCount = (int) Math.ceil((float) size / itemPerPage);
-        
+
         int start = Math.max(page - 4, 1);
         int end = Math.min(page + 4, pageCount);
 
@@ -193,7 +215,7 @@ public class getContentTabServlet extends HttpServlet {
         }
         List<String> listUsers = handler.getAllUser();
         int size = listUsers.size();
-        if(size==0) {
+        if (size == 0) {
             return null;
         }
 
@@ -206,17 +228,16 @@ public class getContentTabServlet extends HttpServlet {
             listUserSection.setVariable("userToken", user.userToken);
             listUserSection.setVariable("userRole", String.valueOf(user.userRole));
             String userRoleName = null;
-            if(user.userRole==1){
-                userRoleName="Admin";
+            if (user.userRole == 1) {
+                userRoleName = "Admin";
             }
-            if(user.userRole==0){
-                userRoleName="User";
+            if (user.userRole == 0) {
+                userRoleName = "User";
             }
-            if(user.userRole==-1){
-                userRoleName="Blocked";
+            if (user.userRole == -1) {
+                userRoleName = "Blocked";
             }
             listUserSection.setVariable("userRoleName", userRoleName);
-            
         }
 
         int pageCount = (int) Math.ceil((float) size / itemPerPage);
@@ -263,5 +284,59 @@ public class getContentTabServlet extends HttpServlet {
         TemplateLoader templateLoader = TemplateResourceLoader.create("tpl/");
         Template template = templateLoader.getTemplate("admin/index/paging_user.xtm");
         return template;
+    }
+}
+
+class Tags implements Comparable<Tags> {
+
+    private String tagID;
+    private String tagName;
+
+    public Tags(String tagID, String tagName) {
+        if (tagID == null || tagName == null) {
+            throw new NullPointerException();
+        }
+        this.tagID = tagID;
+        this.tagName = tagName;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Tags)) {
+            return false;
+        }
+        Tags t = (Tags) obj;
+
+        return t.tagID.equals(this.tagID);
+    }
+
+    @Override
+    public int hashCode() {
+        return 31 * tagID.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return tagID + " " + tagName;
+    }
+
+    @Override
+    public int compareTo(Tags obj) {
+//        throw new UnsupportedOperationException("Not supported yet.");
+        if (obj.tagID.length() < this.tagID.length()) {
+            return -1;
+        }
+        if (obj.tagID.length() > this.tagID.length()) {
+            return 1;
+        }
+        return this.tagID.compareTo(obj.tagID);
+    }
+
+    public String tagID() {
+        return tagID;
+    }
+
+    public String tagName() {
+        return tagName;
     }
 }
