@@ -26,7 +26,6 @@ class Connection {
 
     public Connection(String host, int port) {
         transport = new TSocket(host, port);
-        transport = new TSocket(host, port);
         framedTransport = new TFramedTransport(transport);
         protocol = new TBinaryProtocol(framedTransport);
         client = new MiddlewareFrontend.Client(protocol);
@@ -62,9 +61,10 @@ class Connection {
 
 public class ConnectionPool {
 
-    private static BlockingQueue<Connection> queue;
+    private static ArrayBlockingQueue<Connection> queue;
     private static ConnectionPool connectionPool = null;
     private static int size_ = getConfig.getInstance().getNumberConnection();
+    int count = 0;
 
     private ConnectionPool() {
         queue = new ArrayBlockingQueue<Connection>(size_);
@@ -87,8 +87,12 @@ public class ConnectionPool {
     }
 
     public Connection getConnection() throws InterruptedException {
+        if (queue.isEmpty()) {
+            System.out.println("No Connection found: " + count++);
+        } else {
+            System.out.println("Get Connection OK: " + count++);
+        }
         Connection con = queue.take();
-        //con.open();
         return (con);
     }
 

@@ -25,19 +25,16 @@ public class WebServer {
         // Setup JMX
         MBeanContainer mbContainer = new MBeanContainer(ManagementFactory.getPlatformMBeanServer());
 
-
         server.getContainer().addEventListener(mbContainer);
         server.addBean(mbContainer);
         mbContainer.addBean(Log.getLog());
 
         QueuedThreadPool threadPool = new QueuedThreadPool();
-        threadPool.setMinThreads(1000);
-        threadPool.setMaxThreads(20000);
+        threadPool.setMinThreads(20);
+        threadPool.setMaxThreads(2000);
         server.setThreadPool(threadPool);
 
         int port_listen = Integer.valueOf(Config.getParam("rest", "port_listen"));
-
-
 
         SelectChannelConnector connector = new SelectChannelConnector();
         connector.setPort(port_listen);
@@ -48,8 +45,6 @@ public class WebServer {
         connector.setLowResourcesMaxIdleTime(5000);
 
         server.setConnectors(new Connector[]{connector});
-
-        
 
         ServletHandler handler = new ServletHandler();
 
@@ -71,9 +66,8 @@ public class WebServer {
         handler.addServletWithMapping("webservlet.Client.SaveItemControllerServlet", "/saveItem");
         handler.addServletWithMapping("webservlet.Client.CachingClientItemsControllerServlet", "/uItemsCaching");
 
-        //handler.addServletWithMapping("servlet.randomItemServlet","/random");
-         //admin services
-
+        //Admin
+        
         handler.addServletWithMapping("webservlet.Admin.IndexControllerServlet", "/admin");
 
         handler.addServletWithMapping("webservlet.Admin.randomItemServlet", "/random");
