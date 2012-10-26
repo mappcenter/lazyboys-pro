@@ -127,7 +127,7 @@
                             <ul>
                                 <li><a href="#" class="current">Manage Tags</a></li>
 <!--                                <li><a href="#">Top Tags</a></li>-->
-                                <li><a href="#" alt="addTag">Add Tags</a></li>
+                                <li><a href="javascript:addTag();" alt="addTag">Add Tags</a></li>
 
                             </ul>
                         </li>
@@ -139,8 +139,8 @@
 
                             <ul>
                                 <li><a href="#" class="current">Manage Users</a></li>
-                                <li><a href="#">Top Users</a></li>
-                                <li><a href="#" alt="addUser">Add Users</a></li>
+<!--                                <li><a href="#">Top Users</a></li>
+                                <li><a href="#" alt="addUser">Add Users</a></li>-->
 
                             </ul>
                         </li>
@@ -152,7 +152,7 @@
 
                             <ul>
                                 <li><a href="#" class="current">Manage Cache</a></li>
-                                <li><a href="#">Edit Cache</a></li>
+<!--                                <li><a href="#">Edit Cache</a></li>-->
                             </ul>
                         </li>
 
