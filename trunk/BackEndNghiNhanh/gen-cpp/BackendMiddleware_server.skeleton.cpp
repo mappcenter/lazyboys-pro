@@ -2,10 +2,10 @@
 // You should copy it to another filename to avoid overwriting it.
 
 #include "BackendMiddleware.h"
-#include <thrift/protocol/TBinaryProtocol.h>
-#include <thrift/server/TSimpleServer.h>
-#include <thrift/transport/TServerSocket.h>
-#include <thrift/transport/TBufferTransports.h>
+#include <protocol/TBinaryProtocol.h>
+#include <server/TSimpleServer.h>
+#include <transport/TServerSocket.h>
+#include <transport/TBufferTransports.h>
 
 using namespace ::apache::thrift;
 using namespace ::apache::thrift::protocol;
@@ -300,6 +300,16 @@ class BackendMiddlewareHandler : virtual public BackendMiddlewareIf {
   bool deleteAllUser() {
     // Your implementation goes here
     printf("deleteAllUser\n");
+  }
+
+  void getUser(User& _return, const std::string& userID) {
+    // Your implementation goes here
+    printf("getUser\n");
+  }
+
+  void getAllUser(std::vector<std::string> & _return) {
+    // Your implementation goes here
+    printf("getAllUser\n");
   }
 
 };

@@ -109,5 +109,7 @@ service BackendMiddleware{
   bool addUser(1:string userID, 2:string userToken,3:i32 userRole),	//them user vao data
   bool deleteUser(1:string userID),				//xoa user
   bool editUser(1:string userID, 2:string userToken,3:i32 userRole),
-  bool deleteAllUser()
+  bool deleteAllUser(),
+  User getUser(1:string userID),
+  list<string> getAllUser()
 }

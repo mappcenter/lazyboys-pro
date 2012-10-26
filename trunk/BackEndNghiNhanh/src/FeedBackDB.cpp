@@ -24,7 +24,7 @@ void FeedBackDB::startFeedBackDB() {
     double sysTime1 = clock();
     DBUtils::openHashDB(hashDB, pathHashDB);
     DBUtils::openGrassDB(grassDB);
-    cout << "Copying FeedBackDB" << endl;
+    cout << "Copying FeedBackDB..." << endl;
     DBUtils::copyDBFromHashDBtoGrassDB(hashDB, grassDB);
     double sysTime2 = clock();
     //cout << "Time to search: " << (double) (sysTime2 - sysTime1) << endl;
@@ -43,6 +43,7 @@ string FeedBackDB::convertUserFeedBackToJson(UserFeedBack& userFeedBack) {
     Value value;
     value["itemsLike"];
     value["itemsDislike"];
+    value["favouriteItems"];
     int64_t n = userFeedBack.itemsLike.size();
     for (int i = 0; i < n; i++) {
         value["itemsLike"][i] = userFeedBack.itemsLike[i];

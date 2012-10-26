@@ -1,1 +1,0 @@
- - con lastID trong insertItem.

@@ -10,7 +10,6 @@
 
 UserDB::UserDB() {
     logger = &Logger::get("UserDB");
-    lastID = "lastID";
 }
 
 HashDB& UserDB::getHashDB() {
@@ -24,7 +23,6 @@ int64_t UserDB::getUserDBSize() {
 UserDB::UserDB(string path) {
     logger = &Logger::get("UserDB");
     pathHashDB = path;
-    lastID = "lastID";
 }
 
 UserDB::~UserDB() {
@@ -68,7 +66,7 @@ void UserDB::startUserDB() {
     double sysTime1 = clock();
     DBUtils::openHashDB(hashDB, pathHashDB);
     DBUtils::openGrassDB(grassDB);
-    cout << "Copying UserDB" << endl;
+    cout << "Copying UserDB..." << endl;
     DBUtils::copyDBFromHashDBtoGrassDB(hashDB, grassDB);
     double sysTime2 = clock();
     poco_information_f1(*logger, "startUserDB: Start UserDB in %0.0f milliseconds.", (double) (sysTime2 - sysTime1));

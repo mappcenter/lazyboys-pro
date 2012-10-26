@@ -13,10 +13,10 @@ BackendMiddlewareHandler::BackendMiddlewareHandler(string pathItemsDB, string pa
     userDB = new UserDB(pathUserDB);
     feedBackDB = new FeedBackDB(pathFeedBackDB);
     tagDB->startTagDB();
-    itemDB->startItemDB();
     itemTagDB->startItemTagDB();
     userDB->startUserDB();
     feedBackDB->startFeedBackDB();
+    itemDB->startItemDB();
     synchronizeThread();
 }
 
