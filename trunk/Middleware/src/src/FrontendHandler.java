@@ -424,4 +424,9 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     public List<String> getAllUser() throws TException {
         return handler.getAllUser();
     }
+
+    @Override
+    public List<Item> getItemsPageKeyword(String keyWord, long pageNumber, long itemNumber) throws TException {
+        return handler.getItemsPageKeyword(keyWord, pageNumber, itemNumber);
+    }
 }

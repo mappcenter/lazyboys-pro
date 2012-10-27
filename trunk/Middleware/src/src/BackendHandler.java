@@ -763,4 +763,17 @@ public class BackendHandler implements libs.BackendMiddleware.Iface {
         }
         return null;
     }
+
+    @Override
+    public List<Item> getItemsPageKeyword(String keyWord, long pageNumber, long itemNumber) throws TException {
+        try {
+            Connection connect = connectionPool.getConnection();
+            List<Item> result = connect.getClient().getItemsPageKeyword(keyWord, pageNumber, itemNumber);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
+            Logger.getLogger(BackendHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 }
