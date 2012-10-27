@@ -17,12 +17,12 @@ public class main {
 
     public static void main(String[] args) throws InterruptedException, Exception {
         int port = getConfig.getInstance().getPortListen();
-
+        int numthread = getConfig.getInstance().getNumthread();
         TNonblockingServerSocket serverTransport = new TNonblockingServerSocket(port);
         libs.MiddlewareFrontend.Processor processor = new MiddlewareFrontend.Processor(new FrontendHandler());
 
         THsHaServer.Args options = new THsHaServer.Args(serverTransport);
-        options.workerThreads(300);
+        options.workerThreads(numthread);
         options.processor(processor);
 
         TServer server = new THsHaServer(options);
