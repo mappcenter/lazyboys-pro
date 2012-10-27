@@ -21,6 +21,14 @@ public class getConfig {
     private static getConfig instance;
     private static int ttl;
     private static int number_connection;
+    private static int numthread;
+
+    /**
+     * @return the numthread
+     */
+    public int getNumthread() {
+        return numthread;
+    }
 
     public int getNumberConnection() {
         return number_connection;
@@ -49,6 +57,7 @@ public class getConfig {
         host = pro.getProperty("host");
         ttl = Integer.parseInt(pro.getProperty("ttl"));
         number_connection = Integer.parseInt(pro.getProperty("number_connection"));
+        numthread = Integer.parseInt(pro.getProperty("numthread"));
     }
 
     public static synchronized getConfig getInstance() throws FileNotFoundException, IOException {
