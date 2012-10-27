@@ -13,6 +13,7 @@ import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
+import frontend.*;
 
 public class WebServer {
 
@@ -28,14 +29,15 @@ public class WebServer {
         server.getContainer().addEventListener(mbContainer);
         server.addBean(mbContainer);
         mbContainer.addBean(Log.getLog());
-
+        
+        int min_thread = getConfig.getInstance().getNumber_min_thread();
+        int max_thread = getConfig.getInstance().getNumber_max_thread();
         QueuedThreadPool threadPool = new QueuedThreadPool();
-        threadPool.setMinThreads(20);
-        threadPool.setMaxThreads(2000);
+        threadPool.setMinThreads(min_thread);
+        threadPool.setMaxThreads(max_thread);
         server.setThreadPool(threadPool);
 
-        int port_listen = Integer.valueOf(Config.getParam("rest", "port_listen"));
-
+        int port_listen = getConfig.getInstance().getPortListen();
         SelectChannelConnector connector = new SelectChannelConnector();
         connector.setPort(port_listen);
         connector.setMaxIdleTime(30000);
@@ -72,7 +74,7 @@ public class WebServer {
 
 
         //Admin
-        
+
         handler.addServletWithMapping("webservlet.Admin.IndexControllerServlet", "/admin");
 
         handler.addServletWithMapping("webservlet.Admin.randomItemServlet", "/random");

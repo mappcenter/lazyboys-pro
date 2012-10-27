@@ -39,7 +39,7 @@ $(document).ready(function() {
             })
         });
     });
-
+    
     // Text inside textfield
     var active_color = '#000'; // Color of user provided text
     var inactive_color = '#969696'; // Color of default text
@@ -51,9 +51,9 @@ $(document).ready(function() {
             $(this).css("color", inactive_color);
         }
     });
-
+    
     var default_values = new Array();
-
+    
     $('input[type="text"], input[type="password"]').focus(function() {
         if (!default_values[this.id]) {
             default_values[this.id] = this.value;
@@ -131,7 +131,7 @@ $(document).ready(function() {
 	
     $('#main-nav > li > ul').hide(); // Hide all subnavigation
     $('#main-nav > li > a.current').parent().children("ul").show(); // Show current subnavigation
-
+    
     $('#main-nav > li > a[href="#"]').click( // Click!
         function() {
             $(this).parent().siblings().children("a").removeClass('current'); // Remove .current class from all tabs
@@ -163,7 +163,7 @@ $(document).ready(function() {
             
     $('#listTopItems').hide();//hide listTopItems
     $('#main-nav > li > ul').find('a[href="#"]').click( // Click!
-        function() {
+        function() { 
             $(this).parent().siblings().children("a").removeClass('current'); // Remove .current class from all tabs
             $(this).addClass('current'); // Add class .current
             $("#manage").html($(this).html());
@@ -362,7 +362,7 @@ function deleteItem(){
         });
     
     }
-    else if(tabName=="Tags"){
+    else if(tabName=="Tags"){ 
     }
 }
 
@@ -459,7 +459,7 @@ function editItem() {
                 itemID:itemID, 
                 itemContent:itemContent, 
                 tagIDs:tagIDs
-            }, function(data){
+            }, function(data){                             
                 $('#hidden'+itemID).parent().parent().find('td:nth-child(3)').html(itemContent);
                 $('#hidden'+itemID).attr('value', JSON.stringify(arrTagID));
                 $('#dialog-box').hide();
@@ -589,7 +589,11 @@ function changeUserRole(userID, userToken, userRole){
         userRolename="Blocked";
     }
     //alert(userRole);
-    $.post('changeUserRole', {userID:userID, userToken:userToken, userRole:userRole}, function(data){
+    $.post('changeUserRole', {
+        userID:userID, 
+        userToken:userToken, 
+        userRole:userRole
+    }, function(data){
         if(data){           
             var elem=document.getElementById(userID);
             elem.innerHTML=userRolename

@@ -6,7 +6,6 @@ package frontend;
 
 import com.vng.jcore.common.Config;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TFramedTransport;
@@ -63,13 +62,13 @@ public class ConnectionPool {
 
     private static ArrayBlockingQueue<Connection> queue;
     private static ConnectionPool connectionPool = null;
-    private static int size_ = getConfig.getInstance().getNumberConnection();
     int count = 0;
 
     private ConnectionPool() {
+        int size_ = getConfig.getInstance().getNumberConnection();
         queue = new ArrayBlockingQueue<Connection>(size_);
-        String host = Config.getParam("fresher2012service", "host");
-        int port = Integer.valueOf(Config.getParam("fresher2012service", "port"));
+        String host = getConfig.getInstance().getHost();
+        int port = getConfig.getInstance().getPort();
         for (int i = 0; i < size_; i++) {
             try {
                 queue.put(createConnection(host, port));
