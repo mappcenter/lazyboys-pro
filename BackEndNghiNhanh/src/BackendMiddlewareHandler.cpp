@@ -149,6 +149,10 @@ void BackendMiddlewareHandler::getItemKeywordTag(std::vector<Item> & _return, co
     _return = itemDB->getItemKeyword(keyWord, tagID, *itemTagDB);
 }
 
+void BackendMiddlewareHandler::getItemsPageKeyword(std::vector<Item> & _return, const std::string& keyWord, const int64_t pageNumber, const int64_t itemNumber) {
+    _return = itemDB->getItemsPageKeyword(keyWord, pageNumber, itemNumber);
+}
+
 void BackendMiddlewareHandler::getTopItems(std::vector<Item> & _return, const int64_t number) {
     _return = itemDB->getListTopItem(number);
 }

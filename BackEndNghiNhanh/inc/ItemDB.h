@@ -89,6 +89,7 @@ public:
     vector<Item> getItemKeyword(string keyword, int32_t numberItems);
     vector<Item> getItemKeyword(string keyword, string tagID, ItemTagDB& itemTagDB);
     vector<Item> getItemKeyword(string keyword, string tagID, ItemTagDB& itemTagDB, int32_t numberItems);
+    vector<Item> getItemsPageKeyword(string keyWord, int64_t pageNumber, int64_t itemNumber);
 
     vector<string> getListTopItemID(int64_t number);
     vector<string> getListTopItemID(int64_t number, string tagID, ItemTagDB& itemTagDB);
