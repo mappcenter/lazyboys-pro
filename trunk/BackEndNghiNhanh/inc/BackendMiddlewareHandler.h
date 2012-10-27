@@ -79,6 +79,7 @@ public:
     void getItemsPage(std::vector<Item> & _return, const int64_t pageNumber, const int64_t itemNumber, const std::string& tagID);
     void getItemKeyword(std::vector<Item> & _return, const std::string& keyWord);
     void getItemKeywordTag(std::vector<Item> & _return, const std::string& keyWord, const std::string& tagID);
+    void getItemsPageKeyword(std::vector<Item> & _return, const std::string& keyWord, const int64_t pageNumber, const int64_t itemNumber);
     void getTopItems(std::vector<Item> & _return, const int64_t number);
     void getTopItemsofTag(std::vector<Item> & _return, const int64_t number, const std::string& tagID);
 

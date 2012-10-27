@@ -840,6 +840,54 @@ vector<Item> ItemDB::getItemKeyword(string keyword, int32_t numberItems) {
     return result;
 }
 
+vector<Item> ItemDB::getItemsPageKeyword(string keyWord, int64_t pageNumber, int64_t itemNumber) {
+    vector<Item> lItem;
+
+    if (pageNumber < 1) {
+        poco_error(*logger, "getItemsPage: pageNumber < 0");
+        return lItem;
+    }
+    if (itemNumber < 1) {
+        poco_error(*logger, "getItemsPage: numberItems < 0");
+        return lItem;
+    }
+    int64_t size = grassDB.count() - 1;
+
+    int totalPageNumber;
+    if (size % itemNumber == 0)
+        totalPageNumber = size / itemNumber;
+    else
+        totalPageNumber = size / itemNumber + 1;
+
+    if (pageNumber > totalPageNumber) {
+        poco_warning_f2(*logger, "getItemsPage: pageNumber = %d > totalPageNumber = %d",
+                pageNumber, totalPageNumber);
+        pageNumber = totalPageNumber;
+    }
+
+    int64_t first = (pageNumber - 1) * itemNumber - 1;
+    int64_t last = pageNumber * itemNumber;
+    int64_t i = 0;
+    string key, value;
+    DB::Cursor* cur = grassDB.cursor();
+    cur->jump();
+
+    Item item;
+    while (i < last) {
+        cur->get(&key, &value, true);
+        item = convertJsonToItem(value);
+        if (Utils::findStringInString(item.content, keyWord)) {
+            if (i > first && key != LASTID) {
+                item.itemID = key;
+                lItem.push_back(item);
+            }
+            i++;
+        }
+    }
+    delete cur;
+    return lItem;
+}
+
 /**
  * get item co tagID va keyword
  * @param keyword
