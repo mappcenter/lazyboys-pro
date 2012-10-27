@@ -875,8 +875,8 @@ vector<Item> ItemDB::getItemsPageKeyword(string keyWord, int64_t pageNumber, int
     Item item;
     while (i < last) {
         cur->get(&key, &value, true);
-        item = convertJsonToItem(value);
-        if (Utils::findStringInString(item.content, keyWord)) {
+        if (Utils::findStringInString(value, keyWord)) {
+            item = convertJsonToItem(value);
             if (i > first && key != LASTID) {
                 item.itemID = key;
                 lItem.push_back(item);
