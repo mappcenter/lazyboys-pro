@@ -800,4 +800,17 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return null;
     }
+
+    @Override
+    public List<Item> getItemsPageKeyword(String keyWord, long pageNumber, long itemNumber) throws TException {
+        try {
+            Connection connect = connectionPool.getConnection();
+            List<Item> result = connect.getClient().getItemsPageKeyword(keyWord, pageNumber, itemNumber);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 }
