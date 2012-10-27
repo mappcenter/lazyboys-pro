@@ -211,7 +211,7 @@
                                         <td>
                                             <input type="hidden" id="hidden{{itemID}}" value='{{tagIDs}}'/>
                                             <a href="#" rel="EditItem"><img src="http://localhost:81/images/icons/pencil.png" alt="Edit" /></a>
-                                            <a href="#" class="confirmation"><img src="http://localhost:81/images/icons/cross.png" alt="Delete" /></a>
+                                            <a href="#" class="confirmation" rel="{{itemID}}"><img src="http://localhost:81/images/icons/cross.png" alt="Delete" /></a>
                                         </td>
                                     </tr>
                                     {{/list_section}}
