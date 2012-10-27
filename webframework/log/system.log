@@ -1,63 +1,4 @@
-ERROR [main] 2012-10-27 01:13:18,363 ServiceDaemon.java (line 32) Exception encountered during startup.
-java.net.SocketException: Permission denied
-	at sun.nio.ch.Net.bind0(Native Method)
-	at sun.nio.ch.Net.bind(Net.java:344)
-	at sun.nio.ch.Net.bind(Net.java:336)
-	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:199)
-	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:209)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:289)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:55)
-	at org.eclipse.jetty.server.Server.doStart(Server.java:253)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:55)
-	at httpservice.WebServer.start(WebServer.java:95)
-	at httpservice.ServiceDaemon.main(ServiceDaemon.java:28)
-ERROR [main] 2012-10-27 01:13:18,387 ServiceDaemon.java (line 36) Uncaught exception: Permission denied
-ERROR [main] 2012-10-27 01:38:51,783 ServiceDaemon.java (line 32) Exception encountered during startup.
-org.apache.thrift.transport.TTransportException: Cannot write to null outputStream
-	at org.apache.thrift.transport.TIOStreamTransport.write(Unknown Source)
-	at org.apache.thrift.transport.TFramedTransport.flush(Unknown Source)
-	at org.apache.thrift.TServiceClient.sendBase(Unknown Source)
-	at frontend.MiddlewareFrontend$Client.send_getTopTags(MiddlewareFrontend.java:643)
-	at frontend.MiddlewareFrontend$Client.getTopTags(MiddlewareFrontend.java:635)
-	at frontend.MiddlewareHandler.startLocalCache(MiddlewareHandler.java:33)
-	at httpservice.WebServer.start(WebServer.java:92)
-	at httpservice.ServiceDaemon.main(ServiceDaemon.java:28)
-ERROR [main] 2012-10-27 01:38:51,786 ServiceDaemon.java (line 36) Uncaught exception: Cannot write to null outputStream
-ERROR [main] 2012-10-27 01:40:23,896 ServiceDaemon.java (line 32) Exception encountered during startup.
-org.apache.thrift.transport.TTransportException: Cannot write to null outputStream
-	at org.apache.thrift.transport.TIOStreamTransport.write(Unknown Source)
-	at org.apache.thrift.transport.TFramedTransport.flush(Unknown Source)
-	at org.apache.thrift.TServiceClient.sendBase(Unknown Source)
-	at frontend.MiddlewareFrontend$Client.send_getTopTags(MiddlewareFrontend.java:643)
-	at frontend.MiddlewareFrontend$Client.getTopTags(MiddlewareFrontend.java:635)
-	at frontend.MiddlewareHandler.startLocalCache(MiddlewareHandler.java:33)
-	at httpservice.WebServer.start(WebServer.java:92)
-	at httpservice.ServiceDaemon.main(ServiceDaemon.java:28)
-ERROR [main] 2012-10-27 01:40:23,900 ServiceDaemon.java (line 36) Uncaught exception: Cannot write to null outputStream
-ERROR [main] 2012-10-27 01:41:23,844 ServiceDaemon.java (line 32) Exception encountered during startup.
-org.apache.thrift.transport.TTransportException: Cannot write to null outputStream
-	at org.apache.thrift.transport.TIOStreamTransport.write(Unknown Source)
-	at org.apache.thrift.transport.TFramedTransport.flush(Unknown Source)
-	at org.apache.thrift.TServiceClient.sendBase(Unknown Source)
-	at frontend.MiddlewareFrontend$Client.send_getTopTags(MiddlewareFrontend.java:643)
-	at frontend.MiddlewareFrontend$Client.getTopTags(MiddlewareFrontend.java:635)
-	at frontend.MiddlewareHandler.startLocalCache(MiddlewareHandler.java:33)
-	at httpservice.WebServer.start(WebServer.java:92)
-	at httpservice.ServiceDaemon.main(ServiceDaemon.java:28)
-ERROR [main] 2012-10-27 01:41:23,846 ServiceDaemon.java (line 36) Uncaught exception: Cannot write to null outputStream
-ERROR [main] 2012-10-27 01:42:43,017 ServiceDaemon.java (line 32) Exception encountered during startup.
-org.apache.thrift.transport.TTransportException: Cannot write to null outputStream
-	at org.apache.thrift.transport.TIOStreamTransport.write(Unknown Source)
-	at org.apache.thrift.transport.TFramedTransport.flush(Unknown Source)
-	at org.apache.thrift.TServiceClient.sendBase(Unknown Source)
-	at frontend.MiddlewareFrontend$Client.send_getTopTags(MiddlewareFrontend.java:643)
-	at frontend.MiddlewareFrontend$Client.getTopTags(MiddlewareFrontend.java:635)
-	at frontend.MiddlewareHandler.startLocalCache(MiddlewareHandler.java:33)
-	at httpservice.WebServer.start(WebServer.java:92)
-	at httpservice.ServiceDaemon.main(ServiceDaemon.java:28)
-ERROR [main] 2012-10-27 01:42:43,021 ServiceDaemon.java (line 36) Uncaught exception: Cannot write to null outputStream
-ERROR [main] 2012-10-27 01:44:08,096 ServiceDaemon.java (line 32) Exception encountered during startup.
+ERROR [main] 2012-10-27 22:23:20,731 ServiceDaemon.java (line 32) Exception encountered during startup.
 org.apache.thrift.transport.TTransportException: Cannot write to null outputStream
 	at org.apache.thrift.transport.TIOStreamTransport.write(Unknown Source)
 	at org.apache.thrift.transport.TFramedTransport.flush(Unknown Source)
@@ -65,28 +6,34 @@ org.apache.thrift.transport.TTransportException: Cannot write to null outputStre
 	at frontend.MiddlewareFrontend$Client.send_getTopTags(MiddlewareFrontend.java:643)
 	at frontend.MiddlewareFrontend$Client.getTopTags(MiddlewareFrontend.java:635)
 	at frontend.MiddlewareHandler.startLocalCache(MiddlewareHandler.java:32)
-	at httpservice.WebServer.start(WebServer.java:92)
+	at httpservice.WebServer.start(WebServer.java:100)
 	at httpservice.ServiceDaemon.main(ServiceDaemon.java:28)
-ERROR [main] 2012-10-27 01:44:08,098 ServiceDaemon.java (line 36) Uncaught exception: Cannot write to null outputStream
-ERROR [main] 2012-10-27 01:45:10,983 ServiceDaemon.java (line 32) Exception encountered during startup.
-org.apache.thrift.transport.TTransportException: Cannot write to null outputStream
-	at org.apache.thrift.transport.TIOStreamTransport.write(Unknown Source)
-	at org.apache.thrift.transport.TFramedTransport.flush(Unknown Source)
-	at org.apache.thrift.TServiceClient.sendBase(Unknown Source)
-	at frontend.MiddlewareFrontend$Client.send_getTopTags(MiddlewareFrontend.java:643)
-	at frontend.MiddlewareFrontend$Client.getTopTags(MiddlewareFrontend.java:635)
-	at frontend.MiddlewareHandler.startLocalCache(MiddlewareHandler.java:32)
-	at httpservice.WebServer.start(WebServer.java:92)
+ERROR [main] 2012-10-27 22:23:20,734 ServiceDaemon.java (line 36) Uncaught exception: Cannot write to null outputStream
+ERROR [main] 2012-10-27 22:26:07,757 ServiceDaemon.java (line 32) Exception encountered during startup.
+java.lang.IllegalArgumentException: n must be positive
+	at java.util.Random.nextInt(Random.java:300)
+	at frontend.MyLocalCache.getRandomIndex(MyLocalCache.java:215)
+	at frontend.MyLocalCache.cacheItemsClient(MyLocalCache.java:139)
+	at frontend.MyLocalCache.startMyLocalCache(MyLocalCache.java:80)
+	at frontend.MiddlewareHandler.startLocalCache(MiddlewareHandler.java:38)
+	at httpservice.WebServer.start(WebServer.java:100)
 	at httpservice.ServiceDaemon.main(ServiceDaemon.java:28)
-ERROR [main] 2012-10-27 01:45:10,986 ServiceDaemon.java (line 36) Uncaught exception: Cannot write to null outputStream
-ERROR [main] 2012-10-27 01:46:54,844 ServiceDaemon.java (line 32) Exception encountered during startup.
-org.apache.thrift.transport.TTransportException: Cannot write to null outputStream
-	at org.apache.thrift.transport.TIOStreamTransport.write(Unknown Source)
-	at org.apache.thrift.transport.TFramedTransport.flush(Unknown Source)
-	at org.apache.thrift.TServiceClient.sendBase(Unknown Source)
-	at frontend.MiddlewareFrontend$Client.send_getTopTags(MiddlewareFrontend.java:643)
-	at frontend.MiddlewareFrontend$Client.getTopTags(MiddlewareFrontend.java:635)
-	at frontend.MiddlewareHandler.startLocalCache(MiddlewareHandler.java:32)
-	at httpservice.WebServer.start(WebServer.java:92)
-	at httpservice.ServiceDaemon.main(ServiceDaemon.java:28)
-ERROR [main] 2012-10-27 01:46:54,847 ServiceDaemon.java (line 36) Uncaught exception: Cannot write to null outputStream
+ERROR [main] 2012-10-27 22:26:07,760 ServiceDaemon.java (line 36) Uncaught exception: n must be positive
+ INFO [main] 2012-10-27 22:27:55,040 Server.java (line 263) jetty-8.1.5.v20120716
+ INFO [main] 2012-10-27 22:27:55,153 AbstractConnector.java (line 333) Started SelectChannelConnector@0.0.0.0:80
+ERROR [qtp1911088241-25] 2012-10-27 22:28:04,043 IndexControllerServlet.java (line 64) 
+ WARN [qtp1911088241-25] 2012-10-27 22:28:04,045 HttpGenerator.java (line 175) Ignoring extra content Error exception: null
+ WARN [qtp1911088241-18] 2012-10-27 22:28:06,299 HttpGenerator.java (line 175) Ignoring extra content <html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title id="title" ></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+            <link href="http://localhost:81/static/lzmain-style.css" media="screen" rel="stylesheet" type="text/css">
+                <link href="http://localhost:81/static/lztab-menu-css.css" media="screen" rel="stylesheet" type="text/css">
+                    <link href="http://localhost:81/static/jquery.mCustomScrollbar.css" rel="styl
+ WARN [qtp1911088241-19] 2012-10-27 22:28:06,310 HttpGenerator.java (line 175) Ignoring extra content <html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title id="title" ></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+            <link href="http://localhost:81/static/lzmain-style.css" media="screen" rel="stylesheet" type="text/css">
+                <link href="http://localhost:81/static/lztab-menu-css.css" media="screen" rel="stylesheet" type="text/css">
+                    <link href="http://localhost:81/static/jquery.mCustomScrollbar.css" rel="styl

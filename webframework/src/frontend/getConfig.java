@@ -18,6 +18,8 @@ public class getConfig {
     private static int port;
     private static int port_listen;
     private static int number_connection;
+    private static int number_min_thread;
+    private static int number_max_thread;
     private static getConfig instance;
 
     /**
@@ -34,6 +36,8 @@ public class getConfig {
         number_connection = Integer.parseInt(Config.getParam("connectionpool", "number_connection"));
         port = Integer.valueOf(Config.getParam("fresher2012service", "port"));
         port_listen = Integer.valueOf(Config.getParam("rest", "port_listen"));
+        number_min_thread = Integer.valueOf(Config.getParam("rest", "number_min_thread"));
+        number_max_thread = Integer.valueOf(Config.getParam("rest", "number_max_thread"));
     }
 
     public static synchronized getConfig getInstance() {
@@ -61,5 +65,13 @@ public class getConfig {
 
     public int getPortListen() {
         return port_listen;
+    }
+
+    public int getNumber_max_thread() {
+        return number_max_thread;
+    }
+
+    public int getNumber_min_thread() {
+        return number_min_thread;
     }
 }

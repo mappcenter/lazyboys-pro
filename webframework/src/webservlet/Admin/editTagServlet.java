@@ -24,7 +24,7 @@ import org.apache.thrift.TException;
 public class editTagServlet extends HttpServlet {
 
     MiddlewareHandler handler = new MiddlewareHandler();
-    MyLocalCache localCache=new MyLocalCache();
+    MyLocalCache localCache=new MyLocalCache();    
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
         String tagID = req.getParameter("tagID");

@@ -30,17 +30,15 @@ public class randomItemServlet extends HttpServlet {
         res.setContentType("text/html; charset=UTF-8");
         Item item = null;
         try {
-            int start = (int) System.currentTimeMillis();
             item = handler.getRandomItem();
             int end = (int) System.currentTimeMillis();
-            res.getWriter().println("Times: " + (end - start) + " ms<br/>");
         } catch (TException ex) {
             Logger.getLogger(randomItemServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         long t2 = System.currentTimeMillis();
         //Gson gson = new Gson();
         //String strItem = gson.toJson(item);
-        res.getWriter().println("<html><head><title>Welcome!</title></head><body bgcolor=\"white\" text=\"black\"><center><h1>Welcome to LazyBoys!</h1></center><br/>Time: " + (t2 - t1) + " ms<br/>" + item.itemID + "</body></html>");
+        res.getWriter().println("<html><body><center><h1>Welcome to LazyBoys!</h1></center><br/>Time: " + (t2 - t1) + " ms<br/>" + item.toString() + "</body></html>");
     }
 
     @Override
@@ -67,6 +65,6 @@ public class randomItemServlet extends HttpServlet {
         long t2 = System.currentTimeMillis();
         //Gson gson = new Gson();
         //String strItem = gson.toJson(item);
-        res.getWriter().println("<html><head><title>Welcome!</title></head><body bgcolor=\"white\" text=\"black\"><center><h1>Welcome to LazyBoys!</h1></center><br/>Time: " + (t2 - t1) + " ms<br/>" + item.content + "</body></html>");
+        res.getWriter().println("<html><body><center><h1>Welcome to LazyBoys!</h1></center><br/>Time: " + (t2 - t1) + " ms<br/>" + item.content + "</body></html>");
     }
 }
