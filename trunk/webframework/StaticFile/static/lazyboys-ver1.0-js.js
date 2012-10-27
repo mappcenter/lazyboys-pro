@@ -4,6 +4,13 @@ var myTopTags=jsonParse(myTopTags);
 var myItemsLike="";
 var uItemsCaching;
 //var myItemsDisLike="";
+var isFeed=true;
+
+function isUserFeed()
+{
+    isFeed=true;
+}
+
 function getTagName(tagID){
     var tagName="";                                                      
     for (var prop in myJsonObj) {
@@ -37,6 +44,7 @@ function getRandomItemOfTag(tagID){
             $("#listTag").html(lTags);
             $("#lztitle").attr("style","visibility: visible;");
             $("#statusTag").html("<a href='javascript:getRandomItemOfTag("+tagID+");'>"+tagName+"</a>");
+            turnOnOffBackNext(); 
         }).error(function() { 
             var count=uItemsCaching.length-1;
             if(count>1)
@@ -53,13 +61,15 @@ function getRandomItemOfTag(tagID){
                 for (var k=0;k< listTagsID.length;k++) {
                     lTags+="<a href='javascript:getRandomItemOfTag("+listTagsID[k]+");' rel='"+listTagsID[k]+"'>"+getTagName(listTagsID[k].toString())+"</a>     ";
                 }                            
-                $("#listTag").html(lTags);                
+                $("#listTag").html(lTags); 
+                turnOnOffBackNext(); 
             }
             return;
         });
     });
-    turnOnOffBackNext(); 
+    
 }
+
 //next - back button
 var queueItem=new Array();
 var currentIndex=0;
@@ -160,19 +170,20 @@ function testCurrentIndex(val,index){
     });
 }       
 function fCallback(data) {
-    alert("call back function");
     if(data.action == 0) {
         //user cancel push feed
         //if game/app to track how many user press cancel/hide pushfeed can be keep track here
-        alert('user cancel push feed');
+        //alert('Cancel feed!');
     }
     else if(data.action == 1) {//push feed successful
-        var feedId = data.feedId; //feedId of feed pushed
-        var validateKey = data.validateKey; //validateKey used for app to verify feedId is published by this app/game
-        var state = data.state;
-        //if game/app need to validate feedId (with validateKey), app/game must redirect to another page with param feedid and validateKey and
-        //use socialapi to validate feedId, with successful, app/game will know exactly user published feed successful.
-        alert("feedid=" + feedId + "-validateKey=" + validateKey + "-state=" + state);
+        isFeed=false;
+        alert("Thanh Cong!");
+    //        var feedId = data.feedId; //feedId of feed pushed
+    //        var validateKey = data.validateKey; //validateKey used for app to verify feedId is published by this app/game
+    //        var state = data.state;
+    //        //if game/app need to validate feedId (with validateKey), app/game must redirect to another page with param feedid and validateKey and
+    //        //use socialapi to validate feedId, with successful, app/game will know exactly user published feed successful.
+    //        alert("feedid=" + feedId + "-validateKey=" + validateKey + "-state=" + state);
     }
 }
 function randomFromInterval(from,to)
@@ -200,37 +211,44 @@ function delItem(id){
     });
 }
 function feedWall(id){
-    $(document).ready(function(){                      
-        var uID=$("#usrId").val();            
-        var statusText =$('#itemContent'+id).html();            
-        var uId_to = $('#usrId').val();
-        $.post('/feedItem', {
-            userIdTo : uId_to,
-            itemContent : statusText
-        }, function(data){
-            zmf.ui(
-            {
-                pub_key:"eba443348315d8c27c8c070cb2a40a52",
-                sign_key:data,
-                action_id:1,
-                uid_to: uId_to,
-                object_id: "",
-                attach_name: "",
-                attach_href: "",
-                attach_caption: "",
-                attach_des: statusText,
-                media_type:1,
-                media_img:"http://d.f12.photo.zdn.vn/upload/original/2012/10/11/13/34/1349937282850465_574_574.jpg",
-                media_src:"",
-                actlink_text:"",
-                actlink_href:"",
-                tpl_id: 3,
-                comment:statusText,
-                suggestion: ["hello1","hello2"]
-            });      
-        }
-        );               
-    });
+    if(isFeed==true){    
+        $(document).ready(function(){                      
+            var uID=$("#usrId").val();            
+            var statusText =$('#itemContent'+id).html();            
+            var uId_to = $('#usrId').val();
+            $.post('/feedItem', {
+                userIdTo : uId_to,
+                itemContent : statusText
+            }, function(data){
+                zmf.ui(
+                {
+                    pub_key:"eba443348315d8c27c8c070cb2a40a52",
+                    sign_key:data,
+                    action_id:1,
+                    uid_to: uId_to,
+                    object_id: "",
+                    attach_name: "",
+                    attach_href: "",
+                    attach_caption: "",
+                    attach_des: statusText,
+                    media_type:1,
+                    media_img:"http://d.f12.photo.zdn.vn/upload/original/2012/10/11/13/34/1349937282850465_574_574.jpg",
+                    media_src:"",
+                    actlink_text:"",
+                    actlink_href:"",
+                    tpl_id: 3,
+                    comment:statusText,
+                    suggestion: ["hello1","hello2"],
+                    callback:"fCallback"
+                });      
+            }
+            );               
+        });
+    }
+    else{
+        alert("De tiep tuc, vui long doi sau 3s!")
+        setTimeout("isUserFeed();",3000);
+    }
 }
 function checkUserLike(itemID){   
     for(var i=0;i<myItemsLike.length;i++){          
@@ -440,72 +458,83 @@ $(document).ready(function() {
     //alert(value + "userID:"+uID);
     });
         
-    $("#lz-feed-button").click(function(){            
-        var statusText =$('#ContentItem').html();            
-        var uId_to = $('#usrId').val();
-        var objId=$("#lz-save-button").attr("rel");
-        //alert(objId);
-        $.post('/feedItem', {
-            userIdTo : uId_to,
-            itemContent : statusText
-        }, function(data){
-            zmf.ui(
-            {
-                pub_key:"eba443348315d8c27c8c070cb2a40a52",
-                sign_key:data,
-                action_id:1,
-                uid_to: uId_to,
-                object_id: "",
-                attach_name: "",
-                attach_href: "",
-                attach_caption: "",
-                attach_des: statusText,
-                media_type:1,
-                media_img:"http://d.f12.photo.zdn.vn/upload/original/2012/10/11/13/34/1349937282850465_574_574.jpg",
-                media_src:"",
-                actlink_text:"",
-                actlink_href:"",
-                tpl_id: 3,
-                comment:statusText,
-                suggestion: ["hello1","hello2"]
-            });      
+    $("#lz-feed-button").click(function(){ 
+        if(isFeed==true){
+            var statusText =$('#ContentItem').html();            
+            var uId_to = $('#usrId').val();
+            var objId=$("#lz-save-button").attr("rel");
+            //alert(objId);
+            $.post('/feedItem', {
+                userIdTo : uId_to,
+                itemContent : statusText
+            }, function(data){
+                zmf.ui(
+                {
+                    pub_key:"eba443348315d8c27c8c070cb2a40a52",
+                    sign_key:data,
+                    action_id:1,
+                    uid_to: uId_to,
+                    object_id: "",
+                    attach_name: "",
+                    attach_href: "",
+                    attach_caption: "",
+                    attach_des: statusText,
+                    media_type:1,
+                    media_img:"http://d.f12.photo.zdn.vn/upload/original/2012/10/11/13/34/1349937282850465_574_574.jpg",
+                    media_src:"",
+                    actlink_text:"",
+                    actlink_href:"",
+                    tpl_id: 3,
+                    comment:statusText,
+                    suggestion: ["hello1","hello2"],
+                    callback:"fCallback"
+                });      
+            });
+        }else{
+            alert("De tiep tuc, vui long doisau 3s!")
+            setTimeout("isUserFeed();",3000);
         }
-        );
         
     });
     $(".feedItemWall").click(function(){  
-        var itemID=$(this).attr("rel");
-        var statusText =$('#itemID'+itemID).html();            
-        var uId_to = $('#usrId').val();
-        //var objId=$("#lz-save-button").attr("rel");
-        //alert(objId);
-        $.post('/feedItem', {
-            userIdTo : uId_to,
-            itemContent : statusText
-        }, function(data){
-            zmf.ui(
-            {
-                pub_key:"eba443348315d8c27c8c070cb2a40a52",
-                sign_key:data,
-                action_id:1,
-                uid_to: uId_to,
-                object_id: "",
-                attach_name: "",
-                attach_href: "",
-                attach_caption: "",
-                attach_des: statusText,
-                media_type:1,
-                media_img:"http://d.f12.photo.zdn.vn/upload/original/2012/10/11/13/34/1349937282850465_574_574.jpg",
-                media_src:"",
-                actlink_text:"",
-                actlink_href:"",
-                tpl_id: 3,
-                comment:statusText,
-                suggestion: ["hello1","hello2"]
-            });      
+        if(isFeed==true){
+            var itemID=$(this).attr("rel");
+            var statusText =$('#itemID'+itemID).html();            
+            var uId_to = $('#usrId').val();
+            //var objId=$("#lz-save-button").attr("rel");
+            //alert(objId);
+            $.post('/feedItem', {
+                userIdTo : uId_to,
+                itemContent : statusText
+            }, function(data){
+                zmf.ui(
+                {
+                    pub_key:"eba443348315d8c27c8c070cb2a40a52",
+                    sign_key:data,
+                    action_id:1,
+                    uid_to: uId_to,
+                    object_id: "",
+                    attach_name: "",
+                    attach_href: "",
+                    attach_caption: "",
+                    attach_des: statusText,
+                    media_type:1,
+                    media_img:"http://d.f12.photo.zdn.vn/upload/original/2012/10/11/13/34/1349937282850465_574_574.jpg",
+                    media_src:"",
+                    actlink_text:"",
+                    actlink_href:"",
+                    tpl_id: 3,
+                    comment:statusText,
+                    suggestion: ["hello1","hello2"],
+                    callback:"fCallback"
+                });      
+            }
+            );
         }
-        );
-        
+        else{
+            alert("De tiep tuc, vui long doisau 3s!")
+            setTimeout("isUserFeed();",3000);
+        }        
     });
    
     $(".lztabContents").hide(); // Ẩn toàn bộ nội dung của tab
