@@ -118,7 +118,7 @@ public class IndexControllerServlet extends HttpServlet {
             TemplateDataDictionary listTagSection = dic.addSection("listTag_section");
             listTagSection.setVariable("tagID", listTag.get(i).tagID);
             listTagSection.setVariable("tagName", listTag.get(i).tagName);
-
+            
         }
 
         int itemTagSize = (int) handler.itemdbSize();
@@ -133,11 +133,10 @@ public class IndexControllerServlet extends HttpServlet {
                 listPageSection.setVariable("page", "<a href=\"#\" class=\"graybutton pagelink active\" rel=\"" + page + "\">" + page + "</a>");
             } else {
                 TemplateDataDictionary listPageSection = dic.addSection("listPage_section");
-                listPageSection.setVariable("page", "<a href=\"#\" onclick='itemList(" + i + ");' class=\"graybutton pagelink\" rel=\"" + i + "\">" + i + "</a>");
+                listPageSection.setVariable("page", "<a href=\"javascript:paging("+i+");\"  class=\"graybutton pagelink\" rel=\"" + i + "\">" + i + "</a>");
             }
         }
-        dic.setVariable("onclick_first", "itemList(1);");
-        dic.setVariable("onclick_last", "itemList(" + pageCount + ");");
+       
         dic.setVariable("last", String.valueOf(pageCount));
 
         Template template = this.getCTemplate();
