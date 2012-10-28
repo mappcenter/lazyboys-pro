@@ -1,8 +1,6 @@
 package httpservice;
 
-import com.vng.jcore.common.Config;
-import frontend.MiddlewareHandler;
-import frontend.MyTask;
+import frontend.*;
 import java.lang.management.ManagementFactory;
 import java.util.Timer;
 import org.apache.log4j.Logger;
@@ -13,7 +11,6 @@ import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
-import frontend.*;
 
 public class WebServer {
 
