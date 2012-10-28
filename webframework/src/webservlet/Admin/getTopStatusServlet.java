@@ -72,7 +72,6 @@ public class getTopStatusServlet extends HttpServlet {
 
     private String render(HttpServletRequest req) throws Exception {
         int page = 1;
-
         int itemPerPage = Integer.valueOf(Config.getParam("paging", "itemPerPage"));
 
         try {
@@ -83,42 +82,32 @@ public class getTopStatusServlet extends HttpServlet {
         } catch (Exception ex) {
             return "Error: " + ex.getMessage();
         }
-
         List<Item> listItem = handler.getTopItems(300);
         listItem = listItem.subList((page - 1) * itemPerPage, (page - 1) * itemPerPage + itemPerPage);
-
         TemplateDataDictionary dic = TemplateDictionary.create();
         Gson gson = new Gson();
-
         for (int i = 0; i < listItem.size(); i++) {
             TemplateDataDictionary listsection = dic.addSection("list_section");
             listsection.setVariable("itemContent", listItem.get(i).content);
             listsection.setVariable("itemID", listItem.get(i).itemID);
             listsection.setVariable("tagIDs", gson.toJson(listItem.get(i).tagsID));
         }
-
         int pageCount = (int) Math.ceil((float) 300 / itemPerPage);
-
+        System.out.println(pageCount);
         int start = Math.max(page - 4, 1);
         int end = Math.min(page + 4, pageCount);
-
         for (int i = start; i <= end; i++) {
             if (i == page) {
                 TemplateDataDictionary listPageSection = dic.addSection("listPage_section");
                 listPageSection.setVariable("page", "<a href=\"#\" class=\"graybutton pagelink active\" rel=\"" + page + "\">" + page + "</a>");
             } else {
                 TemplateDataDictionary listPageSection = dic.addSection("listPage_section");
-                listPageSection.setVariable("page", "<a href=\"#\" onclick='topItemList(" + i + ");' class=\"graybutton pagelink\" rel=\"" + i + "\">" + i + "</a>");
+                listPageSection.setVariable("page", "<a href=\"javascript:paging(" + i + ");\" class=\"graybutton pagelink\" rel=\"" + i + "\">" + i + "</a>");
             }
         }
-        dic.setVariable("onclick_first", "topItemList(1);");
-        dic.setVariable("onclick_last", "topItemList(" + pageCount + ");");
         dic.setVariable("last", String.valueOf(pageCount));
-
         Template template = this.getCTemplate();
         String content = template.renderToString(dic);
-
         return content;
-
     }
 }
