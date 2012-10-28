@@ -9,14 +9,13 @@
 
 <tbody id="listItems">
     {{#list_section}}
-    <tr>
+    <tr id="{{itemID}}">
         <td><input type="checkbox" alt="{{itemID}}"/></td>
         <td><a href="#">{{itemID}}</a></td>
         <td>{{itemContent}}</td>
         <td>
             <input type="hidden" id="hidden{{itemID}}" value='{{tagIDs}}'/>
-            <a href="#"  rel="EditItem"><img src="http://localhost:81/images/icons/pencil.png" alt="Edit" /></a>
-
+            <a href="javascript:editItem({{itemID}});" rel="EditItem"><img src="http://localhost:81/images/icons/pencil.png" alt="Edit" /></a>
             <a href="#" class="confirmation" rel="{{itemID}}"><img src="http://localhost:81/images/icons/cross.png" alt="Delete" /></a>
 
         </td>
@@ -28,11 +27,11 @@
     <tr>
         <td colspan="4">	
             <div class="pagination" id="pagination" >
-                <a href="#first" onclick="{{onclick_first}}" rel="1">first</a>
+                <a href="javascript:paging(1);" rel="1">first</a>
                 {{#listPage_section}}
                 {{page}}
                 {{/listPage_section}}
-                <a href="#last" onclick="{{onclick_last}}" rel="{{last}}">last</a>
+                <a href="javascript:paging({{last}});" rel="{{last}}">last</a>
             </div>
             <div class="bulk-actions" onclick="deleteItem();">
                 <a href="#" class="graybutton">Delete selected</a>
