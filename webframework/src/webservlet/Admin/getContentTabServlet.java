@@ -4,6 +4,7 @@
  */
 package webservlet.Admin;
 
+import com.google.gson.Gson;
 import com.vng.jcore.common.Config;
 import com.vng.jcore.profiler.ProfilerLog;
 import frontend.Item;
@@ -120,12 +121,14 @@ public class getContentTabServlet extends HttpServlet {
             return "Error: " + ex.getMessage();
         }
         List<Item> listItem = handler.getItemsPage(page, itemPerPage, tagID);
-        int size = listItem.size();
+        Gson gson = new Gson();
+        
         TemplateDataDictionary dic = TemplateDictionary.create();
         for (int i = 0; i < listItem.size(); i++) {
             TemplateDataDictionary listsection = dic.addSection("list_section");
             listsection.setVariable("itemContent", listItem.get(i).content);
             listsection.setVariable("itemID", listItem.get(i).itemID);
+            listsection.setVariable("tagIDs", gson.toJson(listItem.get(i).tagsID));
         }
 
         int itemTagSize;
@@ -145,11 +148,9 @@ public class getContentTabServlet extends HttpServlet {
                 listPageSection.setVariable("page", "<a href=\"#\" class=\"graybutton pagelink active\" rel=\"" + page + "\">" + page + "</a>");
             } else {
                 TemplateDataDictionary listPageSection = dic.addSection("listPage_section");
-                listPageSection.setVariable("page", "<a href=\"#\" onclick='itemList(" + i + ");' class=\"graybutton pagelink\" rel=\"" + i + "\">" + i + "</a>");
+                listPageSection.setVariable("page", "<a href=\"javascript:paging("+i+");\" class=\"graybutton pagelink\" rel=\"" + i + "\">" + i + "</a>");
             }
         }
-        dic.setVariable("onclick_first", "itemList(1);");
-        dic.setVariable("onclick_last", "itemList(" + pageCount + ");");
         dic.setVariable("last", String.valueOf(pageCount));
 
         Template template = this.getItemTemplate();
