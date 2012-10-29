@@ -112,14 +112,8 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
 
     @Override
     public List<Tag> getTopTags(long number) throws TException {
-        if (number != numberTopTags) {
-            System.out.println("get top tag from cache ...");
-            List<Tag> result = handler.getTopTags(number);
-            numberTopTags = number;
-            return result;
-        }
-        System.out.println("get top tag from backend ...");
-        return (List<Tag>) local_cache.get("getTopTags");
+        List<Tag> result = handler.getTopTags(number);
+        return result;
     }
 
     /**
@@ -226,17 +220,31 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
 
     @Override
     public boolean deleteItem(String itemID) throws TException {
-        return handler.deleteItem(itemID);
+        boolean result = handler.deleteItem(itemID);
+        if (result) {
+            local_cache.remove("item" + itemID);
+        }
+        return result;
     }
 
     @Override
     public boolean deleteAllItem(List<String> itemIDs) throws TException {
-        return handler.deleteAllItem(itemIDs);
+        boolean result = handler.deleteAllItem(itemIDs);
+        if (result) {
+            for (String itemID : itemIDs) {
+                local_cache.remove("item" + itemID);
+            }
+        }
+        return result;
     }
 
     @Override
     public boolean editItem(String itemID, String newItemValue, List<String> newTagIDs) throws TException {
-        return handler.editItem(itemID, newItemValue, newTagIDs);
+        boolean result = handler.editItem(itemID, newItemValue, newTagIDs);
+        if (result) {
+            local_cache.remove("item" + itemID);
+        }
+        return result;
     }
 
     @Override
@@ -251,7 +259,17 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
 
     @Override
     public List<Item> getTopItems(long number) throws TException {
-        return handler.getTopItems(number);
+        if (local_cache.containsKey("getTopItems")) {
+            List<Item> listItem = (List<Item>) local_cache.get("getTopItems");                  
+            if (number <= listItem.size()) {
+                System.out.println("get top item from cache");
+                return listItem.subList(0, (int) number - 1);
+            }
+        }
+        System.out.println("get top item from backend");
+        List<Item> listItem =handler.getTopItems(number);
+        local_cache.put("getTopItems", listItem);
+        return listItem;
     }
 
     @Override
@@ -261,22 +279,34 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
 
     @Override
     public boolean blockUser(String userID) throws TException {
-        return blockUser(userID);
+        boolean result = handler.blockUser(userID);
+        if (result && local_cache.containsKey("user" + userID)) {
+            local_cache.remove("user" + userID);
+        }
+        return result;
     }
 
     @Override
     public boolean unblockUser(String userID) throws TException {
-        return unblockUser(userID);
+        boolean result = handler.unblockUser(userID);
+        if (result && local_cache.containsKey("user" + userID)) {
+            local_cache.remove("user" + userID);
+        }
+        return result;
     }
 
     @Override
     public boolean deleteUser(String userID) throws TException {
-        return handler.deleteUser(userID);
+        boolean result = handler.deleteUser(userID);
+        if (result && local_cache.containsKey("user" + userID)) {
+            local_cache.remove("user" + userID);
+        }
+        return result;
+
     }
 
     @Override
     public Item getItemFromItemID(String itemID) throws TException {
-
         if (local_cache.containsKey("item" + itemID)) {
             System.out.println("get item " + itemID + " from cache ...");
             return (Item) local_cache.get("item" + itemID);
@@ -289,7 +319,12 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
 
     @Override
     public List<Item> getItemsFromListItemID(List<String> itemIDs) throws TException {
-        return handler.getItemsFromListItemID(itemIDs);
+        List<Item> listItem = new ArrayList<>();
+        for (String itemID : itemIDs) {
+            Item item = getItemFromItemID(itemID);
+            listItem.add(item);
+        }
+        return listItem;
     }
 
     @Override
@@ -319,11 +354,19 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
 
     @Override
     public boolean editUser(String userID, String userToken, int userRole) throws TException {
-        return handler.editUser(userID, userToken, userRole);
+        boolean result = handler.editUser(userID, userToken, userRole);
+        if (result && local_cache.containsKey("user" + userID)) {
+            local_cache.remove("user" + userID);
+        }
+        return result;
+
     }
 
     @Override
     public boolean deleteAllUser() throws TException {
+        if (local_cache.containsKey("getAllUser")) {
+            local_cache.remove("getAllUser");
+        }
         return handler.deleteAllUser();
     }
 
@@ -334,7 +377,16 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
 
     @Override
     public List<Item> getFavouriteItems(String userID, long number) throws TException {
-        return handler.getFavouriteItems(userID, number);
+        List<Item> listItem = new ArrayList<>();
+        if (local_cache.containsKey("getFavouriteItems" + userID)) {
+            System.out.println("get favorite items of user: " + userID + " from cache");
+            listItem = (List<Item>) local_cache.get("getFavouriteItems" + userID);
+            return listItem;
+        }
+        listItem = handler.getFavouriteItems(userID, number);
+        local_cache.put("getFavouriteItems" + userID, listItem);
+        System.out.println("get favorite items of user: " + userID + " from backend");
+        return listItem;
     }
 
     @Override
@@ -344,57 +396,126 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
 
     @Override
     public boolean insertFavouriteItem(String userID, String itemID) throws TException {
+        if (local_cache.containsKey("getFavouriteItems" + userID)) {
+            local_cache.remove("getFavouriteItems" + userID);
+        }
         return handler.insertFavouriteItem(userID, itemID);
     }
 
     @Override
     public boolean deleteFavouriteItem(String userID, String itemID) throws TException {
+        if (local_cache.containsKey("getFavouriteItems" + userID)) {
+            local_cache.remove("getFavouriteItems" + userID);
+        }
         return handler.deleteFavouriteItem(userID, itemID);
     }
 
     @Override
     public long itemdbSize() throws TException {
-        return handler.itemdbSize();
+        if (local_cache.containsKey("itemdbSize")) {
+            System.out.println("get itemdb size from cache");
+            return (long) local_cache.get("itemdbSize");
+        }
+        long size = handler.itemdbSize();
+        System.out.println("get itemdb size from backend");
+        local_cache.put("itemdbSize", size);
+        return size;
     }
 
     @Override
     public long tagdbSize() throws TException {
-        return handler.tagdbSize();
+        if (local_cache.containsKey("tagdbSize")) {
+            System.out.println("get tagdb size from cache");
+            return (long) local_cache.get("tagdbSize");
+        }
+        long size = handler.tagdbSize();
+        System.out.println("get tagdb size from backend");
+        local_cache.put("tagdbSize", size);
+        return size;
     }
 
     @Override
     public long itemtagdbSize() throws TException {
-        return handler.itemtagdbSize();
+        if (local_cache.containsKey("itemtagdbSize")) {
+            System.out.println("get itemtagdb size from cache");
+            return (long) local_cache.get("itemtagdbSize");
+        }
+        long size = handler.itemtagdbSize();
+        System.out.println("get itemtagdb size from backend");
+        local_cache.put("itemtagdbSize", size);
+        return size;
     }
 
     @Override
     public long itemtagSize(String tagID) throws TException {
-        return handler.itemtagSize(tagID);
+        if (local_cache.containsKey("itemtagSize" + tagID)) {
+            System.out.println("get itemtag size of tag " + tagID + " from cache");
+            return (long) local_cache.get("itemtagSize" + tagID);
+        }
+        long size = handler.itemtagSize(tagID);
+        System.out.println("get itemtag size of tag " + tagID + "f rom backend");
+        local_cache.put("itemtagSize" + tagID, size);
+        return size;
     }
 
     @Override
     public long userdbSize() throws TException {
-        return handler.userdbSize();
+        if (local_cache.containsKey("userdbSize")) {
+            System.out.println("get userdb size from cache");
+            return (long) local_cache.get("userdbSize");
+        }
+        long size = handler.userdbSize();
+        System.out.println("get userdb size from backend");
+        local_cache.put("userdbSize", size);
+        return size;
     }
 
     @Override
     public long itemsLikeSize(String userID) throws TException {
-        return handler.itemsLikeSize(userID);
+        if (local_cache.containsKey("itemsLikeSize" + userID)) {
+            System.out.println("get itemsLikeSize from cache");
+            return (long) local_cache.get("itemsLikeSize" + userID);
+        }
+        long size = handler.itemsLikeSize(userID);
+        System.out.println("get itemsLikeSize from backend");
+        local_cache.put("itemsLikeSize" + userID, size);
+        return size;
     }
 
     @Override
     public long itemsDislikeSize(String userID) throws TException {
-        return handler.itemsDislikeSize(userID);
+        if (local_cache.containsKey("itemsDislikeSize" + userID)) {
+            System.out.println("get itemsDislikeSize from cache");
+            return (long) local_cache.get("itemsDislikeSize" + userID);
+        }
+        long size = handler.itemsDislikeSize(userID);
+        System.out.println("get itemsDislikeSize from backend");
+        local_cache.put("itemsDislikeSize" + userID, size);
+        return size;
     }
 
     @Override
     public long favouriteItemsSize(String userID) throws TException {
-        return handler.favouriteItemsSize(userID);
+        if (local_cache.containsKey("favouriteItemsSize" + userID)) {
+            System.out.println("get favouriteItemsSize from cache");
+            return (long) local_cache.get("favouriteItemsSize" + userID);
+        }
+        long size = handler.favouriteItemsSize(userID);
+        System.out.println("get favouriteItemsSize from backend");
+        local_cache.put("favouriteItemsSize" + userID, size);
+        return size;
     }
 
     @Override
     public List<String> getAllItemsIDLike(String userID) throws TException {
-        return handler.getAllItemsIDLike(userID);
+        if (local_cache.containsKey("getAllItemsIDLike" + userID)) {
+            System.out.println("get getAllItemsIDLike from cache");
+            return (List<String>) local_cache.get("getAllItemsIDLike" + userID);
+        }
+        List<String> listItemID = handler.getAllItemsIDDislike(userID);
+        System.out.println("get favouriteItemsSize from backend");
+        local_cache.put("getAllItemsIDLike" + userID, listItemID);
+        return listItemID;
     }
 
     @Override
@@ -439,12 +560,31 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
 
     @Override
     public User getUser(String userID) throws TException {
-        return handler.getUser(userID);
+        User user;
+        if (local_cache.containsKey("user" + userID)) {
+            System.out.println("get user " + userID + "from cache ...");
+            user = (User) local_cache.get("user" + userID);
+            return user;
+        }
+        System.out.println("get user " + userID + "from backend ...");
+        user = handler.getUser(userID);
+        local_cache.put("user" + userID, user);
+        return user;
     }
 
     @Override
     public List<String> getAllUser() throws TException {
-        return handler.getAllUser();
+        List<String> listUser;
+        if (local_cache.containsKey("getAllUser")) {
+            System.out.println("get all user from cache ...");
+            listUser = (List<String>) local_cache.get("getAllUser");
+            return listUser;
+        }
+        //start cache
+        System.out.println("get all user from backend ...");
+        listUser = handler.getAllUser();
+        local_cache.put("getAllUser", listUser);
+        return listUser;
     }
 
     @Override
