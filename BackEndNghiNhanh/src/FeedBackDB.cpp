@@ -402,6 +402,8 @@ vector<string> FeedBackDB::friendLikesItemID(string itemID, vector<string> listF
         it = find(user.itemsLike.begin(), user.itemsLike.end(), itemID);
         if (it != user.itemsLike.end()) {
             listReturn.push_back(listFriends[i]);
+            if (listReturn.size() > 10)
+                break;
         }
     }
     return listReturn;
