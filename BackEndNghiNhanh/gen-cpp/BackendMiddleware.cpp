@@ -6112,6 +6112,248 @@ uint32_t BackendMiddleware_getItemsPageKeyword_presult::read(::apache::thrift::p
   return xfer;
 }
 
+uint32_t BackendMiddleware_getItemsPageKeywordOfTag_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->keyWord);
+          this->__isset.keyWord = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->tagID);
+          this->__isset.tagID = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->pageNumber);
+          this->__isset.pageNumber = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 4:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->itemNumber);
+          this->__isset.itemNumber = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t BackendMiddleware_getItemsPageKeywordOfTag_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("BackendMiddleware_getItemsPageKeywordOfTag_args");
+
+  xfer += oprot->writeFieldBegin("keyWord", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString(this->keyWord);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("tagID", ::apache::thrift::protocol::T_STRING, 2);
+  xfer += oprot->writeString(this->tagID);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("pageNumber", ::apache::thrift::protocol::T_I64, 3);
+  xfer += oprot->writeI64(this->pageNumber);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("itemNumber", ::apache::thrift::protocol::T_I64, 4);
+  xfer += oprot->writeI64(this->itemNumber);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t BackendMiddleware_getItemsPageKeywordOfTag_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("BackendMiddleware_getItemsPageKeywordOfTag_pargs");
+
+  xfer += oprot->writeFieldBegin("keyWord", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString((*(this->keyWord)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("tagID", ::apache::thrift::protocol::T_STRING, 2);
+  xfer += oprot->writeString((*(this->tagID)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("pageNumber", ::apache::thrift::protocol::T_I64, 3);
+  xfer += oprot->writeI64((*(this->pageNumber)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("itemNumber", ::apache::thrift::protocol::T_I64, 4);
+  xfer += oprot->writeI64((*(this->itemNumber)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t BackendMiddleware_getItemsPageKeywordOfTag_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_LIST) {
+          {
+            this->success.clear();
+            uint32_t _size186;
+            ::apache::thrift::protocol::TType _etype189;
+            xfer += iprot->readListBegin(_etype189, _size186);
+            this->success.resize(_size186);
+            uint32_t _i190;
+            for (_i190 = 0; _i190 < _size186; ++_i190)
+            {
+              xfer += this->success[_i190].read(iprot);
+            }
+            xfer += iprot->readListEnd();
+          }
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t BackendMiddleware_getItemsPageKeywordOfTag_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("BackendMiddleware_getItemsPageKeywordOfTag_result");
+
+  if (this->__isset.success) {
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
+    {
+      xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->success.size()));
+      std::vector<Item> ::const_iterator _iter191;
+      for (_iter191 = this->success.begin(); _iter191 != this->success.end(); ++_iter191)
+      {
+        xfer += (*_iter191).write(oprot);
+      }
+      xfer += oprot->writeListEnd();
+    }
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t BackendMiddleware_getItemsPageKeywordOfTag_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_LIST) {
+          {
+            (*(this->success)).clear();
+            uint32_t _size192;
+            ::apache::thrift::protocol::TType _etype195;
+            xfer += iprot->readListBegin(_etype195, _size192);
+            (*(this->success)).resize(_size192);
+            uint32_t _i196;
+            for (_i196 = 0; _i196 < _size192; ++_i196)
+            {
+              xfer += (*(this->success))[_i196].read(iprot);
+            }
+            xfer += iprot->readListEnd();
+          }
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
 uint32_t BackendMiddleware_getItemKeywordTag_args::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
@@ -6218,14 +6460,14 @@ uint32_t BackendMiddleware_getItemKeywordTag_result::read(::apache::thrift::prot
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size186;
-            ::apache::thrift::protocol::TType _etype189;
-            xfer += iprot->readListBegin(_etype189, _size186);
-            this->success.resize(_size186);
-            uint32_t _i190;
-            for (_i190 = 0; _i190 < _size186; ++_i190)
+            uint32_t _size197;
+            ::apache::thrift::protocol::TType _etype200;
+            xfer += iprot->readListBegin(_etype200, _size197);
+            this->success.resize(_size197);
+            uint32_t _i201;
+            for (_i201 = 0; _i201 < _size197; ++_i201)
             {
-              xfer += this->success[_i190].read(iprot);
+              xfer += this->success[_i201].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -6256,10 +6498,10 @@ uint32_t BackendMiddleware_getItemKeywordTag_result::write(::apache::thrift::pro
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->success.size()));
-      std::vector<Item> ::const_iterator _iter191;
-      for (_iter191 = this->success.begin(); _iter191 != this->success.end(); ++_iter191)
+      std::vector<Item> ::const_iterator _iter202;
+      for (_iter202 = this->success.begin(); _iter202 != this->success.end(); ++_iter202)
       {
-        xfer += (*_iter191).write(oprot);
+        xfer += (*_iter202).write(oprot);
       }
       xfer += oprot->writeListEnd();
     }
@@ -6294,14 +6536,14 @@ uint32_t BackendMiddleware_getItemKeywordTag_presult::read(::apache::thrift::pro
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size192;
-            ::apache::thrift::protocol::TType _etype195;
-            xfer += iprot->readListBegin(_etype195, _size192);
-            (*(this->success)).resize(_size192);
-            uint32_t _i196;
-            for (_i196 = 0; _i196 < _size192; ++_i196)
+            uint32_t _size203;
+            ::apache::thrift::protocol::TType _etype206;
+            xfer += iprot->readListBegin(_etype206, _size203);
+            (*(this->success)).resize(_size203);
+            uint32_t _i207;
+            for (_i207 = 0; _i207 < _size203; ++_i207)
             {
-              xfer += (*(this->success))[_i196].read(iprot);
+              xfer += (*(this->success))[_i207].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -6412,14 +6654,14 @@ uint32_t BackendMiddleware_getTopItems_result::read(::apache::thrift::protocol::
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size197;
-            ::apache::thrift::protocol::TType _etype200;
-            xfer += iprot->readListBegin(_etype200, _size197);
-            this->success.resize(_size197);
-            uint32_t _i201;
-            for (_i201 = 0; _i201 < _size197; ++_i201)
+            uint32_t _size208;
+            ::apache::thrift::protocol::TType _etype211;
+            xfer += iprot->readListBegin(_etype211, _size208);
+            this->success.resize(_size208);
+            uint32_t _i212;
+            for (_i212 = 0; _i212 < _size208; ++_i212)
             {
-              xfer += this->success[_i201].read(iprot);
+              xfer += this->success[_i212].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -6450,10 +6692,10 @@ uint32_t BackendMiddleware_getTopItems_result::write(::apache::thrift::protocol:
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->success.size()));
-      std::vector<Item> ::const_iterator _iter202;
-      for (_iter202 = this->success.begin(); _iter202 != this->success.end(); ++_iter202)
+      std::vector<Item> ::const_iterator _iter213;
+      for (_iter213 = this->success.begin(); _iter213 != this->success.end(); ++_iter213)
       {
-        xfer += (*_iter202).write(oprot);
+        xfer += (*_iter213).write(oprot);
       }
       xfer += oprot->writeListEnd();
     }
@@ -6488,14 +6730,14 @@ uint32_t BackendMiddleware_getTopItems_presult::read(::apache::thrift::protocol:
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size203;
-            ::apache::thrift::protocol::TType _etype206;
-            xfer += iprot->readListBegin(_etype206, _size203);
-            (*(this->success)).resize(_size203);
-            uint32_t _i207;
-            for (_i207 = 0; _i207 < _size203; ++_i207)
+            uint32_t _size214;
+            ::apache::thrift::protocol::TType _etype217;
+            xfer += iprot->readListBegin(_etype217, _size214);
+            (*(this->success)).resize(_size214);
+            uint32_t _i218;
+            for (_i218 = 0; _i218 < _size214; ++_i218)
             {
-              xfer += (*(this->success))[_i207].read(iprot);
+              xfer += (*(this->success))[_i218].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -6622,14 +6864,14 @@ uint32_t BackendMiddleware_getTopItemsofTag_result::read(::apache::thrift::proto
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size208;
-            ::apache::thrift::protocol::TType _etype211;
-            xfer += iprot->readListBegin(_etype211, _size208);
-            this->success.resize(_size208);
-            uint32_t _i212;
-            for (_i212 = 0; _i212 < _size208; ++_i212)
+            uint32_t _size219;
+            ::apache::thrift::protocol::TType _etype222;
+            xfer += iprot->readListBegin(_etype222, _size219);
+            this->success.resize(_size219);
+            uint32_t _i223;
+            for (_i223 = 0; _i223 < _size219; ++_i223)
             {
-              xfer += this->success[_i212].read(iprot);
+              xfer += this->success[_i223].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -6660,10 +6902,10 @@ uint32_t BackendMiddleware_getTopItemsofTag_result::write(::apache::thrift::prot
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->success.size()));
-      std::vector<Item> ::const_iterator _iter213;
-      for (_iter213 = this->success.begin(); _iter213 != this->success.end(); ++_iter213)
+      std::vector<Item> ::const_iterator _iter224;
+      for (_iter224 = this->success.begin(); _iter224 != this->success.end(); ++_iter224)
       {
-        xfer += (*_iter213).write(oprot);
+        xfer += (*_iter224).write(oprot);
       }
       xfer += oprot->writeListEnd();
     }
@@ -6698,14 +6940,14 @@ uint32_t BackendMiddleware_getTopItemsofTag_presult::read(::apache::thrift::prot
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size214;
-            ::apache::thrift::protocol::TType _etype217;
-            xfer += iprot->readListBegin(_etype217, _size214);
-            (*(this->success)).resize(_size214);
-            uint32_t _i218;
-            for (_i218 = 0; _i218 < _size214; ++_i218)
+            uint32_t _size225;
+            ::apache::thrift::protocol::TType _etype228;
+            xfer += iprot->readListBegin(_etype228, _size225);
+            (*(this->success)).resize(_size225);
+            uint32_t _i229;
+            for (_i229 = 0; _i229 < _size225; ++_i229)
             {
-              xfer += (*(this->success))[_i218].read(iprot);
+              xfer += (*(this->success))[_i229].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -6832,14 +7074,14 @@ uint32_t BackendMiddleware_getFavouriteItems_result::read(::apache::thrift::prot
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size219;
-            ::apache::thrift::protocol::TType _etype222;
-            xfer += iprot->readListBegin(_etype222, _size219);
-            this->success.resize(_size219);
-            uint32_t _i223;
-            for (_i223 = 0; _i223 < _size219; ++_i223)
+            uint32_t _size230;
+            ::apache::thrift::protocol::TType _etype233;
+            xfer += iprot->readListBegin(_etype233, _size230);
+            this->success.resize(_size230);
+            uint32_t _i234;
+            for (_i234 = 0; _i234 < _size230; ++_i234)
             {
-              xfer += this->success[_i223].read(iprot);
+              xfer += this->success[_i234].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -6870,10 +7112,10 @@ uint32_t BackendMiddleware_getFavouriteItems_result::write(::apache::thrift::pro
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->success.size()));
-      std::vector<Item> ::const_iterator _iter224;
-      for (_iter224 = this->success.begin(); _iter224 != this->success.end(); ++_iter224)
+      std::vector<Item> ::const_iterator _iter235;
+      for (_iter235 = this->success.begin(); _iter235 != this->success.end(); ++_iter235)
       {
-        xfer += (*_iter224).write(oprot);
+        xfer += (*_iter235).write(oprot);
       }
       xfer += oprot->writeListEnd();
     }
@@ -6908,14 +7150,14 @@ uint32_t BackendMiddleware_getFavouriteItems_presult::read(::apache::thrift::pro
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size225;
-            ::apache::thrift::protocol::TType _etype228;
-            xfer += iprot->readListBegin(_etype228, _size225);
-            (*(this->success)).resize(_size225);
-            uint32_t _i229;
-            for (_i229 = 0; _i229 < _size225; ++_i229)
+            uint32_t _size236;
+            ::apache::thrift::protocol::TType _etype239;
+            xfer += iprot->readListBegin(_etype239, _size236);
+            (*(this->success)).resize(_size236);
+            uint32_t _i240;
+            for (_i240 = 0; _i240 < _size236; ++_i240)
             {
-              xfer += (*(this->success))[_i229].read(iprot);
+              xfer += (*(this->success))[_i240].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -7058,14 +7300,14 @@ uint32_t BackendMiddleware_getFavouriteItemsofTag_result::read(::apache::thrift:
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size230;
-            ::apache::thrift::protocol::TType _etype233;
-            xfer += iprot->readListBegin(_etype233, _size230);
-            this->success.resize(_size230);
-            uint32_t _i234;
-            for (_i234 = 0; _i234 < _size230; ++_i234)
+            uint32_t _size241;
+            ::apache::thrift::protocol::TType _etype244;
+            xfer += iprot->readListBegin(_etype244, _size241);
+            this->success.resize(_size241);
+            uint32_t _i245;
+            for (_i245 = 0; _i245 < _size241; ++_i245)
             {
-              xfer += this->success[_i234].read(iprot);
+              xfer += this->success[_i245].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -7096,10 +7338,10 @@ uint32_t BackendMiddleware_getFavouriteItemsofTag_result::write(::apache::thrift
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->success.size()));
-      std::vector<Item> ::const_iterator _iter235;
-      for (_iter235 = this->success.begin(); _iter235 != this->success.end(); ++_iter235)
+      std::vector<Item> ::const_iterator _iter246;
+      for (_iter246 = this->success.begin(); _iter246 != this->success.end(); ++_iter246)
       {
-        xfer += (*_iter235).write(oprot);
+        xfer += (*_iter246).write(oprot);
       }
       xfer += oprot->writeListEnd();
     }
@@ -7134,14 +7376,14 @@ uint32_t BackendMiddleware_getFavouriteItemsofTag_presult::read(::apache::thrift
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size236;
-            ::apache::thrift::protocol::TType _etype239;
-            xfer += iprot->readListBegin(_etype239, _size236);
-            (*(this->success)).resize(_size236);
-            uint32_t _i240;
-            for (_i240 = 0; _i240 < _size236; ++_i240)
+            uint32_t _size247;
+            ::apache::thrift::protocol::TType _etype250;
+            xfer += iprot->readListBegin(_etype250, _size247);
+            (*(this->success)).resize(_size247);
+            uint32_t _i251;
+            for (_i251 = 0; _i251 < _size247; ++_i251)
             {
-              xfer += (*(this->success))[_i240].read(iprot);
+              xfer += (*(this->success))[_i251].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -7608,14 +7850,14 @@ uint32_t BackendMiddleware_getAllItemsIDLike_result::read(::apache::thrift::prot
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size241;
-            ::apache::thrift::protocol::TType _etype244;
-            xfer += iprot->readListBegin(_etype244, _size241);
-            this->success.resize(_size241);
-            uint32_t _i245;
-            for (_i245 = 0; _i245 < _size241; ++_i245)
+            uint32_t _size252;
+            ::apache::thrift::protocol::TType _etype255;
+            xfer += iprot->readListBegin(_etype255, _size252);
+            this->success.resize(_size252);
+            uint32_t _i256;
+            for (_i256 = 0; _i256 < _size252; ++_i256)
             {
-              xfer += iprot->readString(this->success[_i245]);
+              xfer += iprot->readString(this->success[_i256]);
             }
             xfer += iprot->readListEnd();
           }
@@ -7646,10 +7888,10 @@ uint32_t BackendMiddleware_getAllItemsIDLike_result::write(::apache::thrift::pro
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->success.size()));
-      std::vector<std::string> ::const_iterator _iter246;
-      for (_iter246 = this->success.begin(); _iter246 != this->success.end(); ++_iter246)
+      std::vector<std::string> ::const_iterator _iter257;
+      for (_iter257 = this->success.begin(); _iter257 != this->success.end(); ++_iter257)
       {
-        xfer += oprot->writeString((*_iter246));
+        xfer += oprot->writeString((*_iter257));
       }
       xfer += oprot->writeListEnd();
     }
@@ -7684,14 +7926,14 @@ uint32_t BackendMiddleware_getAllItemsIDLike_presult::read(::apache::thrift::pro
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size247;
-            ::apache::thrift::protocol::TType _etype250;
-            xfer += iprot->readListBegin(_etype250, _size247);
-            (*(this->success)).resize(_size247);
-            uint32_t _i251;
-            for (_i251 = 0; _i251 < _size247; ++_i251)
+            uint32_t _size258;
+            ::apache::thrift::protocol::TType _etype261;
+            xfer += iprot->readListBegin(_etype261, _size258);
+            (*(this->success)).resize(_size258);
+            uint32_t _i262;
+            for (_i262 = 0; _i262 < _size258; ++_i262)
             {
-              xfer += iprot->readString((*(this->success))[_i251]);
+              xfer += iprot->readString((*(this->success))[_i262]);
             }
             xfer += iprot->readListEnd();
           }
@@ -7818,14 +8060,14 @@ uint32_t BackendMiddleware_getAllItemsLike_result::read(::apache::thrift::protoc
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size252;
-            ::apache::thrift::protocol::TType _etype255;
-            xfer += iprot->readListBegin(_etype255, _size252);
-            this->success.resize(_size252);
-            uint32_t _i256;
-            for (_i256 = 0; _i256 < _size252; ++_i256)
+            uint32_t _size263;
+            ::apache::thrift::protocol::TType _etype266;
+            xfer += iprot->readListBegin(_etype266, _size263);
+            this->success.resize(_size263);
+            uint32_t _i267;
+            for (_i267 = 0; _i267 < _size263; ++_i267)
             {
-              xfer += this->success[_i256].read(iprot);
+              xfer += this->success[_i267].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -7856,10 +8098,10 @@ uint32_t BackendMiddleware_getAllItemsLike_result::write(::apache::thrift::proto
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->success.size()));
-      std::vector<Item> ::const_iterator _iter257;
-      for (_iter257 = this->success.begin(); _iter257 != this->success.end(); ++_iter257)
+      std::vector<Item> ::const_iterator _iter268;
+      for (_iter268 = this->success.begin(); _iter268 != this->success.end(); ++_iter268)
       {
-        xfer += (*_iter257).write(oprot);
+        xfer += (*_iter268).write(oprot);
       }
       xfer += oprot->writeListEnd();
     }
@@ -7894,14 +8136,14 @@ uint32_t BackendMiddleware_getAllItemsLike_presult::read(::apache::thrift::proto
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size258;
-            ::apache::thrift::protocol::TType _etype261;
-            xfer += iprot->readListBegin(_etype261, _size258);
-            (*(this->success)).resize(_size258);
-            uint32_t _i262;
-            for (_i262 = 0; _i262 < _size258; ++_i262)
+            uint32_t _size269;
+            ::apache::thrift::protocol::TType _etype272;
+            xfer += iprot->readListBegin(_etype272, _size269);
+            (*(this->success)).resize(_size269);
+            uint32_t _i273;
+            for (_i273 = 0; _i273 < _size269; ++_i273)
             {
-              xfer += (*(this->success))[_i262].read(iprot);
+              xfer += (*(this->success))[_i273].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -8278,6 +8520,244 @@ uint32_t BackendMiddleware_deleteLikedItem_presult::read(::apache::thrift::proto
   return xfer;
 }
 
+uint32_t BackendMiddleware_friendLikesItemID_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->itemID);
+          this->__isset.itemID = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_LIST) {
+          {
+            this->listFriends.clear();
+            uint32_t _size274;
+            ::apache::thrift::protocol::TType _etype277;
+            xfer += iprot->readListBegin(_etype277, _size274);
+            this->listFriends.resize(_size274);
+            uint32_t _i278;
+            for (_i278 = 0; _i278 < _size274; ++_i278)
+            {
+              xfer += iprot->readString(this->listFriends[_i278]);
+            }
+            xfer += iprot->readListEnd();
+          }
+          this->__isset.listFriends = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t BackendMiddleware_friendLikesItemID_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("BackendMiddleware_friendLikesItemID_args");
+
+  xfer += oprot->writeFieldBegin("itemID", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString(this->itemID);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("listFriends", ::apache::thrift::protocol::T_LIST, 2);
+  {
+    xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->listFriends.size()));
+    std::vector<std::string> ::const_iterator _iter279;
+    for (_iter279 = this->listFriends.begin(); _iter279 != this->listFriends.end(); ++_iter279)
+    {
+      xfer += oprot->writeString((*_iter279));
+    }
+    xfer += oprot->writeListEnd();
+  }
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t BackendMiddleware_friendLikesItemID_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("BackendMiddleware_friendLikesItemID_pargs");
+
+  xfer += oprot->writeFieldBegin("itemID", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString((*(this->itemID)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("listFriends", ::apache::thrift::protocol::T_LIST, 2);
+  {
+    xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRING, static_cast<uint32_t>((*(this->listFriends)).size()));
+    std::vector<std::string> ::const_iterator _iter280;
+    for (_iter280 = (*(this->listFriends)).begin(); _iter280 != (*(this->listFriends)).end(); ++_iter280)
+    {
+      xfer += oprot->writeString((*_iter280));
+    }
+    xfer += oprot->writeListEnd();
+  }
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t BackendMiddleware_friendLikesItemID_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_LIST) {
+          {
+            this->success.clear();
+            uint32_t _size281;
+            ::apache::thrift::protocol::TType _etype284;
+            xfer += iprot->readListBegin(_etype284, _size281);
+            this->success.resize(_size281);
+            uint32_t _i285;
+            for (_i285 = 0; _i285 < _size281; ++_i285)
+            {
+              xfer += iprot->readString(this->success[_i285]);
+            }
+            xfer += iprot->readListEnd();
+          }
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t BackendMiddleware_friendLikesItemID_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("BackendMiddleware_friendLikesItemID_result");
+
+  if (this->__isset.success) {
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
+    {
+      xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->success.size()));
+      std::vector<std::string> ::const_iterator _iter286;
+      for (_iter286 = this->success.begin(); _iter286 != this->success.end(); ++_iter286)
+      {
+        xfer += oprot->writeString((*_iter286));
+      }
+      xfer += oprot->writeListEnd();
+    }
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t BackendMiddleware_friendLikesItemID_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_LIST) {
+          {
+            (*(this->success)).clear();
+            uint32_t _size287;
+            ::apache::thrift::protocol::TType _etype290;
+            xfer += iprot->readListBegin(_etype290, _size287);
+            (*(this->success)).resize(_size287);
+            uint32_t _i291;
+            for (_i291 = 0; _i291 < _size287; ++_i291)
+            {
+              xfer += iprot->readString((*(this->success))[_i291]);
+            }
+            xfer += iprot->readListEnd();
+          }
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
 uint32_t BackendMiddleware_getAllItemsIDDislike_args::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
@@ -8368,14 +8848,14 @@ uint32_t BackendMiddleware_getAllItemsIDDislike_result::read(::apache::thrift::p
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size263;
-            ::apache::thrift::protocol::TType _etype266;
-            xfer += iprot->readListBegin(_etype266, _size263);
-            this->success.resize(_size263);
-            uint32_t _i267;
-            for (_i267 = 0; _i267 < _size263; ++_i267)
+            uint32_t _size292;
+            ::apache::thrift::protocol::TType _etype295;
+            xfer += iprot->readListBegin(_etype295, _size292);
+            this->success.resize(_size292);
+            uint32_t _i296;
+            for (_i296 = 0; _i296 < _size292; ++_i296)
             {
-              xfer += iprot->readString(this->success[_i267]);
+              xfer += iprot->readString(this->success[_i296]);
             }
             xfer += iprot->readListEnd();
           }
@@ -8406,10 +8886,10 @@ uint32_t BackendMiddleware_getAllItemsIDDislike_result::write(::apache::thrift::
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->success.size()));
-      std::vector<std::string> ::const_iterator _iter268;
-      for (_iter268 = this->success.begin(); _iter268 != this->success.end(); ++_iter268)
+      std::vector<std::string> ::const_iterator _iter297;
+      for (_iter297 = this->success.begin(); _iter297 != this->success.end(); ++_iter297)
       {
-        xfer += oprot->writeString((*_iter268));
+        xfer += oprot->writeString((*_iter297));
       }
       xfer += oprot->writeListEnd();
     }
@@ -8444,14 +8924,14 @@ uint32_t BackendMiddleware_getAllItemsIDDislike_presult::read(::apache::thrift::
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size269;
-            ::apache::thrift::protocol::TType _etype272;
-            xfer += iprot->readListBegin(_etype272, _size269);
-            (*(this->success)).resize(_size269);
-            uint32_t _i273;
-            for (_i273 = 0; _i273 < _size269; ++_i273)
+            uint32_t _size298;
+            ::apache::thrift::protocol::TType _etype301;
+            xfer += iprot->readListBegin(_etype301, _size298);
+            (*(this->success)).resize(_size298);
+            uint32_t _i302;
+            for (_i302 = 0; _i302 < _size298; ++_i302)
             {
-              xfer += iprot->readString((*(this->success))[_i273]);
+              xfer += iprot->readString((*(this->success))[_i302]);
             }
             xfer += iprot->readListEnd();
           }
@@ -8578,14 +9058,14 @@ uint32_t BackendMiddleware_getAllItemsDislike_result::read(::apache::thrift::pro
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size274;
-            ::apache::thrift::protocol::TType _etype277;
-            xfer += iprot->readListBegin(_etype277, _size274);
-            this->success.resize(_size274);
-            uint32_t _i278;
-            for (_i278 = 0; _i278 < _size274; ++_i278)
+            uint32_t _size303;
+            ::apache::thrift::protocol::TType _etype306;
+            xfer += iprot->readListBegin(_etype306, _size303);
+            this->success.resize(_size303);
+            uint32_t _i307;
+            for (_i307 = 0; _i307 < _size303; ++_i307)
             {
-              xfer += this->success[_i278].read(iprot);
+              xfer += this->success[_i307].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -8616,10 +9096,10 @@ uint32_t BackendMiddleware_getAllItemsDislike_result::write(::apache::thrift::pr
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->success.size()));
-      std::vector<Item> ::const_iterator _iter279;
-      for (_iter279 = this->success.begin(); _iter279 != this->success.end(); ++_iter279)
+      std::vector<Item> ::const_iterator _iter308;
+      for (_iter308 = this->success.begin(); _iter308 != this->success.end(); ++_iter308)
       {
-        xfer += (*_iter279).write(oprot);
+        xfer += (*_iter308).write(oprot);
       }
       xfer += oprot->writeListEnd();
     }
@@ -8654,14 +9134,14 @@ uint32_t BackendMiddleware_getAllItemsDislike_presult::read(::apache::thrift::pr
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size280;
-            ::apache::thrift::protocol::TType _etype283;
-            xfer += iprot->readListBegin(_etype283, _size280);
-            (*(this->success)).resize(_size280);
-            uint32_t _i284;
-            for (_i284 = 0; _i284 < _size280; ++_i284)
+            uint32_t _size309;
+            ::apache::thrift::protocol::TType _etype312;
+            xfer += iprot->readListBegin(_etype312, _size309);
+            (*(this->success)).resize(_size309);
+            uint32_t _i313;
+            for (_i313 = 0; _i313 < _size309; ++_i313)
             {
-              xfer += (*(this->success))[_i284].read(iprot);
+              xfer += (*(this->success))[_i313].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -10446,14 +10926,14 @@ uint32_t BackendMiddleware_getAllUser_result::read(::apache::thrift::protocol::T
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size285;
-            ::apache::thrift::protocol::TType _etype288;
-            xfer += iprot->readListBegin(_etype288, _size285);
-            this->success.resize(_size285);
-            uint32_t _i289;
-            for (_i289 = 0; _i289 < _size285; ++_i289)
+            uint32_t _size314;
+            ::apache::thrift::protocol::TType _etype317;
+            xfer += iprot->readListBegin(_etype317, _size314);
+            this->success.resize(_size314);
+            uint32_t _i318;
+            for (_i318 = 0; _i318 < _size314; ++_i318)
             {
-              xfer += iprot->readString(this->success[_i289]);
+              xfer += iprot->readString(this->success[_i318]);
             }
             xfer += iprot->readListEnd();
           }
@@ -10484,10 +10964,10 @@ uint32_t BackendMiddleware_getAllUser_result::write(::apache::thrift::protocol::
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->success.size()));
-      std::vector<std::string> ::const_iterator _iter290;
-      for (_iter290 = this->success.begin(); _iter290 != this->success.end(); ++_iter290)
+      std::vector<std::string> ::const_iterator _iter319;
+      for (_iter319 = this->success.begin(); _iter319 != this->success.end(); ++_iter319)
       {
-        xfer += oprot->writeString((*_iter290));
+        xfer += oprot->writeString((*_iter319));
       }
       xfer += oprot->writeListEnd();
     }
@@ -10522,14 +11002,14 @@ uint32_t BackendMiddleware_getAllUser_presult::read(::apache::thrift::protocol::
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size291;
-            ::apache::thrift::protocol::TType _etype294;
-            xfer += iprot->readListBegin(_etype294, _size291);
-            (*(this->success)).resize(_size291);
-            uint32_t _i295;
-            for (_i295 = 0; _i295 < _size291; ++_i295)
+            uint32_t _size320;
+            ::apache::thrift::protocol::TType _etype323;
+            xfer += iprot->readListBegin(_etype323, _size320);
+            (*(this->success)).resize(_size320);
+            uint32_t _i324;
+            for (_i324 = 0; _i324 < _size320; ++_i324)
             {
-              xfer += iprot->readString((*(this->success))[_i295]);
+              xfer += iprot->readString((*(this->success))[_i324]);
             }
             xfer += iprot->readListEnd();
           }
@@ -12566,6 +13046,67 @@ void BackendMiddlewareClient::recv_getItemsPageKeyword(std::vector<Item> & _retu
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getItemsPageKeyword failed: unknown result");
 }
 
+void BackendMiddlewareClient::getItemsPageKeywordOfTag(std::vector<Item> & _return, const std::string& keyWord, const std::string& tagID, const int64_t pageNumber, const int64_t itemNumber)
+{
+  send_getItemsPageKeywordOfTag(keyWord, tagID, pageNumber, itemNumber);
+  recv_getItemsPageKeywordOfTag(_return);
+}
+
+void BackendMiddlewareClient::send_getItemsPageKeywordOfTag(const std::string& keyWord, const std::string& tagID, const int64_t pageNumber, const int64_t itemNumber)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("getItemsPageKeywordOfTag", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  BackendMiddleware_getItemsPageKeywordOfTag_pargs args;
+  args.keyWord = &keyWord;
+  args.tagID = &tagID;
+  args.pageNumber = &pageNumber;
+  args.itemNumber = &itemNumber;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void BackendMiddlewareClient::recv_getItemsPageKeywordOfTag(std::vector<Item> & _return)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("getItemsPageKeywordOfTag") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  BackendMiddleware_getItemsPageKeywordOfTag_presult result;
+  result.success = &_return;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  if (result.__isset.success) {
+    // _return pointer has now been filled
+    return;
+  }
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getItemsPageKeywordOfTag failed: unknown result");
+}
+
 void BackendMiddlewareClient::getItemKeywordTag(std::vector<Item> & _return, const std::string& keyWord, const std::string& tagID)
 {
   send_getItemKeywordTag(keyWord, tagID);
@@ -13212,6 +13753,65 @@ bool BackendMiddlewareClient::recv_deleteLikedItem()
     return _return;
   }
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "deleteLikedItem failed: unknown result");
+}
+
+void BackendMiddlewareClient::friendLikesItemID(std::vector<std::string> & _return, const std::string& itemID, const std::vector<std::string> & listFriends)
+{
+  send_friendLikesItemID(itemID, listFriends);
+  recv_friendLikesItemID(_return);
+}
+
+void BackendMiddlewareClient::send_friendLikesItemID(const std::string& itemID, const std::vector<std::string> & listFriends)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("friendLikesItemID", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  BackendMiddleware_friendLikesItemID_pargs args;
+  args.itemID = &itemID;
+  args.listFriends = &listFriends;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void BackendMiddlewareClient::recv_friendLikesItemID(std::vector<std::string> & _return)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("friendLikesItemID") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  BackendMiddleware_friendLikesItemID_presult result;
+  result.success = &_return;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  if (result.__isset.success) {
+    // _return pointer has now been filled
+    return;
+  }
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "friendLikesItemID failed: unknown result");
 }
 
 void BackendMiddlewareClient::getAllItemsIDDislike(std::vector<std::string> & _return, const std::string& userID)
@@ -15878,6 +16478,60 @@ void BackendMiddlewareProcessor::process_getItemsPageKeyword(int32_t seqid, ::ap
   }
 }
 
+void BackendMiddlewareProcessor::process_getItemsPageKeywordOfTag(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("BackendMiddleware.getItemsPageKeywordOfTag", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "BackendMiddleware.getItemsPageKeywordOfTag");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preRead(ctx, "BackendMiddleware.getItemsPageKeywordOfTag");
+  }
+
+  BackendMiddleware_getItemsPageKeywordOfTag_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postRead(ctx, "BackendMiddleware.getItemsPageKeywordOfTag", bytes);
+  }
+
+  BackendMiddleware_getItemsPageKeywordOfTag_result result;
+  try {
+    iface_->getItemsPageKeywordOfTag(result.success, args.keyWord, args.tagID, args.pageNumber, args.itemNumber);
+    result.__isset.success = true;
+  } catch (const std::exception& e) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "BackendMiddleware.getItemsPageKeywordOfTag");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("getItemsPageKeywordOfTag", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "BackendMiddleware.getItemsPageKeywordOfTag");
+  }
+
+  oprot->writeMessageBegin("getItemsPageKeywordOfTag", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "BackendMiddleware.getItemsPageKeywordOfTag", bytes);
+  }
+}
+
 void BackendMiddlewareProcessor::process_getItemKeywordTag(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = NULL;
@@ -16469,6 +17123,60 @@ void BackendMiddlewareProcessor::process_deleteLikedItem(int32_t seqid, ::apache
 
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "BackendMiddleware.deleteLikedItem", bytes);
+  }
+}
+
+void BackendMiddlewareProcessor::process_friendLikesItemID(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("BackendMiddleware.friendLikesItemID", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "BackendMiddleware.friendLikesItemID");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preRead(ctx, "BackendMiddleware.friendLikesItemID");
+  }
+
+  BackendMiddleware_friendLikesItemID_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postRead(ctx, "BackendMiddleware.friendLikesItemID", bytes);
+  }
+
+  BackendMiddleware_friendLikesItemID_result result;
+  try {
+    iface_->friendLikesItemID(result.success, args.itemID, args.listFriends);
+    result.__isset.success = true;
+  } catch (const std::exception& e) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "BackendMiddleware.friendLikesItemID");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("friendLikesItemID", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "BackendMiddleware.friendLikesItemID");
+  }
+
+  oprot->writeMessageBegin("friendLikesItemID", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "BackendMiddleware.friendLikesItemID", bytes);
   }
 }
 

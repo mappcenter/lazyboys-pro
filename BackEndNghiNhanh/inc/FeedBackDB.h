@@ -60,6 +60,8 @@ public:
     bool insertFavouriteItem(string userID, string itemID);
     bool deleteFavouriteItem(string userID, string itemID);
 
+    vector<string> friendLikesItemID(string itemID, vector<string> listFriends);
+
     HashDB& getHashDB();
     int64_t getItemsLikeSize(const std::string& userID);
     int64_t getItemsDislikeSize(const std::string& userID);

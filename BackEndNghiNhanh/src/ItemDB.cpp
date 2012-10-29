@@ -877,6 +877,27 @@ vector<Item> ItemDB::getItemsPageKeyword(string keyWord, int64_t pageNumber, int
     return lItem;
 }
 
+vector<Item> ItemDB::getItemsPageKeywordOfTag(string keyWord, string tagID, int64_t pageNumber, int64_t itemNumber, ItemTagDB& itemTagDB) {
+    vector<string> lsID = itemTagDB.getAllItemsIdHaveTag(tagID);
+    vector<Item> lsReturn;
+    int size = lsID.size();
+    int start = (pageNumber - 1) * itemNumber;
+    int end = (pageNumber) * itemNumber;
+    int count = 0;
+    for (int i = 0; i < size; i++) {
+        Item item = getItemFromItemID(lsID[i]);
+        if (Utils::findStringInString(item.content, keyWord)) {
+            count++;
+            if (count < start)
+                continue;
+            lsReturn.push_back(item);
+            if (count >= end)
+                break;
+        }
+    }
+    return lsReturn;
+}
+
 /**
  * get item co tagID va keyword
  * @param keyword

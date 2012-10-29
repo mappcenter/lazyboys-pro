@@ -390,6 +390,23 @@ bool FeedBackDB::deleteFavouriteItem(string userID, string itemID) {
     }
 }
 
+vector<string> FeedBackDB::friendLikesItemID(string itemID, vector<string> listFriends) {
+    vector<string> listReturn;
+    if (listFriends.empty())
+        return listReturn;
+    for (int i = 0; i < listFriends.size(); i++) {
+        UserFeedBack user = getUserFeedBack(listFriends[i]);
+        if (user.userID == "-1")
+            continue;
+        vector<string>::iterator it;
+        it = find(user.itemsLike.begin(), user.itemsLike.end(), itemID);
+        if (it != user.itemsLike.end()) {
+            listReturn.push_back(listFriends[i]);
+        }
+    }
+    return listReturn;
+}
+
 HashDB& FeedBackDB::getHashDB() {
     return hashDB;
 }
