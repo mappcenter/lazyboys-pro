@@ -33,16 +33,16 @@ void ItemDB::startItemDB() {
     cout << "Start ItemDB in " << sysTime2 - sysTime1 << " milliseconds." << endl;
     poco_information_f1(*logger, "startItemDB: Start ItemDB in %s milliseconds.", Utils::convertIntToString((sysTime2 - sysTime1)));
 
-    int n = 300;
-    cout << "Getting ListTopItemID" << endl;
-    // Mac dinh lTopItemID chi co 300 itemID.
-    lTopItemID = getListTopItemID(n);
-    Timestamp sysTime3 = Timestamp().utcTime();
-    cout << "Get List Top ItemID in " << sysTime3 - sysTime2 << " milliseconds." << endl;
+//    int n = 300;
+//    cout << "Getting ListTopItemID" << endl;
+//    // Mac dinh lTopItemID chi co 300 itemID.
+//    lTopItemID = getListTopItemID(n);
+//    Timestamp sysTime3 = Timestamp().utcTime();
+//    cout << "Get List Top ItemID in " << sysTime3 - sysTime2 << " milliseconds." << endl;
 
     Timestamp sysTime4 = Timestamp().utcTime();
-    string lastID = DBUtils::initalizeLastID(grassDB);
-    cout << "Initalize LastID=" << lastID << " in " << sysTime4 - sysTime3 << " milliseconds." << endl;
+    LASTID = DBUtils::initalizeLastID(grassDB);
+    //cout << "Initalize LastID=" << LASTID << " in " << sysTime4 - sysTime3 << " milliseconds." << endl;
     return;
 }
 
@@ -140,7 +140,7 @@ Item ItemDB::getItemInHashDB(string itemID) {
         itemReturn.itemID = itemID;
         return itemReturn;
     } catch (Exception ex) {
-        cerr << "Get error: " << hashDB.error().name() << endl;
+        cerr << "getItemInHashDB: Get error " << hashDB.error().name() << endl;
         poco_error_f2(*logger, "getItemInHashDB: Can't open ItemID %s in HashDB. Error is %s.", itemID, hashDB.error().name());
         itemReturn.itemID = "-1";
         return itemReturn;
@@ -208,7 +208,7 @@ string ItemDB::insertItemToGrassDB(Item item) {
  */
 Item ItemDB::getRandomItem() {
     Item item;
-    int64_t lastID = Utils::convertStringToInt(DBUtils::getLastID(grassDB));
+    int64_t lastID = Utils::convertStringToInt(LASTID);
     string itemID;
     int i = 0;
     do {
@@ -252,8 +252,6 @@ vector<Item> ItemDB::getAllItems(int64_t number) {
         cur->jump();
         string itemID, content;
         while (cur->get(&itemID, &content, true)) {
-            if (itemID == LASTID)
-                continue;
             Item item = convertJsonToItem(content);
             item.itemID = itemID;
             result.push_back(item);
@@ -270,8 +268,6 @@ vector<Item> ItemDB::getAllItems(int64_t number) {
         while (i < number) {
             if (!cur->get(&itemID, &content, true))
                 cur->jump();
-            if (itemID == LASTID)
-                continue;
             Item item = convertJsonToItem(content);
             item.itemID = itemID;
             result.push_back(item);
@@ -378,7 +374,7 @@ string ItemDB::insertItem(string content, vector<string> tagsID, ItemTagDB& item
         return "-3";
     }
     string temp;
-    int lastID = Utils::convertStringToInt(DBUtils::getLastID(grassDB));
+    int lastID = Utils::convertStringToInt(LASTID);
     lastID++;
     Item item;
     item.itemID = Utils::convertIntToString(lastID);
@@ -397,12 +393,12 @@ string ItemDB::insertItem(string content, vector<string> tagsID, ItemTagDB& item
     string jsonStr = convertItemToJson(item);
     try {
         grassDB.set(item.itemID, jsonStr);
-        DBUtils::setLastID(grassDB, item.itemID);
+        //DBUtils::setLastID(grassDB, item.itemID);
         sizeTagsID = item.tagsID.size();
         for (int i = 0; i < sizeTagsID; i++)
             itemTagDB.insertItemIDToTag(item.tagsID[i], item.itemID);
         addQueue(ADD, item.itemID, jsonStr);
-        addQueue(ADD, LASTID, item.itemID);
+        LASTID = item.itemID;
         return item.itemID;
     } catch (Exception ex) {
         cout << "insertItem: Error to add itemID=" << item.itemID << endl;
@@ -538,8 +534,6 @@ vector<Item> ItemDB::getItemsPage(int64_t pageNumber, int32_t numberItems, strin
         while (i < last) {
             cur->get(&key, &value, true);
             if (i > first) {
-                if (key == LASTID)
-                    continue;
                 item = convertJsonToItem(value);
                 item.itemID = key;
                 lItem.push_back(item);
@@ -631,10 +625,8 @@ vector<string> ItemDB::getListTopItemID(int64_t number) {
     string ckey, cvalue;
     while (cur->get(&ckey, &cvalue, true)) {
         try {
-            if (ckey != LASTID) {
-                Item item = convertJsonToItem(cvalue);
-                allItems.push_back(std::make_pair(item.likeCounts, ckey));
-            }
+            Item item = convertJsonToItem(cvalue);
+            allItems.push_back(std::make_pair(item.likeCounts, ckey));
         } catch (char* str) {
             //cout << "error make pair:" << str << endl;
         }
@@ -798,8 +790,6 @@ vector<Item> ItemDB::getItemKeyword(string keyword) {
     cur->jump();
     string ckey, cvalue;
     while (cur->get(&ckey, &cvalue, true)) {
-        if (ckey == LASTID)
-            continue;
         if (Utils::findStringInString(cvalue, keyword)) {
             Item item = getItemFromItemID(ckey);
             item.itemID = ckey;
@@ -827,7 +817,7 @@ vector<Item> ItemDB::getItemKeyword(string keyword, int32_t numberItems) {
     cur->jump();
     string ckey, cvalue;
     while (cur->get(&ckey, &cvalue, true)) {
-        if (ckey != LASTID && Utils::findStringInString(cvalue, keyword)) {
+        if (Utils::findStringInString(cvalue, keyword)) {
             i++;
             Item item = convertJsonToItem(cvalue);
             item.itemID = ckey;
@@ -877,7 +867,7 @@ vector<Item> ItemDB::getItemsPageKeyword(string keyWord, int64_t pageNumber, int
         cur->get(&key, &value, true);
         if (Utils::findStringInString(value, keyWord)) {
             item = convertJsonToItem(value);
-            if (i > first && key != LASTID) {
+            if (i > first) {
                 item.itemID = key;
                 lItem.push_back(item);
             }
@@ -996,6 +986,10 @@ vector<string> ItemDB::getFavouriteItemID(string userID, int64_t number, string 
         }
     }
     return result;
+}
+
+string ItemDB::getLastID(){
+    return LASTID;
 }
 
 HashDB& ItemDB::getHashDB() {
