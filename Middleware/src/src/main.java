@@ -27,6 +27,6 @@ public class main {
 
         TServer server = new THsHaServer(options);
         System.out.println("Starting server on port " + port + " ...");
-        server.serve();
+        server.serve();   
     }
 }
