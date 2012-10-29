@@ -153,6 +153,10 @@ void BackendMiddlewareHandler::getItemsPageKeyword(std::vector<Item> & _return, 
     _return = itemDB->getItemsPageKeyword(keyWord, pageNumber, itemNumber);
 }
 
+void BackendMiddlewareHandler::getItemsPageKeywordOfTag(std::vector<Item> & _return, const std::string& keyWord, const std::string& tagID, const int64_t pageNumber, const int64_t itemNumber) {
+    _return = itemDB->getItemsPageKeywordOfTag(keyWord, tagID, pageNumber, itemNumber, *itemTagDB);
+}
+
 void BackendMiddlewareHandler::getTopItems(std::vector<Item> & _return, const int64_t number) {
     _return = itemDB->getListTopItem(number);
 }
@@ -191,6 +195,10 @@ bool BackendMiddlewareHandler::insertLikedItem(const std::string& userID, const 
 
 bool BackendMiddlewareHandler::deleteLikedItem(const std::string& userID, const std::string& itemID) {
     return feedBackDB->deleteLikedItem(userID, itemID);
+}
+
+void BackendMiddlewareHandler::friendLikesItemID(std::vector<std::string> & _return, const std::string& itemID, const std::vector<std::string> & listFriends) {
+    _return = feedBackDB->friendLikesItemID(itemID, listFriends);
 }
 
 void BackendMiddlewareHandler::getAllItemsIDDislike(std::vector<std::string> & _return, const std::string& userID) {

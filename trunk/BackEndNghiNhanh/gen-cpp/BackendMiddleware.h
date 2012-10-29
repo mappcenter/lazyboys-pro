@@ -50,6 +50,7 @@ class BackendMiddlewareIf {
   virtual void getItemsPage(std::vector<Item> & _return, const int64_t pageNumber, const int64_t itemNumber, const std::string& tagID) = 0;
   virtual void getItemKeyword(std::vector<Item> & _return, const std::string& keyWord) = 0;
   virtual void getItemsPageKeyword(std::vector<Item> & _return, const std::string& keyWord, const int64_t pageNumber, const int64_t itemNumber) = 0;
+  virtual void getItemsPageKeywordOfTag(std::vector<Item> & _return, const std::string& keyWord, const std::string& tagID, const int64_t pageNumber, const int64_t itemNumber) = 0;
   virtual void getItemKeywordTag(std::vector<Item> & _return, const std::string& keyWord, const std::string& tagID) = 0;
   virtual void getTopItems(std::vector<Item> & _return, const int64_t number) = 0;
   virtual void getTopItemsofTag(std::vector<Item> & _return, const int64_t number, const std::string& tagID) = 0;
@@ -61,6 +62,7 @@ class BackendMiddlewareIf {
   virtual void getAllItemsLike(std::vector<Item> & _return, const std::string& userID, const int32_t number) = 0;
   virtual bool insertLikedItem(const std::string& userID, const std::string& itemID) = 0;
   virtual bool deleteLikedItem(const std::string& userID, const std::string& itemID) = 0;
+  virtual void friendLikesItemID(std::vector<std::string> & _return, const std::string& itemID, const std::vector<std::string> & listFriends) = 0;
   virtual void getAllItemsIDDislike(std::vector<std::string> & _return, const std::string& userID) = 0;
   virtual void getAllItemsDislike(std::vector<Item> & _return, const std::string& userID, const int32_t number) = 0;
   virtual bool insertDislikedItem(const std::string& userID, const std::string& itemID) = 0;
@@ -223,6 +225,9 @@ class BackendMiddlewareNull : virtual public BackendMiddlewareIf {
   void getItemsPageKeyword(std::vector<Item> & /* _return */, const std::string& /* keyWord */, const int64_t /* pageNumber */, const int64_t /* itemNumber */) {
     return;
   }
+  void getItemsPageKeywordOfTag(std::vector<Item> & /* _return */, const std::string& /* keyWord */, const std::string& /* tagID */, const int64_t /* pageNumber */, const int64_t /* itemNumber */) {
+    return;
+  }
   void getItemKeywordTag(std::vector<Item> & /* _return */, const std::string& /* keyWord */, const std::string& /* tagID */) {
     return;
   }
@@ -259,6 +264,9 @@ class BackendMiddlewareNull : virtual public BackendMiddlewareIf {
   bool deleteLikedItem(const std::string& /* userID */, const std::string& /* itemID */) {
     bool _return = false;
     return _return;
+  }
+  void friendLikesItemID(std::vector<std::string> & /* _return */, const std::string& /* itemID */, const std::vector<std::string> & /* listFriends */) {
+    return;
   }
   void getAllItemsIDDislike(std::vector<std::string> & /* _return */, const std::string& /* userID */) {
     return;
@@ -4034,6 +4042,141 @@ class BackendMiddleware_getItemsPageKeyword_presult {
 
 };
 
+typedef struct _BackendMiddleware_getItemsPageKeywordOfTag_args__isset {
+  _BackendMiddleware_getItemsPageKeywordOfTag_args__isset() : keyWord(false), tagID(false), pageNumber(false), itemNumber(false) {}
+  bool keyWord;
+  bool tagID;
+  bool pageNumber;
+  bool itemNumber;
+} _BackendMiddleware_getItemsPageKeywordOfTag_args__isset;
+
+class BackendMiddleware_getItemsPageKeywordOfTag_args {
+ public:
+
+  BackendMiddleware_getItemsPageKeywordOfTag_args() : keyWord(), tagID(), pageNumber(0), itemNumber(0) {
+  }
+
+  virtual ~BackendMiddleware_getItemsPageKeywordOfTag_args() throw() {}
+
+  std::string keyWord;
+  std::string tagID;
+  int64_t pageNumber;
+  int64_t itemNumber;
+
+  _BackendMiddleware_getItemsPageKeywordOfTag_args__isset __isset;
+
+  void __set_keyWord(const std::string& val) {
+    keyWord = val;
+  }
+
+  void __set_tagID(const std::string& val) {
+    tagID = val;
+  }
+
+  void __set_pageNumber(const int64_t val) {
+    pageNumber = val;
+  }
+
+  void __set_itemNumber(const int64_t val) {
+    itemNumber = val;
+  }
+
+  bool operator == (const BackendMiddleware_getItemsPageKeywordOfTag_args & rhs) const
+  {
+    if (!(keyWord == rhs.keyWord))
+      return false;
+    if (!(tagID == rhs.tagID))
+      return false;
+    if (!(pageNumber == rhs.pageNumber))
+      return false;
+    if (!(itemNumber == rhs.itemNumber))
+      return false;
+    return true;
+  }
+  bool operator != (const BackendMiddleware_getItemsPageKeywordOfTag_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const BackendMiddleware_getItemsPageKeywordOfTag_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class BackendMiddleware_getItemsPageKeywordOfTag_pargs {
+ public:
+
+
+  virtual ~BackendMiddleware_getItemsPageKeywordOfTag_pargs() throw() {}
+
+  const std::string* keyWord;
+  const std::string* tagID;
+  const int64_t* pageNumber;
+  const int64_t* itemNumber;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _BackendMiddleware_getItemsPageKeywordOfTag_result__isset {
+  _BackendMiddleware_getItemsPageKeywordOfTag_result__isset() : success(false) {}
+  bool success;
+} _BackendMiddleware_getItemsPageKeywordOfTag_result__isset;
+
+class BackendMiddleware_getItemsPageKeywordOfTag_result {
+ public:
+
+  BackendMiddleware_getItemsPageKeywordOfTag_result() {
+  }
+
+  virtual ~BackendMiddleware_getItemsPageKeywordOfTag_result() throw() {}
+
+  std::vector<Item>  success;
+
+  _BackendMiddleware_getItemsPageKeywordOfTag_result__isset __isset;
+
+  void __set_success(const std::vector<Item> & val) {
+    success = val;
+  }
+
+  bool operator == (const BackendMiddleware_getItemsPageKeywordOfTag_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const BackendMiddleware_getItemsPageKeywordOfTag_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const BackendMiddleware_getItemsPageKeywordOfTag_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _BackendMiddleware_getItemsPageKeywordOfTag_presult__isset {
+  _BackendMiddleware_getItemsPageKeywordOfTag_presult__isset() : success(false) {}
+  bool success;
+} _BackendMiddleware_getItemsPageKeywordOfTag_presult__isset;
+
+class BackendMiddleware_getItemsPageKeywordOfTag_presult {
+ public:
+
+
+  virtual ~BackendMiddleware_getItemsPageKeywordOfTag_presult() throw() {}
+
+  std::vector<Item> * success;
+
+  _BackendMiddleware_getItemsPageKeywordOfTag_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
 typedef struct _BackendMiddleware_getItemKeywordTag_args__isset {
   _BackendMiddleware_getItemKeywordTag_args__isset() : keyWord(false), tagID(false) {}
   bool keyWord;
@@ -5307,6 +5450,123 @@ class BackendMiddleware_deleteLikedItem_presult {
   bool* success;
 
   _BackendMiddleware_deleteLikedItem_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _BackendMiddleware_friendLikesItemID_args__isset {
+  _BackendMiddleware_friendLikesItemID_args__isset() : itemID(false), listFriends(false) {}
+  bool itemID;
+  bool listFriends;
+} _BackendMiddleware_friendLikesItemID_args__isset;
+
+class BackendMiddleware_friendLikesItemID_args {
+ public:
+
+  BackendMiddleware_friendLikesItemID_args() : itemID() {
+  }
+
+  virtual ~BackendMiddleware_friendLikesItemID_args() throw() {}
+
+  std::string itemID;
+  std::vector<std::string>  listFriends;
+
+  _BackendMiddleware_friendLikesItemID_args__isset __isset;
+
+  void __set_itemID(const std::string& val) {
+    itemID = val;
+  }
+
+  void __set_listFriends(const std::vector<std::string> & val) {
+    listFriends = val;
+  }
+
+  bool operator == (const BackendMiddleware_friendLikesItemID_args & rhs) const
+  {
+    if (!(itemID == rhs.itemID))
+      return false;
+    if (!(listFriends == rhs.listFriends))
+      return false;
+    return true;
+  }
+  bool operator != (const BackendMiddleware_friendLikesItemID_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const BackendMiddleware_friendLikesItemID_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class BackendMiddleware_friendLikesItemID_pargs {
+ public:
+
+
+  virtual ~BackendMiddleware_friendLikesItemID_pargs() throw() {}
+
+  const std::string* itemID;
+  const std::vector<std::string> * listFriends;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _BackendMiddleware_friendLikesItemID_result__isset {
+  _BackendMiddleware_friendLikesItemID_result__isset() : success(false) {}
+  bool success;
+} _BackendMiddleware_friendLikesItemID_result__isset;
+
+class BackendMiddleware_friendLikesItemID_result {
+ public:
+
+  BackendMiddleware_friendLikesItemID_result() {
+  }
+
+  virtual ~BackendMiddleware_friendLikesItemID_result() throw() {}
+
+  std::vector<std::string>  success;
+
+  _BackendMiddleware_friendLikesItemID_result__isset __isset;
+
+  void __set_success(const std::vector<std::string> & val) {
+    success = val;
+  }
+
+  bool operator == (const BackendMiddleware_friendLikesItemID_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const BackendMiddleware_friendLikesItemID_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const BackendMiddleware_friendLikesItemID_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _BackendMiddleware_friendLikesItemID_presult__isset {
+  _BackendMiddleware_friendLikesItemID_presult__isset() : success(false) {}
+  bool success;
+} _BackendMiddleware_friendLikesItemID_presult__isset;
+
+class BackendMiddleware_friendLikesItemID_presult {
+ public:
+
+
+  virtual ~BackendMiddleware_friendLikesItemID_presult() throw() {}
+
+  std::vector<std::string> * success;
+
+  _BackendMiddleware_friendLikesItemID_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -6876,6 +7136,9 @@ class BackendMiddlewareClient : virtual public BackendMiddlewareIf {
   void getItemsPageKeyword(std::vector<Item> & _return, const std::string& keyWord, const int64_t pageNumber, const int64_t itemNumber);
   void send_getItemsPageKeyword(const std::string& keyWord, const int64_t pageNumber, const int64_t itemNumber);
   void recv_getItemsPageKeyword(std::vector<Item> & _return);
+  void getItemsPageKeywordOfTag(std::vector<Item> & _return, const std::string& keyWord, const std::string& tagID, const int64_t pageNumber, const int64_t itemNumber);
+  void send_getItemsPageKeywordOfTag(const std::string& keyWord, const std::string& tagID, const int64_t pageNumber, const int64_t itemNumber);
+  void recv_getItemsPageKeywordOfTag(std::vector<Item> & _return);
   void getItemKeywordTag(std::vector<Item> & _return, const std::string& keyWord, const std::string& tagID);
   void send_getItemKeywordTag(const std::string& keyWord, const std::string& tagID);
   void recv_getItemKeywordTag(std::vector<Item> & _return);
@@ -6909,6 +7172,9 @@ class BackendMiddlewareClient : virtual public BackendMiddlewareIf {
   bool deleteLikedItem(const std::string& userID, const std::string& itemID);
   void send_deleteLikedItem(const std::string& userID, const std::string& itemID);
   bool recv_deleteLikedItem();
+  void friendLikesItemID(std::vector<std::string> & _return, const std::string& itemID, const std::vector<std::string> & listFriends);
+  void send_friendLikesItemID(const std::string& itemID, const std::vector<std::string> & listFriends);
+  void recv_friendLikesItemID(std::vector<std::string> & _return);
   void getAllItemsIDDislike(std::vector<std::string> & _return, const std::string& userID);
   void send_getAllItemsIDDislike(const std::string& userID);
   void recv_getAllItemsIDDislike(std::vector<std::string> & _return);
@@ -6998,6 +7264,7 @@ class BackendMiddlewareProcessor : public ::apache::thrift::TDispatchProcessor {
   void process_getItemsPage(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_getItemKeyword(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_getItemsPageKeyword(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_getItemsPageKeywordOfTag(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_getItemKeywordTag(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_getTopItems(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_getTopItemsofTag(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
@@ -7009,6 +7276,7 @@ class BackendMiddlewareProcessor : public ::apache::thrift::TDispatchProcessor {
   void process_getAllItemsLike(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_insertLikedItem(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_deleteLikedItem(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_friendLikesItemID(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_getAllItemsIDDislike(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_getAllItemsDislike(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_insertDislikedItem(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
@@ -7060,6 +7328,7 @@ class BackendMiddlewareProcessor : public ::apache::thrift::TDispatchProcessor {
     processMap_["getItemsPage"] = &BackendMiddlewareProcessor::process_getItemsPage;
     processMap_["getItemKeyword"] = &BackendMiddlewareProcessor::process_getItemKeyword;
     processMap_["getItemsPageKeyword"] = &BackendMiddlewareProcessor::process_getItemsPageKeyword;
+    processMap_["getItemsPageKeywordOfTag"] = &BackendMiddlewareProcessor::process_getItemsPageKeywordOfTag;
     processMap_["getItemKeywordTag"] = &BackendMiddlewareProcessor::process_getItemKeywordTag;
     processMap_["getTopItems"] = &BackendMiddlewareProcessor::process_getTopItems;
     processMap_["getTopItemsofTag"] = &BackendMiddlewareProcessor::process_getTopItemsofTag;
@@ -7071,6 +7340,7 @@ class BackendMiddlewareProcessor : public ::apache::thrift::TDispatchProcessor {
     processMap_["getAllItemsLike"] = &BackendMiddlewareProcessor::process_getAllItemsLike;
     processMap_["insertLikedItem"] = &BackendMiddlewareProcessor::process_insertLikedItem;
     processMap_["deleteLikedItem"] = &BackendMiddlewareProcessor::process_deleteLikedItem;
+    processMap_["friendLikesItemID"] = &BackendMiddlewareProcessor::process_friendLikesItemID;
     processMap_["getAllItemsIDDislike"] = &BackendMiddlewareProcessor::process_getAllItemsIDDislike;
     processMap_["getAllItemsDislike"] = &BackendMiddlewareProcessor::process_getAllItemsDislike;
     processMap_["insertDislikedItem"] = &BackendMiddlewareProcessor::process_insertDislikedItem;
@@ -7443,6 +7713,16 @@ class BackendMiddlewareMultiface : virtual public BackendMiddlewareIf {
     return;
   }
 
+  void getItemsPageKeywordOfTag(std::vector<Item> & _return, const std::string& keyWord, const std::string& tagID, const int64_t pageNumber, const int64_t itemNumber) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->getItemsPageKeywordOfTag(_return, keyWord, tagID, pageNumber, itemNumber);
+    }
+    ifaces_[i]->getItemsPageKeywordOfTag(_return, keyWord, tagID, pageNumber, itemNumber);
+    return;
+  }
+
   void getItemKeywordTag(std::vector<Item> & _return, const std::string& keyWord, const std::string& tagID) {
     size_t sz = ifaces_.size();
     size_t i = 0;
@@ -7547,6 +7827,16 @@ class BackendMiddlewareMultiface : virtual public BackendMiddlewareIf {
       ifaces_[i]->deleteLikedItem(userID, itemID);
     }
     return ifaces_[i]->deleteLikedItem(userID, itemID);
+  }
+
+  void friendLikesItemID(std::vector<std::string> & _return, const std::string& itemID, const std::vector<std::string> & listFriends) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->friendLikesItemID(_return, itemID, listFriends);
+    }
+    ifaces_[i]->friendLikesItemID(_return, itemID, listFriends);
+    return;
   }
 
   void getAllItemsIDDislike(std::vector<std::string> & _return, const std::string& userID) {

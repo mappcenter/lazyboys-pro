@@ -90,6 +90,7 @@ public:
     vector<Item> getItemKeyword(string keyword, string tagID, ItemTagDB& itemTagDB);
     vector<Item> getItemKeyword(string keyword, string tagID, ItemTagDB& itemTagDB, int32_t numberItems);
     vector<Item> getItemsPageKeyword(string keyWord, int64_t pageNumber, int64_t itemNumber);
+    vector<Item> getItemsPageKeywordOfTag(string keyWord, string tagID, int64_t pageNumber, int64_t itemNumber, ItemTagDB& itemTagDB);
 
     vector<string> getListTopItemID(int64_t number);
     vector<string> getListTopItemID(int64_t number, string tagID, ItemTagDB& itemTagDB);
@@ -109,7 +110,7 @@ public:
     int64_t getSize();
     void setSynDB(synchronizeDB* synDBPtr);
     void addQueue(string command, string itemID, string jsonString);
-    
+
 private:
     HashDB hashDB;
     GrassDB grassDB;

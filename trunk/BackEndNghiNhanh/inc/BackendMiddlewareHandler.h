@@ -80,6 +80,7 @@ public:
     void getItemKeyword(std::vector<Item> & _return, const std::string& keyWord);
     void getItemKeywordTag(std::vector<Item> & _return, const std::string& keyWord, const std::string& tagID);
     void getItemsPageKeyword(std::vector<Item> & _return, const std::string& keyWord, const int64_t pageNumber, const int64_t itemNumber);
+    void getItemsPageKeywordOfTag(std::vector<Item> & _return, const std::string& keyWord, const std::string& tagID, const int64_t pageNumber, const int64_t itemNumber);
     void getTopItems(std::vector<Item> & _return, const int64_t number);
     void getTopItemsofTag(std::vector<Item> & _return, const int64_t number, const std::string& tagID);
 
@@ -92,6 +93,7 @@ public:
     void getAllItemsLike(std::vector<Item> & _return, const std::string& userID, const int32_t number);
     bool insertLikedItem(const std::string& userID, const std::string& itemID);
     bool deleteLikedItem(const std::string& userID, const std::string& itemID);
+    void friendLikesItemID(std::vector<std::string> & _return, const std::string& itemID, const std::vector<std::string> & listFriends);
 
     void getAllItemsIDDislike(std::vector<std::string> & _return, const std::string& userID);
     void getAllItemsDislike(std::vector<Item> & _return, const std::string& userID, const int32_t number);

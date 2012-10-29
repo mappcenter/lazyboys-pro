@@ -45,7 +45,7 @@ public:
     Tag getTag(string tagID);
     vector<Tag> getTagKeyword(string keyword);
     vector<Tag> getAllTag();
-    vector<string> getIDListOfTags(string tagID);
+    //vector<string> getIDListOfTags(string tagID);
     bool insertTag(string tagID, string tagName, ItemTagDB& itemTagDB);
     bool insertTag(Tag& tag, ItemTagDB& itemTagDB);
     bool insertTag(string tagName, ItemTagDB& itemTagDB);

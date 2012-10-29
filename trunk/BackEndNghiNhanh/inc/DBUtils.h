@@ -29,10 +29,7 @@ public:
     static bool openHashDB(HashDB& hashDB, string pathHashDB);
     static bool closeBasicDB(BasicDB& basicDB);
     static bool copyDBFromHashDBtoGrassDB(HashDB &hashDB, GrassDB &grassDB);
-    static string getLastID(GrassDB& grassDB);
     static string initalizeLastID(GrassDB& grassDB);
-    static bool setLastID(GrassDB& grassDB, HashDB& hashDB, string id);
-    static bool setLastID(GrassDB& grassDB, string id);
 public:
     Logger* logger;
 };
