@@ -6,14 +6,14 @@ package src;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.sound.midi.SysexMessage;
 import libs.Item;
 import libs.Tag;
 import libs.User;
-import memcache.MyCache;
 import org.apache.thrift.TException;
 
 /**
@@ -24,93 +24,102 @@ import org.apache.thrift.TException;
 public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
 
     BackendHandler handler = new BackendHandler();
-    public static List<String> tagIDs = new ArrayList<>();
-    public static List<String> itemIDs = new ArrayList<>();
+    static Map<String, Object> local_cache = new HashMap<>();
     private static List<Tag> listTag = new ArrayList<>();
+    static long numberTopTags = 0;
+    static long numberItemsIDofTag = 0;
 
     public FrontendHandler() throws TException, IOException {
-        if (listTag.isEmpty()) {
-            listTag = getAllTag();
-            for (int i = 0; i < listTag.size(); i++) {
-                tagIDs.add(listTag.get(i).tagID);
-                //getAllItemshaveTag(listTag.get(i).tagID, 50);
-                String key = listTag.get(i).tagID + "listItemID";
-                List<String> listItemID = new ArrayList<>();
-                listItemID = handler.getAllItemsIDhaveTag(listTag.get(i).tagID, 100);
-                MyCache.getInstance().set(key, 3600, listItemID);
-            }
-        }
     }
 
-    public void Caching() throws TException {
-        if (listTag.isEmpty()) {
-            listTag = getAllTag();
-            for (int i = 0; i < listTag.size(); i++) {
-                tagIDs.add(listTag.get(i).tagID);
-            }
-        }
-    }
-
-    /**
-     * get all tag
-     *
-     * @return
-     * @throws TException
-     */
     @Override
     public List<Tag> getAllTag() throws TException {
-
-        //List<Tag> listTag = null;
-        try {
-            if (listTag.isEmpty()) {
-                listTag = (List<Tag>) MyCache.getInstance().get("listTag");
-                System.out.println("get listTag from Cached");
-            }
-            if (listTag == null) {
-                System.out.println("get listTag from DB");
-                listTag = handler.getAllTag();
-                int ttl = getConfig.getInstance().getTtl();
-                MyCache.getInstance().set("listTag", ttl, listTag);
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(FrontendHandler.class.getName()).log(Level.SEVERE, null, ex);
+        if (!listTag.isEmpty()) {
+            System.out.println("getAllTag from cache ...");
+            return listTag;
         }
+        listTag = handler.getAllTag();
+        for (Tag tag : listTag) {
+            local_cache.put("getTag" + tag.tagID, tag);
+        }
+        System.out.println("getAllTag from backend ...");
         return listTag;
     }
 
     @Override
     public boolean insertTag(String tagName) throws TException {
-        return handler.insertTag(tagName);
+        boolean result = handler.insertTag(tagName);
+        if (result) {
+            System.out.println("insert tag success ...");
+            listTag = handler.getAllTag();
+        } else {
+            System.out.println("insert tag failed ...");
+        }
+        return result;
     }
 
     @Override
     public boolean deleteTag(String tagID) throws TException {
-        return handler.deleteTag(tagID);
+        boolean result = handler.deleteTag(tagID);
+        if (result) {
+            System.out.println("delete tag success ...");
+            listTag = handler.getAllTag();
+        } else {
+            System.out.println("delete tag failed ...");
+        }
+        return result;
     }
 
     @Override
     public boolean deleteAllTag(List<String> tagIDs) throws TException {
-        return handler.deleteAllTag(tagIDs);
+        boolean result = handler.deleteAllTag(tagIDs);
+        if (result) {
+            System.out.println("delete all tag success ...");
+            listTag = handler.getAllTag();
+        } else {
+            System.out.println("delete all tag failed ...");
+        }
+        return result;
     }
 
     @Override
     public boolean editTag(String tagID, String tagName) throws TException {
-        return handler.editTag(tagID, tagName);
+        boolean result = handler.editTag(tagID, tagName);
+        if (result) {
+            System.out.println("edit tag success ...");
+            listTag = handler.getAllTag();
+        } else {
+            System.out.println("edit tag failed ...");
+        }
+        return result;
     }
 
     @Override
     public Tag getTag(String tagID) throws TException {
+        if (local_cache.containsKey("getTag" + tagID)) {
+            System.out.println("get tag from cache ...");
+            return (Tag) local_cache.get("getTag" + tagID);
+        }
+        System.out.println("get tag froom backend ...");
         return handler.getTag(tagID);
     }
 
     @Override
     public void setViewCountTag(String tagID) throws TException {
+        System.out.println("set view count tag ...");
         handler.setViewCountTag(tagID);
     }
 
     @Override
     public List<Tag> getTopTags(long number) throws TException {
-        return handler.getTopTags(number);
+        if (number != numberTopTags) {
+            System.out.println("get top tag from cache ...");
+            List<Tag> result = handler.getTopTags(number);
+            numberTopTags = number;
+            return result;
+        }
+        System.out.println("get top tag from backend ...");
+        return (List<Tag>) local_cache.get("getTopTags");
     }
 
     /**
@@ -122,41 +131,56 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
      */
     @Override
     public List<Item> getAllItems(long number) throws TException {
-
         List<Item> listItem = new ArrayList<>();
-        //call getRandomItem number times
-
         for (int i = 0; i < number; i++) {
             Item item = getRandomItem();
             listItem.add(item);
         }
+        System.out.println("get " + number + " items  ...");
         return listItem;
     }
 
     @Override
     public List<Item> getAllItemshaveTag(String tagID, int numberItems) throws TException {
-        return handler.getAllItemshaveTag(tagID, numberItems);
+        List<String> listItemID = getAllItemsIDhaveTag(tagID, numberItems);
+        List<Item> listItem = new ArrayList<>();
+        for (String itemID : listItemID) {
+            Item item = getItemFromItemID(itemID);
+            listItem.add(item);
+        }
+        System.out.println("get " + numberItems + " item have tag " + tagID + " ...");
+        return listItem;
     }
 
     @Override
     public List<Item> pagingItemsTag(String tagID, int pageNumber, int numberItems) throws TException {
-        return handler.pagingItemsTag(tagID, pageNumber, numberItems);
+        List<String> listItemID = getAllItemsIDhaveTag(tagID, numberItems);
+        List<Item> listItem = new ArrayList<>();
+        int start = (pageNumber - 1) * numberItems;
+        int end = start + numberItems;
+        for (int i = start; i < end; i++) {
+            Item item = getItemFromItemID(listItemID.get(i));
+            if (!"-1".equals(item.itemID) && item != null) {
+                listItem.add(item);
+            }
+        }
+        System.out.println("paging status of tag: " + tagID + " ...");
+        return listItem;
+        //return handler.pagingItemsTag(tagID, pageNumber, numberItems);
     }
 
     @Override
     public List<String> getAllItemsIDhaveTag(String tagID, int numberItemsID) throws TException {
-        List<String> listItemID = null;
-        String key = tagID + "listItemID";
-        try {
-            listItemID = (List<String>) MyCache.getInstance().get(key);
-            if (listItemID == null) {
-                System.out.println("get list ItemID from DB");
-                listItemID = handler.getAllItemsIDhaveTag(tagID, numberItemsID);
-                MyCache.getInstance().set(key, 3600, listItemID);
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(FrontendHandler.class.getName()).log(Level.SEVERE, null, ex);
+        List<String> listItemID;
+        if (local_cache.containsKey("getAllItemsIDhaveTag" + tagID) && numberItemsID <= numberItemsIDofTag) {
+            System.out.println("get all itemID have tag " + tagID + " from cache...");
+            listItemID = (List<String>) local_cache.get("getAllItemsIDhaveTag" + tagID);
+            return listItemID;
         }
+        listItemID = handler.getAllItemsIDhaveTag(tagID, numberItemsID);
+        System.out.println("get all itemID have tag " + tagID + " from backend...");
+        numberItemsIDofTag = numberItemsID;
+        local_cache.put("getAllItemsIDhaveTag" + tagID, listItemID);
         return listItemID;
     }
 
@@ -186,12 +210,12 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
 
     @Override
     public Item getRandomItemhaveTag(String tagID) throws TException {
-        Item item = null;
-        //an com roi lam tiep
-        List<String> listitem = getAllItemsIDhaveTag(tagID, 100);
+        Item item;
+        List<String> listitem = getAllItemsIDhaveTag(tagID, 1000);
         int index = getRandomIndex(listitem.size());
         String itemID = listitem.get(index);
         item = getItemFromItemID(itemID);
+        System.out.println("get random item " + itemID + " from tag " + tagID + " ..");
         return item;
     }
 
@@ -252,16 +276,14 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
 
     @Override
     public Item getItemFromItemID(String itemID) throws TException {
-        Item item = null;
-        try {
-            item = (Item) MyCache.getInstance().get(itemID);
-            if (item == null) {
-                item = handler.getItemFromItemID(itemID);
-                MyCache.getInstance().set(itemID, 3600, item);
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(FrontendHandler.class.getName()).log(Level.SEVERE, null, ex);
+
+        if (local_cache.containsKey("item" + itemID)) {
+            System.out.println("get item " + itemID + " from cache ...");
+            return (Item) local_cache.get("item" + itemID);
         }
+        System.out.println("get item " + itemID + " from backend ...");
+        Item item = handler.getItemFromItemID(itemID);
+        local_cache.put("item" + itemID, item);
         return item;
     }
 
