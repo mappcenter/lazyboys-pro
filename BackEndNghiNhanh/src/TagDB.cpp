@@ -69,7 +69,7 @@ void TagDB::startTagDB() {
     cout << "Copying TagDB..." << endl;
     DBUtils::copyDBFromHashDBtoGrassDB(hashDB, grassDB);
     double sysTime2 = clock();
-    DBUtils::initalizeLastID(grassDB);
+    LASTID = DBUtils::initalizeLastID(grassDB);
     //cout << "Time to search: " << (double) (sysTime2 - sysTime1) << endl;
     poco_information_f1(*logger, "startTagDB: Start TagDB in %0.0f milliseconds.", (double) (sysTime2 - sysTime1));
     return;
@@ -110,7 +110,7 @@ vector<Tag> TagDB::getTagKeyword(string keyword) {
     string ckey, cvalue;
     while (cur->get(&ckey, &cvalue, true)) {
 
-        if (ckey != "lastID" && Utils::findStringInStringForTag(cvalue, keyword)) {
+        if (Utils::findStringInStringForTag(cvalue, keyword)) {
             Tag tag = convertJsonToTag(cvalue);
             tag.tagID = ckey;
             result.push_back(tag);
@@ -127,11 +127,10 @@ vector<Tag> TagDB::getAllTag() {
     cur->jump();
     string ckey, cvalue;
     while (cur->get(&ckey, &cvalue, true)) {
-        if (ckey != "lastID") {
-            Tag tag = convertJsonToTag(cvalue);
-            tag.tagID = ckey;
-            listTag.push_back(tag);
-        }
+        Tag tag = convertJsonToTag(cvalue);
+        tag.tagID = ckey;
+        listTag.push_back(tag);
+
     }
     delete cur;
     //cout << "t" << listTag.size() << endl;
@@ -162,7 +161,8 @@ bool TagDB::insertTag(Tag& tag, ItemTagDB& itemTagDB) {
         }
         grassDB.set(ckey, jsonString);
         addQueue(ADD, ckey, jsonString);
-        DBUtils::setLastID(grassDB, ckey);
+        //DBUtils::setLastID(grassDB, ckey);
+        LASTID = ckey;
 
         vector<string> lItemID;
         itemTagDB.insertItemTag(tag.tagID, lItemID);
@@ -180,7 +180,7 @@ bool TagDB::insertTag(Tag& tag, ItemTagDB& itemTagDB) {
  * @return bool
  */
 bool TagDB::insertTag(string tagName, ItemTagDB& itemTagDB) {
-    int temp = Utils::convertStringToInt(DBUtils::getLastID(grassDB));
+    int64_t temp = Utils::convertStringToInt(LASTID);
     string lastID = Utils::convertIntToString(temp + 1);
     return insertTag(lastID, tagName, itemTagDB);
 }

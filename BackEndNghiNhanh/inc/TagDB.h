@@ -68,6 +68,7 @@ private:
     synchronizeDB* syndb;
     Logger* logger;
     string pathHashDB;
+    string LASTID;
 };
 
 #endif	/* TAGDB_H */

@@ -104,10 +104,12 @@ public:
     vector<Item> getAllItemsLike(string userID, int64_t number, FeedBackDB& feedBackDB);
     vector<Item> getAllItemsDislike(string userID, int64_t number, FeedBackDB& feedBackDB);
 
+    string getLastID();
     HashDB& getHashDB();
     int64_t getSize();
     void setSynDB(synchronizeDB* synDBPtr);
     void addQueue(string command, string itemID, string jsonString);
+    
 private:
     HashDB hashDB;
     GrassDB grassDB;
@@ -121,6 +123,7 @@ private:
     //se cap nhat lTopItemID
     //int timeToUpdateF; // cho timeToUpdateTF=0; khi nao timeToUpdateTF=1000 thi 
     //se cap nhat lFavouriteItemID
+    string LASTID;
 };
 
 #endif	/* ITEMMANAGER_H */
