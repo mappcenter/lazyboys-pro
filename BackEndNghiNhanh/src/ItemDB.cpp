@@ -33,16 +33,16 @@ void ItemDB::startItemDB() {
     cout << "Start ItemDB in " << sysTime2 - sysTime1 << " milliseconds." << endl;
     poco_information_f1(*logger, "startItemDB: Start ItemDB in %s milliseconds.", Utils::convertIntToString((sysTime2 - sysTime1)));
 
-//    int n = 300;
-//    cout << "Getting ListTopItemID" << endl;
-//    // Mac dinh lTopItemID chi co 300 itemID.
-//    lTopItemID = getListTopItemID(n);
-//    Timestamp sysTime3 = Timestamp().utcTime();
-//    cout << "Get List Top ItemID in " << sysTime3 - sysTime2 << " milliseconds." << endl;
+    int n = 300;
+    cout << "Getting ListTopItemID" << endl;
+    // Mac dinh lTopItemID chi co 300 itemID.
+    lTopItemID = getListTopItemID(n);
+    Timestamp sysTime3 = Timestamp().utcTime();
+    cout << "Get List Top ItemID in " << sysTime3 - sysTime2 << " milliseconds." << endl;
 
     Timestamp sysTime4 = Timestamp().utcTime();
     LASTID = DBUtils::initalizeLastID(grassDB);
-    //cout << "Initalize LastID=" << LASTID << " in " << sysTime4 - sysTime3 << " milliseconds." << endl;
+    cout << "Initalize LastID=" << LASTID << " in " << sysTime4 - sysTime3 << " milliseconds." << endl;
     return;
 }
 
@@ -118,10 +118,8 @@ Item ItemDB::convertJsonToItem(string jsonString) {
     itemReturn.viewCounts = viewCounts.asInt();
     itemReturn.likeCounts = likeCounts.asInt();
     itemReturn.dislikeCounts = dislikeCounts.asInt();
-    //itemReturn.likeCounts = likeCounts.asDouble();
     itemReturn.dateAdd = dateAdd.asString();
     itemReturn.dateUpdate = dateUpdate.asString();
-    //poco_information(*logger, "convertJsonToItem: Convert from Json to Item successfull");
     return itemReturn;
 }
 
@@ -628,6 +626,7 @@ vector<string> ItemDB::getListTopItemID(int64_t number) {
             Item item = convertJsonToItem(cvalue);
             allItems.push_back(std::make_pair(item.likeCounts, ckey));
         } catch (char* str) {
+            continue;
             //cout << "error make pair:" << str << endl;
         }
     }
@@ -988,7 +987,7 @@ vector<string> ItemDB::getFavouriteItemID(string userID, int64_t number, string 
     return result;
 }
 
-string ItemDB::getLastID(){
+string ItemDB::getLastID() {
     return LASTID;
 }
 
