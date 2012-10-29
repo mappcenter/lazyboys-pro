@@ -208,12 +208,24 @@ $(document).ready(function() {
                 alert("Please enter your key word");
                 return;
             }
-            var keyword=$(this).attr('value');
+            var keyword=$(this).attr('value'); 
             $.post('searchItem', {
                 key:keyword
             }, function(data){
-                alert(data);
-                //$(this).attr('value','keyword');
+                $('#table_pagination').html(data);
+                $('#search').attr('value', 'true');
+                $('#search').attr('alt', keyword);
+                regen();
+                return;
+            });
+            
+            var timer=$.timer(function(){
+                alert("No result ...");
+                return;
+                }); 
+            timer.set({
+                timer:3000, 
+                autostart: true
             });
         }
     }); 
@@ -253,16 +265,34 @@ function regen(){
 }
 
 function paging(page){
-    var tabName=$('#main-nav > li > a.current').attr('id');
-    var tagID=$('#cmbTag').attr('value');
-    $.post("getContentTab",{
-        tabName:tabName,
-        p:page,
-        t:tagID
-    },function(data){
-        $("#table_pagination").html(data);
-        regen();
-    });                 
+    if($('#search').attr('value')=='true'){ 
+        var keyword=$('#search').attr('alt');   
+        //alert(page);
+        $.post('searchItem', {
+            key:keyword,
+            p:page
+        }, function(data){
+            if(data!='null'){
+                $('#table_pagination').html(data);
+                regen();        
+            }else{
+                alert("No more record ...");
+            }   
+            return;
+        });
+    }else{
+        var tabName=$('#main-nav > li > a.current').attr('id');
+        var tagID=$('#cmbTag').attr('value');
+        $.post("getContentTab",{
+            tabName:tabName,
+            p:page,
+            t:tagID
+        },function(data){
+            $("#table_pagination").html(data);
+            regen();
+        });  
+    }
+                   
 }
 
 function deleteItem(){
@@ -362,7 +392,7 @@ function editItem(itemID) {
     });                 
 }
 
-function edit_submit(){
+function submit(){
     var tabName=$('#main-nav > li > a.current').attr('id');
     if(tabName=="Status"){
         var tagIDs="";
@@ -442,8 +472,9 @@ function addStatus(){
         var tag_list =jsonParse(data); 
         var str="";
         for(var i in tag_list){
-            str+="<div style='float:left; width:150px;'><input name='checkbox_listtag' type='checkbox' value='"
-            +tag_list[i].tagID+"' alt='"+tag_list[i].tagID+"'/>"+tag_list[i].tagName+"</div>";
+            str+="<div style='float:left; width:150px;'><input id='"+i+"' type='checkbox' value='"
+            +tag_list[i].tagID+"' alt='"+tag_list[i].tagID+"'/><label for='"+i+"'>"+tag_list[i].tagName+"</label>"
+            +"</div>";
         }
         var list_tag_textarea=document.getElementById('tag_list_textbox');
         list_tag_textarea.innerHTML=str;     
@@ -595,15 +626,16 @@ function changeTab(tabName){
 
 function editTag(tagID){
     var tagName=$('#'+tagID).find('td:nth-child(3)').html();
+    //alert(tagName);
     tagName=prompt("Type new tag name", tagName);
-    $.post('editTag', {
-        tagID:tagID, 
-        tagName:tagName
-    }, function(data){
-        alert(data);
-        $('#'+tagID).find('td:nth-child(3)').html(tagName);
-    });
-}
-
-function aaa(){
+    if(tagName!=null){
+        $.post('editTag', {
+            tagID:tagID, 
+            tagName:tagName
+        }, function(data){
+            alert(data);
+            $('#'+tagID).find('td:nth-child(3)').html(tagName);
+        });
+    }
+    
 }
