@@ -45,6 +45,7 @@ function getRandomItemOfTag(tagID){
             $("#lztitle").attr("style","visibility: visible;");
             $("#statusTag").html("<a href='javascript:getRandomItemOfTag("+tagID+");'>"+tagName+"</a>");
             turnOnOffBackNext(); 
+            checkUserLike(myJsonObj.itemID);
         }).error(function() { 
             var count=uItemsCaching.length-1;
             if(count>1)
@@ -63,6 +64,7 @@ function getRandomItemOfTag(tagID){
                 }                            
                 $("#listTag").html(lTags); 
                 turnOnOffBackNext(); 
+                checkUserLike(item.itemID);
             }
             return;
         });
