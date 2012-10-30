@@ -97,16 +97,14 @@ public class MyLocalCache {
         }
         LocalCache.put(listItemIDKey, listItemIDs);
     }
-
-    public void StartCacheTopItems() throws TException {
-        List<Item> items = handler.getTopItems(numberTopItems);
+    public void StartCacheTopItems() throws TException{
+        List<Item> items=handler.getTopItems(numberTopItems);
         LocalCache.put(listTopItemsKey, items);
     }
-
-    public List<Item> getTopItems() throws TException {
-        List<Item> items = (List<Item>) LocalCache.get(listTopItemsKey);
-        if (items == null) {
-            items = handler.getTopItems(numberTopItems);
+    public List<Item> getTopItems() throws TException{
+        List<Item> items=(List<Item>) LocalCache.get(listTopItemsKey);
+        if(items==null){
+            items=handler.getTopItems(numberTopItems);
         }
         return items;
     }
@@ -286,8 +284,7 @@ public class MyLocalCache {
     public void clearAllUserCaching() {
         //UserLocalCache.
     }
-
-    public void clearUserCaching(String uID) {
+    public void clearUserCaching(String uID){
         UserLocalCache.remove(uID);
     }
 

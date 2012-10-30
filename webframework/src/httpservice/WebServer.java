@@ -11,6 +11,7 @@ import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
+import webservlet.Admin.testHandler;
 
 public class WebServer {
 
@@ -88,6 +89,7 @@ public class WebServer {
         handler.addServletWithMapping("webservlet.Admin.addTagServlet", "/addTag");
         handler.addServletWithMapping("webservlet.Admin.addUserServlet", "/addUser");
         handler.addServletWithMapping("webservlet.Admin.changeUserRoleServlet", "/changeUserRole");
+        handler.addServletWithMapping("webservlet.Admin.searchItemServlet", "/searchItem");
 
         server.setHandler(handler);
 

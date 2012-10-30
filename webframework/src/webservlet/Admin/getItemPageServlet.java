@@ -133,7 +133,7 @@ public class getItemPageServlet extends HttpServlet {
                 listPageSection.setVariable("page", "<a href=\"#\" class=\"graybutton pagelink active\" rel=\"" + page + "\">" + page + "</a>");
             } else {
                 TemplateDataDictionary listPageSection = dic.addSection("listPage_section");
-                listPageSection.setVariable("page", "<a href=\"javascript:paging(" + i + ");\" class=\"graybutton pagelink\" rel=\"" + i + "\">" + i + "</a>");
+                listPageSection.setVariable("page", "<a href=\"javascript:paging(" + i + ");\"  class=\"graybutton pagelink\" rel=\"" + i + "\">" + i + "</a>");
             }
         }
 

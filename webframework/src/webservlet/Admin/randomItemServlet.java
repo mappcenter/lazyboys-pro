@@ -31,14 +31,9 @@ public class randomItemServlet extends HttpServlet {
         long t1 = System.currentTimeMillis();
         res.setContentType("text/html; charset=UTF-8");
         Item item = null;
-        try {
-            MyLocalCache mycache=new MyLocalCache();
-            item = mycache.getFastRandom(); 
-            //item = handler.getRandomItem();
-
-        } catch (Exception ex) {
-            Logger.getLogger(randomItemServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        MyLocalCache myLocalCache = new MyLocalCache();
+        item = myLocalCache.getFastRandom();
+        //item = handler.getRandomItem();          
         long t2 = System.currentTimeMillis();
         res.getWriter().println("<html><body><center><h1>Welcome to LazyBoys!</h1></center><br/>Time: " + (t2 - t1) + " ms<br/>" + item.toString() + "</body></html>");
     }
