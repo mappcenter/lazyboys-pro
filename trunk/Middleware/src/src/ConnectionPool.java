@@ -35,6 +35,14 @@ class Connection {
         client = new BackendMiddleware.Client(protocol);
     }
 
+    public boolean isOpen() {
+        if (transport.isOpen()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public boolean open() {
         try {
             transport.open();
@@ -98,6 +106,9 @@ public class ConnectionPool {
 
     public Connection getConnection() throws InterruptedException {
         Connection con = queue.take();
+        if (con.isOpen() == false) {
+            con.open();
+        }
         return (con);
     }
 
