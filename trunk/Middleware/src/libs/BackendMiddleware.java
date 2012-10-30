@@ -106,6 +106,8 @@ public class BackendMiddleware {
 
     public List<Item> getItemsPageKeyword(String keyWord, long pageNumber, long itemNumber) throws org.apache.thrift.TException;
 
+    public List<Item> getItemsPageKeywordOfTag(String keyWord, String tagID, long pageNumber, long itemNumber) throws org.apache.thrift.TException;
+
     public List<Item> getTopItems(long number) throws org.apache.thrift.TException;
 
     public List<Item> getTopItemsofTag(long number, String tagID) throws org.apache.thrift.TException;
@@ -125,6 +127,8 @@ public class BackendMiddleware {
     public boolean insertLikedItem(String userID, String itemID) throws org.apache.thrift.TException;
 
     public boolean deleteLikedItem(String userID, String itemID) throws org.apache.thrift.TException;
+
+    public List<String> friendLikesItemID(String itemID, List<String> listFriends) throws org.apache.thrift.TException;
 
     public List<String> getAllItemsIDDislike(String userID) throws org.apache.thrift.TException;
 
@@ -228,6 +232,8 @@ public class BackendMiddleware {
 
     public void getItemsPageKeyword(String keyWord, long pageNumber, long itemNumber, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getItemsPageKeyword_call> resultHandler) throws org.apache.thrift.TException;
 
+    public void getItemsPageKeywordOfTag(String keyWord, String tagID, long pageNumber, long itemNumber, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getItemsPageKeywordOfTag_call> resultHandler) throws org.apache.thrift.TException;
+
     public void getTopItems(long number, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getTopItems_call> resultHandler) throws org.apache.thrift.TException;
 
     public void getTopItemsofTag(long number, String tagID, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getTopItemsofTag_call> resultHandler) throws org.apache.thrift.TException;
@@ -247,6 +253,8 @@ public class BackendMiddleware {
     public void insertLikedItem(String userID, String itemID, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.insertLikedItem_call> resultHandler) throws org.apache.thrift.TException;
 
     public void deleteLikedItem(String userID, String itemID, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.deleteLikedItem_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void friendLikesItemID(String itemID, List<String> listFriends, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.friendLikesItemID_call> resultHandler) throws org.apache.thrift.TException;
 
     public void getAllItemsIDDislike(String userID, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getAllItemsIDDislike_call> resultHandler) throws org.apache.thrift.TException;
 
@@ -1119,6 +1127,32 @@ public class BackendMiddleware {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getItemsPageKeyword failed: unknown result");
     }
 
+    public List<Item> getItemsPageKeywordOfTag(String keyWord, String tagID, long pageNumber, long itemNumber) throws org.apache.thrift.TException
+    {
+      send_getItemsPageKeywordOfTag(keyWord, tagID, pageNumber, itemNumber);
+      return recv_getItemsPageKeywordOfTag();
+    }
+
+    public void send_getItemsPageKeywordOfTag(String keyWord, String tagID, long pageNumber, long itemNumber) throws org.apache.thrift.TException
+    {
+      getItemsPageKeywordOfTag_args args = new getItemsPageKeywordOfTag_args();
+      args.setKeyWord(keyWord);
+      args.setTagID(tagID);
+      args.setPageNumber(pageNumber);
+      args.setItemNumber(itemNumber);
+      sendBase("getItemsPageKeywordOfTag", args);
+    }
+
+    public List<Item> recv_getItemsPageKeywordOfTag() throws org.apache.thrift.TException
+    {
+      getItemsPageKeywordOfTag_result result = new getItemsPageKeywordOfTag_result();
+      receiveBase(result, "getItemsPageKeywordOfTag");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getItemsPageKeywordOfTag failed: unknown result");
+    }
+
     public List<Item> getTopItems(long number) throws org.apache.thrift.TException
     {
       send_getTopItems(number);
@@ -1356,6 +1390,30 @@ public class BackendMiddleware {
         return result.success;
       }
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "deleteLikedItem failed: unknown result");
+    }
+
+    public List<String> friendLikesItemID(String itemID, List<String> listFriends) throws org.apache.thrift.TException
+    {
+      send_friendLikesItemID(itemID, listFriends);
+      return recv_friendLikesItemID();
+    }
+
+    public void send_friendLikesItemID(String itemID, List<String> listFriends) throws org.apache.thrift.TException
+    {
+      friendLikesItemID_args args = new friendLikesItemID_args();
+      args.setItemID(itemID);
+      args.setListFriends(listFriends);
+      sendBase("friendLikesItemID", args);
+    }
+
+    public List<String> recv_friendLikesItemID() throws org.apache.thrift.TException
+    {
+      friendLikesItemID_result result = new friendLikesItemID_result();
+      receiveBase(result, "friendLikesItemID");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "friendLikesItemID failed: unknown result");
     }
 
     public List<String> getAllItemsIDDislike(String userID) throws org.apache.thrift.TException
@@ -2853,6 +2911,47 @@ public class BackendMiddleware {
       }
     }
 
+    public void getItemsPageKeywordOfTag(String keyWord, String tagID, long pageNumber, long itemNumber, org.apache.thrift.async.AsyncMethodCallback<getItemsPageKeywordOfTag_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      getItemsPageKeywordOfTag_call method_call = new getItemsPageKeywordOfTag_call(keyWord, tagID, pageNumber, itemNumber, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class getItemsPageKeywordOfTag_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private String keyWord;
+      private String tagID;
+      private long pageNumber;
+      private long itemNumber;
+      public getItemsPageKeywordOfTag_call(String keyWord, String tagID, long pageNumber, long itemNumber, org.apache.thrift.async.AsyncMethodCallback<getItemsPageKeywordOfTag_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.keyWord = keyWord;
+        this.tagID = tagID;
+        this.pageNumber = pageNumber;
+        this.itemNumber = itemNumber;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getItemsPageKeywordOfTag", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getItemsPageKeywordOfTag_args args = new getItemsPageKeywordOfTag_args();
+        args.setKeyWord(keyWord);
+        args.setTagID(tagID);
+        args.setPageNumber(pageNumber);
+        args.setItemNumber(itemNumber);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public List<Item> getResult() throws org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_getItemsPageKeywordOfTag();
+      }
+    }
+
     public void getTopItems(long number, org.apache.thrift.async.AsyncMethodCallback<getTopItems_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
       getTopItems_call method_call = new getTopItems_call(number, resultHandler, this, ___protocolFactory, ___transport);
@@ -3197,6 +3296,41 @@ public class BackendMiddleware {
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
         return (new Client(prot)).recv_deleteLikedItem();
+      }
+    }
+
+    public void friendLikesItemID(String itemID, List<String> listFriends, org.apache.thrift.async.AsyncMethodCallback<friendLikesItemID_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      friendLikesItemID_call method_call = new friendLikesItemID_call(itemID, listFriends, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class friendLikesItemID_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private String itemID;
+      private List<String> listFriends;
+      public friendLikesItemID_call(String itemID, List<String> listFriends, org.apache.thrift.async.AsyncMethodCallback<friendLikesItemID_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.itemID = itemID;
+        this.listFriends = listFriends;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("friendLikesItemID", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        friendLikesItemID_args args = new friendLikesItemID_args();
+        args.setItemID(itemID);
+        args.setListFriends(listFriends);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public List<String> getResult() throws org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_friendLikesItemID();
       }
     }
 
@@ -3680,6 +3814,7 @@ public class BackendMiddleware {
       processMap.put("getItemKeyword", new getItemKeyword());
       processMap.put("getItemKeywordTag", new getItemKeywordTag());
       processMap.put("getItemsPageKeyword", new getItemsPageKeyword());
+      processMap.put("getItemsPageKeywordOfTag", new getItemsPageKeywordOfTag());
       processMap.put("getTopItems", new getTopItems());
       processMap.put("getTopItemsofTag", new getTopItemsofTag());
       processMap.put("getFavouriteItems", new getFavouriteItems());
@@ -3690,6 +3825,7 @@ public class BackendMiddleware {
       processMap.put("getAllItemsLike", new getAllItemsLike());
       processMap.put("insertLikedItem", new insertLikedItem());
       processMap.put("deleteLikedItem", new deleteLikedItem());
+      processMap.put("friendLikesItemID", new friendLikesItemID());
       processMap.put("getAllItemsIDDislike", new getAllItemsIDDislike());
       processMap.put("getAllItemsDislike", new getAllItemsDislike());
       processMap.put("insertDislikedItem", new insertDislikedItem());
@@ -4441,6 +4577,26 @@ public class BackendMiddleware {
       }
     }
 
+    public static class getItemsPageKeywordOfTag<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getItemsPageKeywordOfTag_args> {
+      public getItemsPageKeywordOfTag() {
+        super("getItemsPageKeywordOfTag");
+      }
+
+      public getItemsPageKeywordOfTag_args getEmptyArgsInstance() {
+        return new getItemsPageKeywordOfTag_args();
+      }
+
+      protected boolean isOneway() {
+        return false;
+      }
+
+      public getItemsPageKeywordOfTag_result getResult(I iface, getItemsPageKeywordOfTag_args args) throws org.apache.thrift.TException {
+        getItemsPageKeywordOfTag_result result = new getItemsPageKeywordOfTag_result();
+        result.success = iface.getItemsPageKeywordOfTag(args.keyWord, args.tagID, args.pageNumber, args.itemNumber);
+        return result;
+      }
+    }
+
     public static class getTopItems<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getTopItems_args> {
       public getTopItems() {
         super("getTopItems");
@@ -4641,6 +4797,26 @@ public class BackendMiddleware {
         deleteLikedItem_result result = new deleteLikedItem_result();
         result.success = iface.deleteLikedItem(args.userID, args.itemID);
         result.setSuccessIsSet(true);
+        return result;
+      }
+    }
+
+    public static class friendLikesItemID<I extends Iface> extends org.apache.thrift.ProcessFunction<I, friendLikesItemID_args> {
+      public friendLikesItemID() {
+        super("friendLikesItemID");
+      }
+
+      public friendLikesItemID_args getEmptyArgsInstance() {
+        return new friendLikesItemID_args();
+      }
+
+      protected boolean isOneway() {
+        return false;
+      }
+
+      public friendLikesItemID_result getResult(I iface, friendLikesItemID_args args) throws org.apache.thrift.TException {
+        friendLikesItemID_result result = new friendLikesItemID_result();
+        result.success = iface.friendLikesItemID(args.itemID, args.listFriends);
         return result;
       }
     }
@@ -31518,6 +31694,1060 @@ public class BackendMiddleware {
 
   }
 
+  public static class getItemsPageKeywordOfTag_args implements org.apache.thrift.TBase<getItemsPageKeywordOfTag_args, getItemsPageKeywordOfTag_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getItemsPageKeywordOfTag_args");
+
+    private static final org.apache.thrift.protocol.TField KEY_WORD_FIELD_DESC = new org.apache.thrift.protocol.TField("keyWord", org.apache.thrift.protocol.TType.STRING, (short)1);
+    private static final org.apache.thrift.protocol.TField TAG_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("tagID", org.apache.thrift.protocol.TType.STRING, (short)2);
+    private static final org.apache.thrift.protocol.TField PAGE_NUMBER_FIELD_DESC = new org.apache.thrift.protocol.TField("pageNumber", org.apache.thrift.protocol.TType.I64, (short)3);
+    private static final org.apache.thrift.protocol.TField ITEM_NUMBER_FIELD_DESC = new org.apache.thrift.protocol.TField("itemNumber", org.apache.thrift.protocol.TType.I64, (short)4);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new getItemsPageKeywordOfTag_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new getItemsPageKeywordOfTag_argsTupleSchemeFactory());
+    }
+
+    public String keyWord; // required
+    public String tagID; // required
+    public long pageNumber; // required
+    public long itemNumber; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      KEY_WORD((short)1, "keyWord"),
+      TAG_ID((short)2, "tagID"),
+      PAGE_NUMBER((short)3, "pageNumber"),
+      ITEM_NUMBER((short)4, "itemNumber");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // KEY_WORD
+            return KEY_WORD;
+          case 2: // TAG_ID
+            return TAG_ID;
+          case 3: // PAGE_NUMBER
+            return PAGE_NUMBER;
+          case 4: // ITEM_NUMBER
+            return ITEM_NUMBER;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    private static final int __PAGENUMBER_ISSET_ID = 0;
+    private static final int __ITEMNUMBER_ISSET_ID = 1;
+    private byte __isset_bitfield = 0;
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.KEY_WORD, new org.apache.thrift.meta_data.FieldMetaData("keyWord", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      tmpMap.put(_Fields.TAG_ID, new org.apache.thrift.meta_data.FieldMetaData("tagID", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      tmpMap.put(_Fields.PAGE_NUMBER, new org.apache.thrift.meta_data.FieldMetaData("pageNumber", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
+      tmpMap.put(_Fields.ITEM_NUMBER, new org.apache.thrift.meta_data.FieldMetaData("itemNumber", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getItemsPageKeywordOfTag_args.class, metaDataMap);
+    }
+
+    public getItemsPageKeywordOfTag_args() {
+    }
+
+    public getItemsPageKeywordOfTag_args(
+      String keyWord,
+      String tagID,
+      long pageNumber,
+      long itemNumber)
+    {
+      this();
+      this.keyWord = keyWord;
+      this.tagID = tagID;
+      this.pageNumber = pageNumber;
+      setPageNumberIsSet(true);
+      this.itemNumber = itemNumber;
+      setItemNumberIsSet(true);
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getItemsPageKeywordOfTag_args(getItemsPageKeywordOfTag_args other) {
+      __isset_bitfield = other.__isset_bitfield;
+      if (other.isSetKeyWord()) {
+        this.keyWord = other.keyWord;
+      }
+      if (other.isSetTagID()) {
+        this.tagID = other.tagID;
+      }
+      this.pageNumber = other.pageNumber;
+      this.itemNumber = other.itemNumber;
+    }
+
+    public getItemsPageKeywordOfTag_args deepCopy() {
+      return new getItemsPageKeywordOfTag_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.keyWord = null;
+      this.tagID = null;
+      setPageNumberIsSet(false);
+      this.pageNumber = 0;
+      setItemNumberIsSet(false);
+      this.itemNumber = 0;
+    }
+
+    public String getKeyWord() {
+      return this.keyWord;
+    }
+
+    public getItemsPageKeywordOfTag_args setKeyWord(String keyWord) {
+      this.keyWord = keyWord;
+      return this;
+    }
+
+    public void unsetKeyWord() {
+      this.keyWord = null;
+    }
+
+    /** Returns true if field keyWord is set (has been assigned a value) and false otherwise */
+    public boolean isSetKeyWord() {
+      return this.keyWord != null;
+    }
+
+    public void setKeyWordIsSet(boolean value) {
+      if (!value) {
+        this.keyWord = null;
+      }
+    }
+
+    public String getTagID() {
+      return this.tagID;
+    }
+
+    public getItemsPageKeywordOfTag_args setTagID(String tagID) {
+      this.tagID = tagID;
+      return this;
+    }
+
+    public void unsetTagID() {
+      this.tagID = null;
+    }
+
+    /** Returns true if field tagID is set (has been assigned a value) and false otherwise */
+    public boolean isSetTagID() {
+      return this.tagID != null;
+    }
+
+    public void setTagIDIsSet(boolean value) {
+      if (!value) {
+        this.tagID = null;
+      }
+    }
+
+    public long getPageNumber() {
+      return this.pageNumber;
+    }
+
+    public getItemsPageKeywordOfTag_args setPageNumber(long pageNumber) {
+      this.pageNumber = pageNumber;
+      setPageNumberIsSet(true);
+      return this;
+    }
+
+    public void unsetPageNumber() {
+      __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __PAGENUMBER_ISSET_ID);
+    }
+
+    /** Returns true if field pageNumber is set (has been assigned a value) and false otherwise */
+    public boolean isSetPageNumber() {
+      return EncodingUtils.testBit(__isset_bitfield, __PAGENUMBER_ISSET_ID);
+    }
+
+    public void setPageNumberIsSet(boolean value) {
+      __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __PAGENUMBER_ISSET_ID, value);
+    }
+
+    public long getItemNumber() {
+      return this.itemNumber;
+    }
+
+    public getItemsPageKeywordOfTag_args setItemNumber(long itemNumber) {
+      this.itemNumber = itemNumber;
+      setItemNumberIsSet(true);
+      return this;
+    }
+
+    public void unsetItemNumber() {
+      __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __ITEMNUMBER_ISSET_ID);
+    }
+
+    /** Returns true if field itemNumber is set (has been assigned a value) and false otherwise */
+    public boolean isSetItemNumber() {
+      return EncodingUtils.testBit(__isset_bitfield, __ITEMNUMBER_ISSET_ID);
+    }
+
+    public void setItemNumberIsSet(boolean value) {
+      __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __ITEMNUMBER_ISSET_ID, value);
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case KEY_WORD:
+        if (value == null) {
+          unsetKeyWord();
+        } else {
+          setKeyWord((String)value);
+        }
+        break;
+
+      case TAG_ID:
+        if (value == null) {
+          unsetTagID();
+        } else {
+          setTagID((String)value);
+        }
+        break;
+
+      case PAGE_NUMBER:
+        if (value == null) {
+          unsetPageNumber();
+        } else {
+          setPageNumber((Long)value);
+        }
+        break;
+
+      case ITEM_NUMBER:
+        if (value == null) {
+          unsetItemNumber();
+        } else {
+          setItemNumber((Long)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case KEY_WORD:
+        return getKeyWord();
+
+      case TAG_ID:
+        return getTagID();
+
+      case PAGE_NUMBER:
+        return Long.valueOf(getPageNumber());
+
+      case ITEM_NUMBER:
+        return Long.valueOf(getItemNumber());
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case KEY_WORD:
+        return isSetKeyWord();
+      case TAG_ID:
+        return isSetTagID();
+      case PAGE_NUMBER:
+        return isSetPageNumber();
+      case ITEM_NUMBER:
+        return isSetItemNumber();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getItemsPageKeywordOfTag_args)
+        return this.equals((getItemsPageKeywordOfTag_args)that);
+      return false;
+    }
+
+    public boolean equals(getItemsPageKeywordOfTag_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_keyWord = true && this.isSetKeyWord();
+      boolean that_present_keyWord = true && that.isSetKeyWord();
+      if (this_present_keyWord || that_present_keyWord) {
+        if (!(this_present_keyWord && that_present_keyWord))
+          return false;
+        if (!this.keyWord.equals(that.keyWord))
+          return false;
+      }
+
+      boolean this_present_tagID = true && this.isSetTagID();
+      boolean that_present_tagID = true && that.isSetTagID();
+      if (this_present_tagID || that_present_tagID) {
+        if (!(this_present_tagID && that_present_tagID))
+          return false;
+        if (!this.tagID.equals(that.tagID))
+          return false;
+      }
+
+      boolean this_present_pageNumber = true;
+      boolean that_present_pageNumber = true;
+      if (this_present_pageNumber || that_present_pageNumber) {
+        if (!(this_present_pageNumber && that_present_pageNumber))
+          return false;
+        if (this.pageNumber != that.pageNumber)
+          return false;
+      }
+
+      boolean this_present_itemNumber = true;
+      boolean that_present_itemNumber = true;
+      if (this_present_itemNumber || that_present_itemNumber) {
+        if (!(this_present_itemNumber && that_present_itemNumber))
+          return false;
+        if (this.itemNumber != that.itemNumber)
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(getItemsPageKeywordOfTag_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      getItemsPageKeywordOfTag_args typedOther = (getItemsPageKeywordOfTag_args)other;
+
+      lastComparison = Boolean.valueOf(isSetKeyWord()).compareTo(typedOther.isSetKeyWord());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetKeyWord()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.keyWord, typedOther.keyWord);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetTagID()).compareTo(typedOther.isSetTagID());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetTagID()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.tagID, typedOther.tagID);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetPageNumber()).compareTo(typedOther.isSetPageNumber());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetPageNumber()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.pageNumber, typedOther.pageNumber);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetItemNumber()).compareTo(typedOther.isSetItemNumber());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetItemNumber()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.itemNumber, typedOther.itemNumber);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getItemsPageKeywordOfTag_args(");
+      boolean first = true;
+
+      sb.append("keyWord:");
+      if (this.keyWord == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.keyWord);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("tagID:");
+      if (this.tagID == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.tagID);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("pageNumber:");
+      sb.append(this.pageNumber);
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("itemNumber:");
+      sb.append(this.itemNumber);
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+      // check for sub-struct validity
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+        __isset_bitfield = 0;
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class getItemsPageKeywordOfTag_argsStandardSchemeFactory implements SchemeFactory {
+      public getItemsPageKeywordOfTag_argsStandardScheme getScheme() {
+        return new getItemsPageKeywordOfTag_argsStandardScheme();
+      }
+    }
+
+    private static class getItemsPageKeywordOfTag_argsStandardScheme extends StandardScheme<getItemsPageKeywordOfTag_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, getItemsPageKeywordOfTag_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 1: // KEY_WORD
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+                struct.keyWord = iprot.readString();
+                struct.setKeyWordIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            case 2: // TAG_ID
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+                struct.tagID = iprot.readString();
+                struct.setTagIDIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            case 3: // PAGE_NUMBER
+              if (schemeField.type == org.apache.thrift.protocol.TType.I64) {
+                struct.pageNumber = iprot.readI64();
+                struct.setPageNumberIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            case 4: // ITEM_NUMBER
+              if (schemeField.type == org.apache.thrift.protocol.TType.I64) {
+                struct.itemNumber = iprot.readI64();
+                struct.setItemNumberIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, getItemsPageKeywordOfTag_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.keyWord != null) {
+          oprot.writeFieldBegin(KEY_WORD_FIELD_DESC);
+          oprot.writeString(struct.keyWord);
+          oprot.writeFieldEnd();
+        }
+        if (struct.tagID != null) {
+          oprot.writeFieldBegin(TAG_ID_FIELD_DESC);
+          oprot.writeString(struct.tagID);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldBegin(PAGE_NUMBER_FIELD_DESC);
+        oprot.writeI64(struct.pageNumber);
+        oprot.writeFieldEnd();
+        oprot.writeFieldBegin(ITEM_NUMBER_FIELD_DESC);
+        oprot.writeI64(struct.itemNumber);
+        oprot.writeFieldEnd();
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class getItemsPageKeywordOfTag_argsTupleSchemeFactory implements SchemeFactory {
+      public getItemsPageKeywordOfTag_argsTupleScheme getScheme() {
+        return new getItemsPageKeywordOfTag_argsTupleScheme();
+      }
+    }
+
+    private static class getItemsPageKeywordOfTag_argsTupleScheme extends TupleScheme<getItemsPageKeywordOfTag_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, getItemsPageKeywordOfTag_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetKeyWord()) {
+          optionals.set(0);
+        }
+        if (struct.isSetTagID()) {
+          optionals.set(1);
+        }
+        if (struct.isSetPageNumber()) {
+          optionals.set(2);
+        }
+        if (struct.isSetItemNumber()) {
+          optionals.set(3);
+        }
+        oprot.writeBitSet(optionals, 4);
+        if (struct.isSetKeyWord()) {
+          oprot.writeString(struct.keyWord);
+        }
+        if (struct.isSetTagID()) {
+          oprot.writeString(struct.tagID);
+        }
+        if (struct.isSetPageNumber()) {
+          oprot.writeI64(struct.pageNumber);
+        }
+        if (struct.isSetItemNumber()) {
+          oprot.writeI64(struct.itemNumber);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, getItemsPageKeywordOfTag_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(4);
+        if (incoming.get(0)) {
+          struct.keyWord = iprot.readString();
+          struct.setKeyWordIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.tagID = iprot.readString();
+          struct.setTagIDIsSet(true);
+        }
+        if (incoming.get(2)) {
+          struct.pageNumber = iprot.readI64();
+          struct.setPageNumberIsSet(true);
+        }
+        if (incoming.get(3)) {
+          struct.itemNumber = iprot.readI64();
+          struct.setItemNumberIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class getItemsPageKeywordOfTag_result implements org.apache.thrift.TBase<getItemsPageKeywordOfTag_result, getItemsPageKeywordOfTag_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getItemsPageKeywordOfTag_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new getItemsPageKeywordOfTag_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new getItemsPageKeywordOfTag_resultTupleSchemeFactory());
+    }
+
+    public List<Item> success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Item.class))));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getItemsPageKeywordOfTag_result.class, metaDataMap);
+    }
+
+    public getItemsPageKeywordOfTag_result() {
+    }
+
+    public getItemsPageKeywordOfTag_result(
+      List<Item> success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getItemsPageKeywordOfTag_result(getItemsPageKeywordOfTag_result other) {
+      if (other.isSetSuccess()) {
+        List<Item> __this__success = new ArrayList<Item>();
+        for (Item other_element : other.success) {
+          __this__success.add(new Item(other_element));
+        }
+        this.success = __this__success;
+      }
+    }
+
+    public getItemsPageKeywordOfTag_result deepCopy() {
+      return new getItemsPageKeywordOfTag_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public int getSuccessSize() {
+      return (this.success == null) ? 0 : this.success.size();
+    }
+
+    public java.util.Iterator<Item> getSuccessIterator() {
+      return (this.success == null) ? null : this.success.iterator();
+    }
+
+    public void addToSuccess(Item elem) {
+      if (this.success == null) {
+        this.success = new ArrayList<Item>();
+      }
+      this.success.add(elem);
+    }
+
+    public List<Item> getSuccess() {
+      return this.success;
+    }
+
+    public getItemsPageKeywordOfTag_result setSuccess(List<Item> success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((List<Item>)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getItemsPageKeywordOfTag_result)
+        return this.equals((getItemsPageKeywordOfTag_result)that);
+      return false;
+    }
+
+    public boolean equals(getItemsPageKeywordOfTag_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(getItemsPageKeywordOfTag_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      getItemsPageKeywordOfTag_result typedOther = (getItemsPageKeywordOfTag_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getItemsPageKeywordOfTag_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+      // check for sub-struct validity
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class getItemsPageKeywordOfTag_resultStandardSchemeFactory implements SchemeFactory {
+      public getItemsPageKeywordOfTag_resultStandardScheme getScheme() {
+        return new getItemsPageKeywordOfTag_resultStandardScheme();
+      }
+    }
+
+    private static class getItemsPageKeywordOfTag_resultStandardScheme extends StandardScheme<getItemsPageKeywordOfTag_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, getItemsPageKeywordOfTag_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
+                {
+                  org.apache.thrift.protocol.TList _list176 = iprot.readListBegin();
+                  struct.success = new ArrayList<Item>(_list176.size);
+                  for (int _i177 = 0; _i177 < _list176.size; ++_i177)
+                  {
+                    Item _elem178; // required
+                    _elem178 = new Item();
+                    _elem178.read(iprot);
+                    struct.success.add(_elem178);
+                  }
+                  iprot.readListEnd();
+                }
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, getItemsPageKeywordOfTag_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          {
+            oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
+            for (Item _iter179 : struct.success)
+            {
+              _iter179.write(oprot);
+            }
+            oprot.writeListEnd();
+          }
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class getItemsPageKeywordOfTag_resultTupleSchemeFactory implements SchemeFactory {
+      public getItemsPageKeywordOfTag_resultTupleScheme getScheme() {
+        return new getItemsPageKeywordOfTag_resultTupleScheme();
+      }
+    }
+
+    private static class getItemsPageKeywordOfTag_resultTupleScheme extends TupleScheme<getItemsPageKeywordOfTag_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, getItemsPageKeywordOfTag_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetSuccess()) {
+          {
+            oprot.writeI32(struct.success.size());
+            for (Item _iter180 : struct.success)
+            {
+              _iter180.write(oprot);
+            }
+          }
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, getItemsPageKeywordOfTag_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          {
+            org.apache.thrift.protocol.TList _list181 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<Item>(_list181.size);
+            for (int _i182 = 0; _i182 < _list181.size; ++_i182)
+            {
+              Item _elem183; // required
+              _elem183 = new Item();
+              _elem183.read(iprot);
+              struct.success.add(_elem183);
+            }
+          }
+          struct.setSuccessIsSet(true);
+        }
+      }
+    }
+
+  }
+
   public static class getTopItems_args implements org.apache.thrift.TBase<getTopItems_args, getTopItems_args._Fields>, java.io.Serializable, Cloneable   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getTopItems_args");
 
@@ -32179,14 +33409,14 @@ public class BackendMiddleware {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list176 = iprot.readListBegin();
-                  struct.success = new ArrayList<Item>(_list176.size);
-                  for (int _i177 = 0; _i177 < _list176.size; ++_i177)
+                  org.apache.thrift.protocol.TList _list184 = iprot.readListBegin();
+                  struct.success = new ArrayList<Item>(_list184.size);
+                  for (int _i185 = 0; _i185 < _list184.size; ++_i185)
                   {
-                    Item _elem178; // required
-                    _elem178 = new Item();
-                    _elem178.read(iprot);
-                    struct.success.add(_elem178);
+                    Item _elem186; // required
+                    _elem186 = new Item();
+                    _elem186.read(iprot);
+                    struct.success.add(_elem186);
                   }
                   iprot.readListEnd();
                 }
@@ -32214,9 +33444,9 @@ public class BackendMiddleware {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (Item _iter179 : struct.success)
+            for (Item _iter187 : struct.success)
             {
-              _iter179.write(oprot);
+              _iter187.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -32247,9 +33477,9 @@ public class BackendMiddleware {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (Item _iter180 : struct.success)
+            for (Item _iter188 : struct.success)
             {
-              _iter180.write(oprot);
+              _iter188.write(oprot);
             }
           }
         }
@@ -32261,14 +33491,14 @@ public class BackendMiddleware {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list181 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<Item>(_list181.size);
-            for (int _i182 = 0; _i182 < _list181.size; ++_i182)
+            org.apache.thrift.protocol.TList _list189 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<Item>(_list189.size);
+            for (int _i190 = 0; _i190 < _list189.size; ++_i190)
             {
-              Item _elem183; // required
-              _elem183 = new Item();
-              _elem183.read(iprot);
-              struct.success.add(_elem183);
+              Item _elem191; // required
+              _elem191 = new Item();
+              _elem191.read(iprot);
+              struct.success.add(_elem191);
             }
           }
           struct.setSuccessIsSet(true);
@@ -33039,14 +34269,14 @@ public class BackendMiddleware {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list184 = iprot.readListBegin();
-                  struct.success = new ArrayList<Item>(_list184.size);
-                  for (int _i185 = 0; _i185 < _list184.size; ++_i185)
+                  org.apache.thrift.protocol.TList _list192 = iprot.readListBegin();
+                  struct.success = new ArrayList<Item>(_list192.size);
+                  for (int _i193 = 0; _i193 < _list192.size; ++_i193)
                   {
-                    Item _elem186; // required
-                    _elem186 = new Item();
-                    _elem186.read(iprot);
-                    struct.success.add(_elem186);
+                    Item _elem194; // required
+                    _elem194 = new Item();
+                    _elem194.read(iprot);
+                    struct.success.add(_elem194);
                   }
                   iprot.readListEnd();
                 }
@@ -33074,9 +34304,9 @@ public class BackendMiddleware {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (Item _iter187 : struct.success)
+            for (Item _iter195 : struct.success)
             {
-              _iter187.write(oprot);
+              _iter195.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -33107,9 +34337,9 @@ public class BackendMiddleware {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (Item _iter188 : struct.success)
+            for (Item _iter196 : struct.success)
             {
-              _iter188.write(oprot);
+              _iter196.write(oprot);
             }
           }
         }
@@ -33121,14 +34351,14 @@ public class BackendMiddleware {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list189 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<Item>(_list189.size);
-            for (int _i190 = 0; _i190 < _list189.size; ++_i190)
+            org.apache.thrift.protocol.TList _list197 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<Item>(_list197.size);
+            for (int _i198 = 0; _i198 < _list197.size; ++_i198)
             {
-              Item _elem191; // required
-              _elem191 = new Item();
-              _elem191.read(iprot);
-              struct.success.add(_elem191);
+              Item _elem199; // required
+              _elem199 = new Item();
+              _elem199.read(iprot);
+              struct.success.add(_elem199);
             }
           }
           struct.setSuccessIsSet(true);
@@ -33899,14 +35129,14 @@ public class BackendMiddleware {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list192 = iprot.readListBegin();
-                  struct.success = new ArrayList<Item>(_list192.size);
-                  for (int _i193 = 0; _i193 < _list192.size; ++_i193)
+                  org.apache.thrift.protocol.TList _list200 = iprot.readListBegin();
+                  struct.success = new ArrayList<Item>(_list200.size);
+                  for (int _i201 = 0; _i201 < _list200.size; ++_i201)
                   {
-                    Item _elem194; // required
-                    _elem194 = new Item();
-                    _elem194.read(iprot);
-                    struct.success.add(_elem194);
+                    Item _elem202; // required
+                    _elem202 = new Item();
+                    _elem202.read(iprot);
+                    struct.success.add(_elem202);
                   }
                   iprot.readListEnd();
                 }
@@ -33934,9 +35164,9 @@ public class BackendMiddleware {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (Item _iter195 : struct.success)
+            for (Item _iter203 : struct.success)
             {
-              _iter195.write(oprot);
+              _iter203.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -33967,9 +35197,9 @@ public class BackendMiddleware {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (Item _iter196 : struct.success)
+            for (Item _iter204 : struct.success)
             {
-              _iter196.write(oprot);
+              _iter204.write(oprot);
             }
           }
         }
@@ -33981,14 +35211,14 @@ public class BackendMiddleware {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list197 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<Item>(_list197.size);
-            for (int _i198 = 0; _i198 < _list197.size; ++_i198)
+            org.apache.thrift.protocol.TList _list205 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<Item>(_list205.size);
+            for (int _i206 = 0; _i206 < _list205.size; ++_i206)
             {
-              Item _elem199; // required
-              _elem199 = new Item();
-              _elem199.read(iprot);
-              struct.success.add(_elem199);
+              Item _elem207; // required
+              _elem207 = new Item();
+              _elem207.read(iprot);
+              struct.success.add(_elem207);
             }
           }
           struct.setSuccessIsSet(true);
@@ -34859,14 +36089,14 @@ public class BackendMiddleware {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list200 = iprot.readListBegin();
-                  struct.success = new ArrayList<Item>(_list200.size);
-                  for (int _i201 = 0; _i201 < _list200.size; ++_i201)
+                  org.apache.thrift.protocol.TList _list208 = iprot.readListBegin();
+                  struct.success = new ArrayList<Item>(_list208.size);
+                  for (int _i209 = 0; _i209 < _list208.size; ++_i209)
                   {
-                    Item _elem202; // required
-                    _elem202 = new Item();
-                    _elem202.read(iprot);
-                    struct.success.add(_elem202);
+                    Item _elem210; // required
+                    _elem210 = new Item();
+                    _elem210.read(iprot);
+                    struct.success.add(_elem210);
                   }
                   iprot.readListEnd();
                 }
@@ -34894,9 +36124,9 @@ public class BackendMiddleware {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (Item _iter203 : struct.success)
+            for (Item _iter211 : struct.success)
             {
-              _iter203.write(oprot);
+              _iter211.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -34927,9 +36157,9 @@ public class BackendMiddleware {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (Item _iter204 : struct.success)
+            for (Item _iter212 : struct.success)
             {
-              _iter204.write(oprot);
+              _iter212.write(oprot);
             }
           }
         }
@@ -34941,14 +36171,14 @@ public class BackendMiddleware {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list205 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<Item>(_list205.size);
-            for (int _i206 = 0; _i206 < _list205.size; ++_i206)
+            org.apache.thrift.protocol.TList _list213 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<Item>(_list213.size);
+            for (int _i214 = 0; _i214 < _list213.size; ++_i214)
             {
-              Item _elem207; // required
-              _elem207 = new Item();
-              _elem207.read(iprot);
-              struct.success.add(_elem207);
+              Item _elem215; // required
+              _elem215 = new Item();
+              _elem215.read(iprot);
+              struct.success.add(_elem215);
             }
           }
           struct.setSuccessIsSet(true);
@@ -37237,13 +38467,13 @@ public class BackendMiddleware {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list208 = iprot.readListBegin();
-                  struct.success = new ArrayList<String>(_list208.size);
-                  for (int _i209 = 0; _i209 < _list208.size; ++_i209)
+                  org.apache.thrift.protocol.TList _list216 = iprot.readListBegin();
+                  struct.success = new ArrayList<String>(_list216.size);
+                  for (int _i217 = 0; _i217 < _list216.size; ++_i217)
                   {
-                    String _elem210; // required
-                    _elem210 = iprot.readString();
-                    struct.success.add(_elem210);
+                    String _elem218; // required
+                    _elem218 = iprot.readString();
+                    struct.success.add(_elem218);
                   }
                   iprot.readListEnd();
                 }
@@ -37271,9 +38501,9 @@ public class BackendMiddleware {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, struct.success.size()));
-            for (String _iter211 : struct.success)
+            for (String _iter219 : struct.success)
             {
-              oprot.writeString(_iter211);
+              oprot.writeString(_iter219);
             }
             oprot.writeListEnd();
           }
@@ -37304,9 +38534,9 @@ public class BackendMiddleware {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (String _iter212 : struct.success)
+            for (String _iter220 : struct.success)
             {
-              oprot.writeString(_iter212);
+              oprot.writeString(_iter220);
             }
           }
         }
@@ -37318,13 +38548,13 @@ public class BackendMiddleware {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list213 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
-            struct.success = new ArrayList<String>(_list213.size);
-            for (int _i214 = 0; _i214 < _list213.size; ++_i214)
+            org.apache.thrift.protocol.TList _list221 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
+            struct.success = new ArrayList<String>(_list221.size);
+            for (int _i222 = 0; _i222 < _list221.size; ++_i222)
             {
-              String _elem215; // required
-              _elem215 = iprot.readString();
-              struct.success.add(_elem215);
+              String _elem223; // required
+              _elem223 = iprot.readString();
+              struct.success.add(_elem223);
             }
           }
           struct.setSuccessIsSet(true);
@@ -38095,14 +39325,14 @@ public class BackendMiddleware {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list216 = iprot.readListBegin();
-                  struct.success = new ArrayList<Item>(_list216.size);
-                  for (int _i217 = 0; _i217 < _list216.size; ++_i217)
+                  org.apache.thrift.protocol.TList _list224 = iprot.readListBegin();
+                  struct.success = new ArrayList<Item>(_list224.size);
+                  for (int _i225 = 0; _i225 < _list224.size; ++_i225)
                   {
-                    Item _elem218; // required
-                    _elem218 = new Item();
-                    _elem218.read(iprot);
-                    struct.success.add(_elem218);
+                    Item _elem226; // required
+                    _elem226 = new Item();
+                    _elem226.read(iprot);
+                    struct.success.add(_elem226);
                   }
                   iprot.readListEnd();
                 }
@@ -38130,9 +39360,9 @@ public class BackendMiddleware {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (Item _iter219 : struct.success)
+            for (Item _iter227 : struct.success)
             {
-              _iter219.write(oprot);
+              _iter227.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -38163,9 +39393,9 @@ public class BackendMiddleware {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (Item _iter220 : struct.success)
+            for (Item _iter228 : struct.success)
             {
-              _iter220.write(oprot);
+              _iter228.write(oprot);
             }
           }
         }
@@ -38177,14 +39407,14 @@ public class BackendMiddleware {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list221 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<Item>(_list221.size);
-            for (int _i222 = 0; _i222 < _list221.size; ++_i222)
+            org.apache.thrift.protocol.TList _list229 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<Item>(_list229.size);
+            for (int _i230 = 0; _i230 < _list229.size; ++_i230)
             {
-              Item _elem223; // required
-              _elem223 = new Item();
-              _elem223.read(iprot);
-              struct.success.add(_elem223);
+              Item _elem231; // required
+              _elem231 = new Item();
+              _elem231.read(iprot);
+              struct.success.add(_elem231);
             }
           }
           struct.setSuccessIsSet(true);
@@ -39810,6 +41040,918 @@ public class BackendMiddleware {
 
   }
 
+  public static class friendLikesItemID_args implements org.apache.thrift.TBase<friendLikesItemID_args, friendLikesItemID_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("friendLikesItemID_args");
+
+    private static final org.apache.thrift.protocol.TField ITEM_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("itemID", org.apache.thrift.protocol.TType.STRING, (short)1);
+    private static final org.apache.thrift.protocol.TField LIST_FRIENDS_FIELD_DESC = new org.apache.thrift.protocol.TField("listFriends", org.apache.thrift.protocol.TType.LIST, (short)2);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new friendLikesItemID_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new friendLikesItemID_argsTupleSchemeFactory());
+    }
+
+    public String itemID; // required
+    public List<String> listFriends; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      ITEM_ID((short)1, "itemID"),
+      LIST_FRIENDS((short)2, "listFriends");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // ITEM_ID
+            return ITEM_ID;
+          case 2: // LIST_FRIENDS
+            return LIST_FRIENDS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.ITEM_ID, new org.apache.thrift.meta_data.FieldMetaData("itemID", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      tmpMap.put(_Fields.LIST_FRIENDS, new org.apache.thrift.meta_data.FieldMetaData("listFriends", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+              new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(friendLikesItemID_args.class, metaDataMap);
+    }
+
+    public friendLikesItemID_args() {
+    }
+
+    public friendLikesItemID_args(
+      String itemID,
+      List<String> listFriends)
+    {
+      this();
+      this.itemID = itemID;
+      this.listFriends = listFriends;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public friendLikesItemID_args(friendLikesItemID_args other) {
+      if (other.isSetItemID()) {
+        this.itemID = other.itemID;
+      }
+      if (other.isSetListFriends()) {
+        List<String> __this__listFriends = new ArrayList<String>();
+        for (String other_element : other.listFriends) {
+          __this__listFriends.add(other_element);
+        }
+        this.listFriends = __this__listFriends;
+      }
+    }
+
+    public friendLikesItemID_args deepCopy() {
+      return new friendLikesItemID_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.itemID = null;
+      this.listFriends = null;
+    }
+
+    public String getItemID() {
+      return this.itemID;
+    }
+
+    public friendLikesItemID_args setItemID(String itemID) {
+      this.itemID = itemID;
+      return this;
+    }
+
+    public void unsetItemID() {
+      this.itemID = null;
+    }
+
+    /** Returns true if field itemID is set (has been assigned a value) and false otherwise */
+    public boolean isSetItemID() {
+      return this.itemID != null;
+    }
+
+    public void setItemIDIsSet(boolean value) {
+      if (!value) {
+        this.itemID = null;
+      }
+    }
+
+    public int getListFriendsSize() {
+      return (this.listFriends == null) ? 0 : this.listFriends.size();
+    }
+
+    public java.util.Iterator<String> getListFriendsIterator() {
+      return (this.listFriends == null) ? null : this.listFriends.iterator();
+    }
+
+    public void addToListFriends(String elem) {
+      if (this.listFriends == null) {
+        this.listFriends = new ArrayList<String>();
+      }
+      this.listFriends.add(elem);
+    }
+
+    public List<String> getListFriends() {
+      return this.listFriends;
+    }
+
+    public friendLikesItemID_args setListFriends(List<String> listFriends) {
+      this.listFriends = listFriends;
+      return this;
+    }
+
+    public void unsetListFriends() {
+      this.listFriends = null;
+    }
+
+    /** Returns true if field listFriends is set (has been assigned a value) and false otherwise */
+    public boolean isSetListFriends() {
+      return this.listFriends != null;
+    }
+
+    public void setListFriendsIsSet(boolean value) {
+      if (!value) {
+        this.listFriends = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case ITEM_ID:
+        if (value == null) {
+          unsetItemID();
+        } else {
+          setItemID((String)value);
+        }
+        break;
+
+      case LIST_FRIENDS:
+        if (value == null) {
+          unsetListFriends();
+        } else {
+          setListFriends((List<String>)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case ITEM_ID:
+        return getItemID();
+
+      case LIST_FRIENDS:
+        return getListFriends();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case ITEM_ID:
+        return isSetItemID();
+      case LIST_FRIENDS:
+        return isSetListFriends();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof friendLikesItemID_args)
+        return this.equals((friendLikesItemID_args)that);
+      return false;
+    }
+
+    public boolean equals(friendLikesItemID_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_itemID = true && this.isSetItemID();
+      boolean that_present_itemID = true && that.isSetItemID();
+      if (this_present_itemID || that_present_itemID) {
+        if (!(this_present_itemID && that_present_itemID))
+          return false;
+        if (!this.itemID.equals(that.itemID))
+          return false;
+      }
+
+      boolean this_present_listFriends = true && this.isSetListFriends();
+      boolean that_present_listFriends = true && that.isSetListFriends();
+      if (this_present_listFriends || that_present_listFriends) {
+        if (!(this_present_listFriends && that_present_listFriends))
+          return false;
+        if (!this.listFriends.equals(that.listFriends))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(friendLikesItemID_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      friendLikesItemID_args typedOther = (friendLikesItemID_args)other;
+
+      lastComparison = Boolean.valueOf(isSetItemID()).compareTo(typedOther.isSetItemID());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetItemID()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.itemID, typedOther.itemID);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetListFriends()).compareTo(typedOther.isSetListFriends());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetListFriends()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.listFriends, typedOther.listFriends);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("friendLikesItemID_args(");
+      boolean first = true;
+
+      sb.append("itemID:");
+      if (this.itemID == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.itemID);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("listFriends:");
+      if (this.listFriends == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.listFriends);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+      // check for sub-struct validity
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class friendLikesItemID_argsStandardSchemeFactory implements SchemeFactory {
+      public friendLikesItemID_argsStandardScheme getScheme() {
+        return new friendLikesItemID_argsStandardScheme();
+      }
+    }
+
+    private static class friendLikesItemID_argsStandardScheme extends StandardScheme<friendLikesItemID_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, friendLikesItemID_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 1: // ITEM_ID
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+                struct.itemID = iprot.readString();
+                struct.setItemIDIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            case 2: // LIST_FRIENDS
+              if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
+                {
+                  org.apache.thrift.protocol.TList _list232 = iprot.readListBegin();
+                  struct.listFriends = new ArrayList<String>(_list232.size);
+                  for (int _i233 = 0; _i233 < _list232.size; ++_i233)
+                  {
+                    String _elem234; // required
+                    _elem234 = iprot.readString();
+                    struct.listFriends.add(_elem234);
+                  }
+                  iprot.readListEnd();
+                }
+                struct.setListFriendsIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, friendLikesItemID_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.itemID != null) {
+          oprot.writeFieldBegin(ITEM_ID_FIELD_DESC);
+          oprot.writeString(struct.itemID);
+          oprot.writeFieldEnd();
+        }
+        if (struct.listFriends != null) {
+          oprot.writeFieldBegin(LIST_FRIENDS_FIELD_DESC);
+          {
+            oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, struct.listFriends.size()));
+            for (String _iter235 : struct.listFriends)
+            {
+              oprot.writeString(_iter235);
+            }
+            oprot.writeListEnd();
+          }
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class friendLikesItemID_argsTupleSchemeFactory implements SchemeFactory {
+      public friendLikesItemID_argsTupleScheme getScheme() {
+        return new friendLikesItemID_argsTupleScheme();
+      }
+    }
+
+    private static class friendLikesItemID_argsTupleScheme extends TupleScheme<friendLikesItemID_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, friendLikesItemID_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetItemID()) {
+          optionals.set(0);
+        }
+        if (struct.isSetListFriends()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
+        if (struct.isSetItemID()) {
+          oprot.writeString(struct.itemID);
+        }
+        if (struct.isSetListFriends()) {
+          {
+            oprot.writeI32(struct.listFriends.size());
+            for (String _iter236 : struct.listFriends)
+            {
+              oprot.writeString(_iter236);
+            }
+          }
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, friendLikesItemID_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(2);
+        if (incoming.get(0)) {
+          struct.itemID = iprot.readString();
+          struct.setItemIDIsSet(true);
+        }
+        if (incoming.get(1)) {
+          {
+            org.apache.thrift.protocol.TList _list237 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
+            struct.listFriends = new ArrayList<String>(_list237.size);
+            for (int _i238 = 0; _i238 < _list237.size; ++_i238)
+            {
+              String _elem239; // required
+              _elem239 = iprot.readString();
+              struct.listFriends.add(_elem239);
+            }
+          }
+          struct.setListFriendsIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class friendLikesItemID_result implements org.apache.thrift.TBase<friendLikesItemID_result, friendLikesItemID_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("friendLikesItemID_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new friendLikesItemID_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new friendLikesItemID_resultTupleSchemeFactory());
+    }
+
+    public List<String> success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+              new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(friendLikesItemID_result.class, metaDataMap);
+    }
+
+    public friendLikesItemID_result() {
+    }
+
+    public friendLikesItemID_result(
+      List<String> success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public friendLikesItemID_result(friendLikesItemID_result other) {
+      if (other.isSetSuccess()) {
+        List<String> __this__success = new ArrayList<String>();
+        for (String other_element : other.success) {
+          __this__success.add(other_element);
+        }
+        this.success = __this__success;
+      }
+    }
+
+    public friendLikesItemID_result deepCopy() {
+      return new friendLikesItemID_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public int getSuccessSize() {
+      return (this.success == null) ? 0 : this.success.size();
+    }
+
+    public java.util.Iterator<String> getSuccessIterator() {
+      return (this.success == null) ? null : this.success.iterator();
+    }
+
+    public void addToSuccess(String elem) {
+      if (this.success == null) {
+        this.success = new ArrayList<String>();
+      }
+      this.success.add(elem);
+    }
+
+    public List<String> getSuccess() {
+      return this.success;
+    }
+
+    public friendLikesItemID_result setSuccess(List<String> success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((List<String>)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof friendLikesItemID_result)
+        return this.equals((friendLikesItemID_result)that);
+      return false;
+    }
+
+    public boolean equals(friendLikesItemID_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(friendLikesItemID_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      friendLikesItemID_result typedOther = (friendLikesItemID_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("friendLikesItemID_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+      // check for sub-struct validity
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class friendLikesItemID_resultStandardSchemeFactory implements SchemeFactory {
+      public friendLikesItemID_resultStandardScheme getScheme() {
+        return new friendLikesItemID_resultStandardScheme();
+      }
+    }
+
+    private static class friendLikesItemID_resultStandardScheme extends StandardScheme<friendLikesItemID_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, friendLikesItemID_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
+                {
+                  org.apache.thrift.protocol.TList _list240 = iprot.readListBegin();
+                  struct.success = new ArrayList<String>(_list240.size);
+                  for (int _i241 = 0; _i241 < _list240.size; ++_i241)
+                  {
+                    String _elem242; // required
+                    _elem242 = iprot.readString();
+                    struct.success.add(_elem242);
+                  }
+                  iprot.readListEnd();
+                }
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, friendLikesItemID_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          {
+            oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, struct.success.size()));
+            for (String _iter243 : struct.success)
+            {
+              oprot.writeString(_iter243);
+            }
+            oprot.writeListEnd();
+          }
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class friendLikesItemID_resultTupleSchemeFactory implements SchemeFactory {
+      public friendLikesItemID_resultTupleScheme getScheme() {
+        return new friendLikesItemID_resultTupleScheme();
+      }
+    }
+
+    private static class friendLikesItemID_resultTupleScheme extends TupleScheme<friendLikesItemID_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, friendLikesItemID_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetSuccess()) {
+          {
+            oprot.writeI32(struct.success.size());
+            for (String _iter244 : struct.success)
+            {
+              oprot.writeString(_iter244);
+            }
+          }
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, friendLikesItemID_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          {
+            org.apache.thrift.protocol.TList _list245 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
+            struct.success = new ArrayList<String>(_list245.size);
+            for (int _i246 = 0; _i246 < _list245.size; ++_i246)
+            {
+              String _elem247; // required
+              _elem247 = iprot.readString();
+              struct.success.add(_elem247);
+            }
+          }
+          struct.setSuccessIsSet(true);
+        }
+      }
+    }
+
+  }
+
   public static class getAllItemsIDDislike_args implements org.apache.thrift.TBase<getAllItemsIDDislike_args, getAllItemsIDDislike_args._Fields>, java.io.Serializable, Cloneable   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getAllItemsIDDislike_args");
 
@@ -40473,13 +42615,13 @@ public class BackendMiddleware {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list224 = iprot.readListBegin();
-                  struct.success = new ArrayList<String>(_list224.size);
-                  for (int _i225 = 0; _i225 < _list224.size; ++_i225)
+                  org.apache.thrift.protocol.TList _list248 = iprot.readListBegin();
+                  struct.success = new ArrayList<String>(_list248.size);
+                  for (int _i249 = 0; _i249 < _list248.size; ++_i249)
                   {
-                    String _elem226; // required
-                    _elem226 = iprot.readString();
-                    struct.success.add(_elem226);
+                    String _elem250; // required
+                    _elem250 = iprot.readString();
+                    struct.success.add(_elem250);
                   }
                   iprot.readListEnd();
                 }
@@ -40507,9 +42649,9 @@ public class BackendMiddleware {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, struct.success.size()));
-            for (String _iter227 : struct.success)
+            for (String _iter251 : struct.success)
             {
-              oprot.writeString(_iter227);
+              oprot.writeString(_iter251);
             }
             oprot.writeListEnd();
           }
@@ -40540,9 +42682,9 @@ public class BackendMiddleware {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (String _iter228 : struct.success)
+            for (String _iter252 : struct.success)
             {
-              oprot.writeString(_iter228);
+              oprot.writeString(_iter252);
             }
           }
         }
@@ -40554,13 +42696,13 @@ public class BackendMiddleware {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list229 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
-            struct.success = new ArrayList<String>(_list229.size);
-            for (int _i230 = 0; _i230 < _list229.size; ++_i230)
+            org.apache.thrift.protocol.TList _list253 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
+            struct.success = new ArrayList<String>(_list253.size);
+            for (int _i254 = 0; _i254 < _list253.size; ++_i254)
             {
-              String _elem231; // required
-              _elem231 = iprot.readString();
-              struct.success.add(_elem231);
+              String _elem255; // required
+              _elem255 = iprot.readString();
+              struct.success.add(_elem255);
             }
           }
           struct.setSuccessIsSet(true);
@@ -41331,14 +43473,14 @@ public class BackendMiddleware {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list232 = iprot.readListBegin();
-                  struct.success = new ArrayList<Item>(_list232.size);
-                  for (int _i233 = 0; _i233 < _list232.size; ++_i233)
+                  org.apache.thrift.protocol.TList _list256 = iprot.readListBegin();
+                  struct.success = new ArrayList<Item>(_list256.size);
+                  for (int _i257 = 0; _i257 < _list256.size; ++_i257)
                   {
-                    Item _elem234; // required
-                    _elem234 = new Item();
-                    _elem234.read(iprot);
-                    struct.success.add(_elem234);
+                    Item _elem258; // required
+                    _elem258 = new Item();
+                    _elem258.read(iprot);
+                    struct.success.add(_elem258);
                   }
                   iprot.readListEnd();
                 }
@@ -41366,9 +43508,9 @@ public class BackendMiddleware {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (Item _iter235 : struct.success)
+            for (Item _iter259 : struct.success)
             {
-              _iter235.write(oprot);
+              _iter259.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -41399,9 +43541,9 @@ public class BackendMiddleware {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (Item _iter236 : struct.success)
+            for (Item _iter260 : struct.success)
             {
-              _iter236.write(oprot);
+              _iter260.write(oprot);
             }
           }
         }
@@ -41413,14 +43555,14 @@ public class BackendMiddleware {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list237 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<Item>(_list237.size);
-            for (int _i238 = 0; _i238 < _list237.size; ++_i238)
+            org.apache.thrift.protocol.TList _list261 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<Item>(_list261.size);
+            for (int _i262 = 0; _i262 < _list261.size; ++_i262)
             {
-              Item _elem239; // required
-              _elem239 = new Item();
-              _elem239.read(iprot);
-              struct.success.add(_elem239);
+              Item _elem263; // required
+              _elem263 = new Item();
+              _elem263.read(iprot);
+              struct.success.add(_elem263);
             }
           }
           struct.setSuccessIsSet(true);
@@ -49558,13 +51700,13 @@ public class BackendMiddleware {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list240 = iprot.readListBegin();
-                  struct.success = new ArrayList<String>(_list240.size);
-                  for (int _i241 = 0; _i241 < _list240.size; ++_i241)
+                  org.apache.thrift.protocol.TList _list264 = iprot.readListBegin();
+                  struct.success = new ArrayList<String>(_list264.size);
+                  for (int _i265 = 0; _i265 < _list264.size; ++_i265)
                   {
-                    String _elem242; // required
-                    _elem242 = iprot.readString();
-                    struct.success.add(_elem242);
+                    String _elem266; // required
+                    _elem266 = iprot.readString();
+                    struct.success.add(_elem266);
                   }
                   iprot.readListEnd();
                 }
@@ -49592,9 +51734,9 @@ public class BackendMiddleware {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, struct.success.size()));
-            for (String _iter243 : struct.success)
+            for (String _iter267 : struct.success)
             {
-              oprot.writeString(_iter243);
+              oprot.writeString(_iter267);
             }
             oprot.writeListEnd();
           }
@@ -49625,9 +51767,9 @@ public class BackendMiddleware {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (String _iter244 : struct.success)
+            for (String _iter268 : struct.success)
             {
-              oprot.writeString(_iter244);
+              oprot.writeString(_iter268);
             }
           }
         }
@@ -49639,13 +51781,13 @@ public class BackendMiddleware {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list245 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
-            struct.success = new ArrayList<String>(_list245.size);
-            for (int _i246 = 0; _i246 < _list245.size; ++_i246)
+            org.apache.thrift.protocol.TList _list269 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
+            struct.success = new ArrayList<String>(_list269.size);
+            for (int _i270 = 0; _i270 < _list269.size; ++_i270)
             {
-              String _elem247; // required
-              _elem247 = iprot.readString();
-              struct.success.add(_elem247);
+              String _elem271; // required
+              _elem271 = iprot.readString();
+              struct.success.add(_elem271);
             }
           }
           struct.setSuccessIsSet(true);
