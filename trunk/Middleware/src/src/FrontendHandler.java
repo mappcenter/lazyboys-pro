@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import libs.Item;
@@ -52,14 +51,14 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     @Override
     public List<Tag> getAllTag() throws TException {
         if (!listTag.isEmpty()) {
-            System.out.println("getAllTag from cache ...");
+            //System.out.println("getAllTag from cache ...");
             return listTag;
         }
         listTag = handler.getAllTag();
         for (Tag tag : listTag) {
             local_cache.put("getTag" + tag.tagID, tag);
         }
-        System.out.println("getAllTag from backend ...");
+        //System.out.println("getAllTag from backend ...");
         return listTag;
     }
 
@@ -67,10 +66,10 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     public boolean insertTag(String tagName) throws TException {
         boolean result = handler.insertTag(tagName);
         if (result) {
-            System.out.println("insert tag success ...");
+            //System.out.println("insert tag success ...");
             listTag = handler.getAllTag();
         } else {
-            System.out.println("insert tag failed ...");
+            //System.out.println("insert tag failed ...");
         }
         return result;
     }
@@ -79,10 +78,10 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     public boolean deleteTag(String tagID) throws TException {
         boolean result = handler.deleteTag(tagID);
         if (result) {
-            System.out.println("delete tag success ...");
+            //System.out.println("delete tag success ...");
             listTag = handler.getAllTag();
         } else {
-            System.out.println("delete tag failed ...");
+            //System.out.println("delete tag failed ...");
         }
         return result;
     }
@@ -91,10 +90,10 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     public boolean deleteAllTag(List<String> tagIDs) throws TException {
         boolean result = handler.deleteAllTag(tagIDs);
         if (result) {
-            System.out.println("delete all tag success ...");
+            //System.out.println("delete all tag success ...");
             listTag = handler.getAllTag();
         } else {
-            System.out.println("delete all tag failed ...");
+            //System.out.println("delete all tag failed ...");
         }
         return result;
     }
@@ -103,10 +102,10 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     public boolean editTag(String tagID, String tagName) throws TException {
         boolean result = handler.editTag(tagID, tagName);
         if (result) {
-            System.out.println("edit tag success ...");
+            //System.out.println("edit tag success ...");
             listTag = handler.getAllTag();
         } else {
-            System.out.println("edit tag failed ...");
+            //System.out.println("edit tag failed ...");
         }
         return result;
     }
@@ -114,16 +113,16 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     @Override
     public Tag getTag(String tagID) throws TException {
         if (local_cache.containsKey("getTag" + tagID)) {
-            System.out.println("get tag from cache ...");
+            //System.out.println("get tag from cache ...");
             return (Tag) local_cache.get("getTag" + tagID);
         }
-        System.out.println("get tag froom backend ...");
+        //System.out.println("get tag froom backend ...");
         return handler.getTag(tagID);
     }
 
     @Override
     public void setViewCountTag(String tagID) throws TException {
-        System.out.println("set view count tag ...");
+        //System.out.println("set view count tag ...");
         handler.setViewCountTag(tagID);
     }
 
@@ -147,7 +146,7 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
             Item item = getRandomItem();
             listItem.add(item);
         }
-        System.out.println("get " + number + " items  ...");
+        //System.out.println("get " + number + " items  ...");
         return listItem;
     }
 
@@ -159,7 +158,7 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
             Item item = getItemFromItemID(itemID);
             listItem.add(item);
         }
-        System.out.println("get " + numberItems + " item have tag " + tagID + " ...");
+        //System.out.println("get " + numberItems + " item have tag " + tagID + " ...");
         return listItem;
     }
 
@@ -175,7 +174,7 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
                 listItem.add(item);
             }
         }
-        System.out.println("paging status of tag: " + tagID + " ...");
+        //System.out.println("paging status of tag: " + tagID + " ...");
         return listItem;
         //return handler.pagingItemsTag(tagID, pageNumber, numberItems);
     }
@@ -184,12 +183,12 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     public List<String> getAllItemsIDhaveTag(String tagID, int numberItemsID) throws TException {
         List<String> listItemID;
         if (local_cache.containsKey("getAllItemsIDhaveTag" + tagID) && numberItemsID <= numberItemsIDofTag) {
-            System.out.println("get all itemID have tag " + tagID + " from cache...");
+            //System.out.println("get all itemID have tag " + tagID + " from cache...");
             listItemID = (List<String>) local_cache.get("getAllItemsIDhaveTag" + tagID);
             return listItemID;
         }
         listItemID = handler.getAllItemsIDhaveTag(tagID, numberItemsID);
-        System.out.println("get all itemID have tag " + tagID + " from backend...");
+        //System.out.println("get all itemID have tag " + tagID + " from backend...");
         numberItemsIDofTag = numberItemsID;
         local_cache.put("getAllItemsIDhaveTag" + tagID, listItemID);
         return listItemID;
@@ -226,7 +225,7 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
         int index = getRandomIndex(listitem.size());
         String itemID = listitem.get(index);
         item = getItemFromItemID(itemID);
-        System.out.println("get random item " + itemID + " from tag " + tagID + " ..");
+        //System.out.println("get random item " + itemID + " from tag " + tagID + " ..");
         return item;
     }
 
@@ -279,11 +278,11 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
         if (local_cache.containsKey("getTopItems")) {
             List<Item> listItem = (List<Item>) local_cache.get("getTopItems");
             if (number <= listItem.size()) {
-                System.out.println("get top item from cache");
+                //System.out.println("get top item from cache");
                 return listItem.subList(0, (int) number - 1);
             }
         }
-        System.out.println("get top item from backend");
+        //System.out.println("get top item from backend");
         List<Item> listItem = handler.getTopItems(number);
         local_cache.put("getTopItems", listItem);
         return listItem;
@@ -325,10 +324,10 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     @Override
     public Item getItemFromItemID(String itemID) throws TException {
         if (local_cache.containsKey("item" + itemID)) {
-            System.out.println("get item " + itemID + " from cache ...");
+            //System.out.println("get item " + itemID + " from cache ...");
             return (Item) local_cache.get("item" + itemID);
         }
-        System.out.println("get item " + itemID + " from backend ...");
+        //System.out.println("get item " + itemID + " from backend ...");
         Item item = handler.getItemFromItemID(itemID);
         local_cache.put("item" + itemID, item);
         return item;
@@ -396,13 +395,13 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     public List<Item> getFavouriteItems(String userID, long number) throws TException {
         List<Item> listItem = new ArrayList<>();
         if (local_cache.containsKey("getFavouriteItems" + userID)) {
-            System.out.println("get favorite items of user: " + userID + " from cache");
+            //System.out.println("get favorite items of user: " + userID + " from cache");
             listItem = (List<Item>) local_cache.get("getFavouriteItems" + userID);
             return listItem;
         }
         listItem = handler.getFavouriteItems(userID, number);
         local_cache.put("getFavouriteItems" + userID, listItem);
-        System.out.println("get favorite items of user: " + userID + " from backend");
+        //System.out.println("get favorite items of user: " + userID + " from backend");
         return listItem;
     }
 
@@ -430,11 +429,11 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     @Override
     public long itemdbSize() throws TException {
         if (local_cache.containsKey("itemdbSize")) {
-            System.out.println("get itemdb size from cache");
+            //System.out.println("get itemdb size from cache");
             return (long) local_cache.get("itemdbSize");
         }
         long size = handler.itemdbSize();
-        System.out.println("get itemdb size from backend");
+        //System.out.println("get itemdb size from backend");
         local_cache.put("itemdbSize", size);
         return size;
     }
@@ -442,11 +441,11 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     @Override
     public long tagdbSize() throws TException {
         if (local_cache.containsKey("tagdbSize")) {
-            System.out.println("get tagdb size from cache");
+            //System.out.println("get tagdb size from cache");
             return (long) local_cache.get("tagdbSize");
         }
         long size = handler.tagdbSize();
-        System.out.println("get tagdb size from backend");
+        //System.out.println("get tagdb size from backend");
         local_cache.put("tagdbSize", size);
         return size;
     }
@@ -454,11 +453,11 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     @Override
     public long itemtagdbSize() throws TException {
         if (local_cache.containsKey("itemtagdbSize")) {
-            System.out.println("get itemtagdb size from cache");
+            //System.out.println("get itemtagdb size from cache");
             return (long) local_cache.get("itemtagdbSize");
         }
         long size = handler.itemtagdbSize();
-        System.out.println("get itemtagdb size from backend");
+        //System.out.println("get itemtagdb size from backend");
         local_cache.put("itemtagdbSize", size);
         return size;
     }
@@ -466,11 +465,11 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     @Override
     public long itemtagSize(String tagID) throws TException {
         if (local_cache.containsKey("itemtagSize" + tagID)) {
-            System.out.println("get itemtag size of tag " + tagID + " from cache");
+            //System.out.println("get itemtag size of tag " + tagID + " from cache");
             return (long) local_cache.get("itemtagSize" + tagID);
         }
         long size = handler.itemtagSize(tagID);
-        System.out.println("get itemtag size of tag " + tagID + "f rom backend");
+        //System.out.println("get itemtag size of tag " + tagID + "f rom backend");
         local_cache.put("itemtagSize" + tagID, size);
         return size;
     }
@@ -478,11 +477,11 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     @Override
     public long userdbSize() throws TException {
         if (local_cache.containsKey("userdbSize")) {
-            System.out.println("get userdb size from cache");
+            //System.out.println("get userdb size from cache");
             return (long) local_cache.get("userdbSize");
         }
         long size = handler.userdbSize();
-        System.out.println("get userdb size from backend");
+        //System.out.println("get userdb size from backend");
         local_cache.put("userdbSize", size);
         return size;
     }
@@ -490,11 +489,11 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     @Override
     public long itemsLikeSize(String userID) throws TException {
         if (local_cache.containsKey("itemsLikeSize" + userID)) {
-            System.out.println("get itemsLikeSize from cache");
+            //System.out.println("get itemsLikeSize from cache");
             return (long) local_cache.get("itemsLikeSize" + userID);
         }
         long size = handler.itemsLikeSize(userID);
-        System.out.println("get itemsLikeSize from backend");
+        //System.out.println("get itemsLikeSize from backend");
         local_cache.put("itemsLikeSize" + userID, size);
         return size;
     }
@@ -502,11 +501,11 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     @Override
     public long itemsDislikeSize(String userID) throws TException {
         if (local_cache.containsKey("itemsDislikeSize" + userID)) {
-            System.out.println("get itemsDislikeSize from cache");
+            //System.out.println("get itemsDislikeSize from cache");
             return (long) local_cache.get("itemsDislikeSize" + userID);
         }
         long size = handler.itemsDislikeSize(userID);
-        System.out.println("get itemsDislikeSize from backend");
+        //System.out.println("get itemsDislikeSize from backend");
         local_cache.put("itemsDislikeSize" + userID, size);
         return size;
     }
@@ -514,11 +513,11 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     @Override
     public long favouriteItemsSize(String userID) throws TException {
         if (local_cache.containsKey("favouriteItemsSize" + userID)) {
-            System.out.println("get favouriteItemsSize from cache");
+            //System.out.println("get favouriteItemsSize from cache");
             return (long) local_cache.get("favouriteItemsSize" + userID);
         }
         long size = handler.favouriteItemsSize(userID);
-        System.out.println("get favouriteItemsSize from backend");
+        //System.out.println("get favouriteItemsSize from backend");
         local_cache.put("favouriteItemsSize" + userID, size);
         return size;
     }
@@ -526,11 +525,11 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     @Override
     public List<String> getAllItemsIDLike(String userID) throws TException {
         if (local_cache.containsKey("getAllItemsIDLike" + userID)) {
-            System.out.println("get getAllItemsIDLike from cache");
+            //System.out.println("get getAllItemsIDLike from cache");
             return (List<String>) local_cache.get("getAllItemsIDLike" + userID);
         }
         List<String> listItemID = handler.getAllItemsIDLike(userID);
-        System.out.println("get favouriteItemsSize from backend");
+        //System.out.println("get favouriteItemsSize from backend");
         local_cache.put("getAllItemsIDLike" + userID, listItemID);
         return listItemID;
     }
@@ -587,11 +586,11 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     public User getUser(String userID) throws TException {
         User user;
         if (local_cache.containsKey("user" + userID)) {
-            System.out.println("get user " + userID + "from cache ...");
+            //System.out.println("get user " + userID + "from cache ...");
             user = (User) local_cache.get("user" + userID);
             return user;
         }
-        System.out.println("get user " + userID + "from backend ...");
+        //System.out.println("get user " + userID + "from backend ...");
         user = handler.getUser(userID);
         local_cache.put("user" + userID, user);
         return user;
@@ -601,12 +600,12 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     public List<String> getAllUser() throws TException {
         List<String> listUser;
         if (local_cache.containsKey("getAllUser")) {
-            System.out.println("get all user from cache ...");
+            //System.out.println("get all user from cache ...");
             listUser = (List<String>) local_cache.get("getAllUser");
             return listUser;
         }
         //start cache
-        System.out.println("get all user from backend ...");
+        //System.out.println("get all user from backend ...");
         listUser = handler.getAllUser();
         local_cache.put("getAllUser", listUser);
         for (String userID : listUser) {
@@ -627,5 +626,15 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
             getAllItemsIDDislike(userID);
             getAllItemsIDLike(userID);
         }
+    }
+
+    @Override
+    public List<Item> getItemsPageKeywordOfTag(String keyWord, String tagID, long pageNumber, long itemNumber) throws TException {
+        return handler.getFavouriteItemsofTag(tagID, itemNumber, tagID);
+    }
+
+    @Override
+    public List<String> friendLikesItemID(String itemID, List<String> listFriends) throws TException {
+        return handler.friendLikesItemID(itemID, listFriends);
     }
 }
