@@ -22,6 +22,8 @@ public class getConfig {
     private static int ttl;
     private static int number_connection;
     private static int numthread;
+    private static int maxObject;
+    private static int expireTime;
 
     /**
      * @return the numthread
@@ -58,6 +60,8 @@ public class getConfig {
         ttl = Integer.parseInt(pro.getProperty("ttl"));
         number_connection = Integer.parseInt(pro.getProperty("number_connection"));
         numthread = Integer.parseInt(pro.getProperty("numthread"));
+        maxObject=Integer.parseInt(pro.getProperty("numberUser"));
+        expireTime=Integer.parseInt(pro.getProperty("expireTime"));
     }
 
     public static synchronized getConfig getInstance() throws FileNotFoundException, IOException {
@@ -77,5 +81,11 @@ public class getConfig {
 
     public int getPortListen() {
         return port_listen;
+    }
+    public int maxObject(){
+        return maxObject;
+    }
+    public int expireTime(){
+        return expireTime;
     }
 }
