@@ -71,7 +71,20 @@ function getRandomItemOfTag(tagID){
     });
     
 }
-
+function getItemsOfTag(tagID){
+    var tagName=getTagName(tagID);    
+    $currentTagID=tagID.toString();
+    $(document).ready(function(){                
+        $.post("/getItemsTag", {
+            tagID:$currentTagID
+        }, function(data) {	
+            $('#itemsOfTag').html(data);
+        }).error(function() { 
+            //            
+            });
+    });
+    
+}
 //next - back button
 var queueItem=new Array();
 var currentIndex=0;
@@ -346,7 +359,9 @@ $(document).ready(function() {
             myItemsLike=data.toString().split(",");    
         //alert("LIKE:"+myItemsLike);                
         });  
-        $.post("/uCaching", {userID:uId}); 
+        $.post("/uCaching", {
+            userID:uId
+        }); 
     }
     
     
@@ -384,7 +399,7 @@ $(document).ready(function() {
         none:123
     }, function(data) {
         uItemsCaching=jsonParse(data);
-        //alert(data);
+    //alert(data);
     }); 
             
     turnOnOffBackNext();
@@ -595,10 +610,67 @@ $(document).ready(function() {
 
 function callbacksearch(item) {
     //alert('You selected \'' + item.tagName + '\'\n\nHere is the full selected JSON object;\n' + JSON.stringify(item));
-    getRandomItemOfTag(item.tagID);
+    getItemsOfTag(item.tagID);
 }
 jQuery(function() {
     $('input#suggestBox').jsonSuggest(listTags, {
         onSelect:callbacksearch
     });	
 });
+
+
+function uFeedWall(itemID){  
+    $(document).ready(function(){
+        if(isFeed==true){
+            var statusText =$('#itemID'+itemID).html();            
+            var uId_to = $('#usrId').val();
+            //var objId=$("#lz-save-button").attr("rel");
+            //alert(objId);
+            $.post('/feedItem', {
+                userIdTo : uId_to,
+                itemContent : statusText
+            }, function(data){
+                zmf.ui(
+                {
+                    pub_key:"eba443348315d8c27c8c070cb2a40a52",
+                    sign_key:data,
+                    action_id:1,
+                    uid_to: uId_to,
+                    object_id: "",
+                    attach_name: "",
+                    attach_href: "",
+                    attach_caption: "",
+                    attach_des: statusText,
+                    media_type:1,
+                    media_img:"http://d.f12.photo.zdn.vn/upload/original/2012/10/11/13/34/1349937282850465_574_574.jpg",
+                    media_src:"",
+                    actlink_text:"",
+                    actlink_href:"",
+                    tpl_id: 3,
+                    comment:statusText,
+                    suggestion: ["hello1","hello2"],
+                    callback:"fCallback"
+                });      
+            }
+            );
+        }
+        else{
+            alert("De tiep tuc, vui long doisau 3s!")
+            setTimeout("isUserFeed();",3000);
+        }        
+    });
+}
+function uSaveItem(itemID){
+$(document).ready(function(){
+            var value=itemID;
+            var uID=$("#usrId").val();
+            $.post("saveItem", {
+                userID:uID,
+                itemID:value
+            }, function(data) {
+                //var myJsonObj = jsonParse(data);
+                alert(data);
+            });
+        //alert(value + "userID:"+uID);
+        });        
+}

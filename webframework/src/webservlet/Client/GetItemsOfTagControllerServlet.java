@@ -48,7 +48,7 @@ public class GetItemsOfTagControllerServlet extends HttpServlet {
         for (int i = 0; i < items.size(); i++) {
             result += "<tr>";
             result += "<td id='itemID" + items.get(i).itemID + "' style='width:84%;'>" + items.get(i).content + "</td>";
-            result += "<td style='width:16%;'><a class='ufeedItemWall' href='javascript:uFeedWall("+items.get(i).itemID+")' rel='" + items.get(i).itemID + "'> Dang</a> |  <a class='saveItem' href='#' rel='" + items.get(i).itemID + "' >Luu</a>";
+            result += "<td style='width:16%;'><a class='ufeedItemWall' href='javascript:uFeedWall("+items.get(i).itemID+")' rel='" + items.get(i).itemID + "'> Dang</a> |  <a class='saveItem' href='javascript:uSaveItem("+items.get(i).itemID+")' rel='" + items.get(i).itemID + "' >Luu</a>";
             result += "</td>";
             result += "</tr>";
         }
