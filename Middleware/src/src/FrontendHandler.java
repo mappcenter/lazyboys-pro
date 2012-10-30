@@ -4,16 +4,20 @@
  */
 package src;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import javax.sound.midi.SysexMessage;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import libs.Item;
 import libs.Tag;
 import libs.User;
+import memcache.LazyBoysLRUCache;
 import org.apache.thrift.TException;
 
 /**
@@ -23,13 +27,26 @@ import org.apache.thrift.TException;
  */
 public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
 
-    BackendHandler handler = new BackendHandler();
+    static BackendHandler handler = new BackendHandler();
     static Map<String, Object> local_cache = new HashMap<>();
+    static LazyBoysLRUCache lzCache = null;
     private static List<Tag> listTag = new ArrayList<>();
     static long numberTopTags = 0;
     static long numberItemsIDofTag = 0;
 
     public FrontendHandler() throws TException, IOException {
+    }
+
+    public static void StartLZCache() {
+        int maxObject = 0;
+        try {
+            maxObject = getConfig.getInstance().maxObject();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(FrontendHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FrontendHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        lzCache = new LazyBoysLRUCache(maxObject);
     }
 
     @Override
@@ -260,14 +277,14 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     @Override
     public List<Item> getTopItems(long number) throws TException {
         if (local_cache.containsKey("getTopItems")) {
-            List<Item> listItem = (List<Item>) local_cache.get("getTopItems");                  
+            List<Item> listItem = (List<Item>) local_cache.get("getTopItems");
             if (number <= listItem.size()) {
                 System.out.println("get top item from cache");
                 return listItem.subList(0, (int) number - 1);
             }
         }
         System.out.println("get top item from backend");
-        List<Item> listItem =handler.getTopItems(number);
+        List<Item> listItem = handler.getTopItems(number);
         local_cache.put("getTopItems", listItem);
         return listItem;
     }
@@ -512,7 +529,7 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
             System.out.println("get getAllItemsIDLike from cache");
             return (List<String>) local_cache.get("getAllItemsIDLike" + userID);
         }
-        List<String> listItemID = handler.getAllItemsIDDislike(userID);
+        List<String> listItemID = handler.getAllItemsIDLike(userID);
         System.out.println("get favouriteItemsSize from backend");
         local_cache.put("getAllItemsIDLike" + userID, listItemID);
         return listItemID;
@@ -535,7 +552,15 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
 
     @Override
     public List<String> getAllItemsIDDislike(String userID) throws TException {
-        return handler.getAllItemsIDDislike(userID);
+        if (local_cache.containsKey("getAllItemsIDDislike" + userID)) {
+            List<String> listItemID = (List<String>) local_cache.get("getAllItemsIDDislike" + userID);
+            System.out.println("get all item id dislike of user: " + userID + " from cache");
+            return listItemID;
+        }
+        List<String> listItemID = handler.getAllItemsIDDislike(userID);
+        System.out.println("get all item id dislike of user: " + userID + " from cache");
+        local_cache.put("getAllItemsIDDislike" + userID, listItemID);
+        return listItemID;
     }
 
     @Override
@@ -584,11 +609,23 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
         System.out.println("get all user from backend ...");
         listUser = handler.getAllUser();
         local_cache.put("getAllUser", listUser);
+        for (String userID : listUser) {
+            getUser(userID);
+        }
         return listUser;
     }
 
     @Override
     public List<Item> getItemsPageKeyword(String keyWord, long pageNumber, long itemNumber) throws TException {
         return handler.getItemsPageKeyword(keyWord, pageNumber, itemNumber);
+    }
+
+    public void startCache() throws TException {
+        getAllTag();
+        List<String> listUserID = getAllUser();
+        for (String userID : listUserID) {
+            getAllItemsIDDislike(userID);
+            getAllItemsIDLike(userID);
+        }
     }
 }
