@@ -15,14 +15,7 @@ import java.util.ArrayList;
  */
 public class FileIO
 {
-    public static void main(String[] args) 
-    {
-        FileIO file=new FileIO();
-        ArrayList bob = file.loadFile("xcall.proxy-1.00.html");
-        for (int i=0; i<bob.size(); i++) {
-            System.out.println("\t" + bob.get(i));
-        }
-    }
+    
     public ArrayList loadFile(String fileName)
     {
         if ((fileName == null) || ("".equals(fileName))) {
