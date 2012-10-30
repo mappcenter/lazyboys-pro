@@ -4,10 +4,12 @@
  */
 package src;
 
+import java.util.Timer;
 import libs.MiddlewareFrontend;
 import org.apache.thrift.server.THsHaServer;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.transport.TNonblockingServerSocket;
+import org.eclipse.jetty.server.Server;
 
 /**
  *
@@ -26,7 +28,10 @@ public class main {
         options.processor(processor);
 
         TServer server = new THsHaServer(options);
+        (new FrontendHandler()).startCache();
+        Timer timer = new Timer();
+        timer.schedule(new myTask(), 10 * 60 * 1000, 10 * 60 * 1000);
         System.out.println("Starting server on port " + port + " ...");
-        server.serve();   
+        server.serve();
     }
 }
