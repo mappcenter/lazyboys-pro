@@ -25,7 +25,7 @@ public class MySwapLocalCache {
     public static long userExpiredTime = (15 * 60 * 1000); //15minutes
     public static int numberTopTags = 30;
     public static int numberItemIDTags = 30;
-    public static int numberTopItems = 30;
+    public static int numberTopItems = 15;
     public static int itemIDTagSize = 0;
     public static int numberFavoriteItems = 20;
     public static String listAllTagsKey = "listAllTags";
@@ -54,7 +54,7 @@ public class MySwapLocalCache {
         LocalCache.put(listTopTagsKey, listTopTags);
         
         //cache items for client to random
-        cacheItemsClient(50);
+        cacheItemsClient(25);
         List<Item> test = (List<Item>) LocalCache.get(listItemsClientCache);
         int t = test.size();
 

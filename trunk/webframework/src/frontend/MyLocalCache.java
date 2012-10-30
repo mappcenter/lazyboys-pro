@@ -10,7 +10,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.LinkedBlockingQueue;
 import myLRUCaching.LazyBoysLRUCache;
 import org.apache.thrift.TException;
 
@@ -26,7 +25,7 @@ public class MyLocalCache {
     private static long userExpiredTime = (15 * 60 * 1000); //15minutes
     private static int numberTopTags = 30;
     private static int numberItemIDTags = 30;
-    private static int numberTopItems = 30;
+    private static int numberTopItems = 15;
     public static int itemIDTagSize = 0;
     public static int numberFavoriteItems = 20;
     public static String listAllTagsKey = "listAllTags";
@@ -77,7 +76,7 @@ public class MyLocalCache {
 
 
         //cache items for client to random
-        cacheItemsClient(50);
+        cacheItemsClient(25);
         List<Item> test = (List<Item>) LocalCache.get(listItemsClientCache);
         int t = test.size();
 
@@ -122,7 +121,7 @@ public class MyLocalCache {
 
     private void cacheItemsClientDetail(List<Tag> ltags, int i) {
         List<String> itemIDs = (List<String>) LocalCache.get(itemIDTagsKey + ltags.get(i).tagID);
-        for (int j = 0; j < itemIDs.size() && j < 3; j++) { //get 5 items each tag to cache client
+        for (int j = 0; j < itemIDs.size() && j < 2; j++) { //get 5 items each tag to cache client
             //if (j < 2) {
             Item item = (Item) LocalCache.get("item" + itemIDs.get(j));
             itemsClientCache.add(item);
