@@ -38,8 +38,7 @@ public class editItemServlet extends HttpServlet{
         }
         catch(Exception e){
             return;
-        }
-        
+        }       
         try {
             result = handler.editItem(itemID, itemContent, tagIDs);
         } catch (TException ex) {

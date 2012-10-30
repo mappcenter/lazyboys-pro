@@ -27,13 +27,10 @@ public class deleteItemServlet extends HttpServlet{
         try {
             for(int i=0; i<listItemID.length; i++){
                 handler.deleteItem(listItemID[i]);
-            }
-            
+            }           
         } catch (TException ex) {
             Logger.getLogger(deleteItemServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        //res.getWriter().println(result);
+        }  
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException{

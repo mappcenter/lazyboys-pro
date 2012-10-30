@@ -35,12 +35,7 @@ public class editTagServlet extends HttpServlet {
         } catch (TException ex) {
             Logger.getLogger(editTagServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if (result) {
-            try {
-                localCache.updateListTags();
-            } catch (TException ex) {
-                Logger.getLogger(editTagServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        if (result) {         
             res.getWriter().println("Update success");
         } else {
             res.getWriter().println("Update failed");

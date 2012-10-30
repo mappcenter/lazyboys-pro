@@ -68,14 +68,12 @@ public class getItemPageServlet extends HttpServlet {
         return result;
     }
 
-   
     private Template getCTemplate() throws Exception {
         TemplateLoader templateLoader = TemplateResourceLoader.create("tpl/");
         Template template = templateLoader.getTemplate("admin/index/paging_item.xtm");
         return template;
     }
-    
-   
+
     private void out(String content, HttpServletResponse resp) throws IOException {
         resp.addHeader("Content-Type", "text/html");
         PrintWriter out = resp.getWriter();
@@ -87,7 +85,7 @@ public class getItemPageServlet extends HttpServlet {
         int page = 1;
         String tagID = "-1";
         int itemPerPage = Integer.valueOf(Config.getParam("paging", "itemPerPage"));
-       
+
         try {
             if (req.getParameter("p") != null) {
                 page = Integer.parseInt(req.getParameter("p"));
@@ -106,7 +104,7 @@ public class getItemPageServlet extends HttpServlet {
 
 
         TemplateDataDictionary dic = TemplateDictionary.create();
-        Gson gson=new Gson();
+        Gson gson = new Gson();
 
         for (int i = 0; i < listItem.size(); i++) {
             TemplateDataDictionary listsection = dic.addSection("list_section");
@@ -114,21 +112,19 @@ public class getItemPageServlet extends HttpServlet {
             listsection.setVariable("itemID", listItem.get(i).itemID);
             listsection.setVariable("tagIDs", gson.toJson(listItem.get(i).tagsID));
         }
-    
-        
-        int itemTagSize;
-        if(tagID.equals("-1")){
-              itemTagSize= (int) handler.itemdbSize();
-        }
-        else
-        {
-            itemTagSize= (int) handler.itemtagSize(tagID);
-        }
-	
-        int pageCount = (int) Math.ceil((float)itemTagSize / itemPerPage);
 
-        int start=Math.max(page-4, 1);
-        int end=Math.min(page+4, pageCount);
+
+        int itemTagSize;
+        if (tagID.equals("-1")) {
+            itemTagSize = (int) handler.itemdbSize();
+        } else {
+            itemTagSize = (int) handler.itemtagSize(tagID);
+        }
+
+        int pageCount = (int) Math.ceil((float) itemTagSize / itemPerPage);
+
+        int start = Math.max(page - 4, 1);
+        int end = Math.min(page + 4, pageCount);
 
         for (int i = start; i <= end; i++) {
             if (i == page) {
@@ -136,17 +132,16 @@ public class getItemPageServlet extends HttpServlet {
                 listPageSection.setVariable("page", "<a href=\"#\" class=\"graybutton pagelink active\" rel=\"" + page + "\">" + page + "</a>");
             } else {
                 TemplateDataDictionary listPageSection = dic.addSection("listPage_section");
-                listPageSection.setVariable("page", "<a href=\"#\" onclick='itemList("+i+");' class=\"graybutton pagelink\" rel=\"" + i + "\">" + i + "</a>");
+                listPageSection.setVariable("page", "<a href=\"javascript:paging(" + i + ");\" class=\"graybutton pagelink\" rel=\"" + i + "\">" + i + "</a>");
             }
         }
-        dic.setVariable("onclick_first", "itemList(1);");
-        dic.setVariable("onclick_last", "itemList(" + pageCount + ");");
+
         dic.setVariable("last", String.valueOf(pageCount));
 
         Template template = this.getCTemplate();
         String content = template.renderToString(dic);
 
         return content;
-        
+
     }
 }

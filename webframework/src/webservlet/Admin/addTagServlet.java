@@ -25,19 +25,12 @@ public class addTagServlet extends HttpServlet{
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException{
         String tagName=req.getParameter("tagName");
         boolean result=false;
-        try {
-            
-            result = handler.insertTag(tagName);
-           
+        try {           
+            result = handler.insertTag(tagName);          
         } catch (TException ex) {
             Logger.getLogger(addTagServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if(result){
-            try {
-                localCache.updateListTags();
-            } catch (TException ex) {
-                Logger.getLogger(addTagServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        if(result){            
             res.getWriter().println("Insert success");
         }
         else{
