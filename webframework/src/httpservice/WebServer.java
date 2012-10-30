@@ -97,6 +97,9 @@ public class WebServer {
         
         //Block user page
         handler.addServletWithMapping("webservlet.Client.ErrorUserControllerServlet", "/blockUser");
+        
+        //get items of tag
+        handler.addServletWithMapping("webservlet.Client.GetItemsOfTagControllerServlet", "/getItemsTag");
 
         //handler.addServletWithMapping("servlet.randomItemServlet","/random");
         //admin services

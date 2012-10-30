@@ -95,6 +95,7 @@ public class MyLocalCache {
             List<String> itemIDs = handler.getAllItemsIDhaveTag(tags.get(i).tagID, numberItemIDs);
             listItemIDs.addAll(itemIDs);
             LocalCache.put(key, itemIDs);
+            //LocalCache.put("tag"+tags.get(i).tagID, tags);
             startCacheItem(itemIDs);
         }
         LocalCache.put(listItemIDKey, listItemIDs);
@@ -399,5 +400,19 @@ public class MyLocalCache {
             UserLocalCache.put(uID, user);            
         }
         handler.blockUser(uID);
+    }
+    public List<Item> getItemsTag(String tagID){
+        List<String> itemIDs=(List<String>) LocalCache.get(itemIDTagsKey+tagID);
+        List<Item> items=new ArrayList<Item>();
+        for (int i = 0; i < itemIDs.size() && i<16; i++) { // chi lay 15 items
+            Item temp=(Item) LocalCache.get("item"+itemIDs.get(i));
+            if(temp!=null){
+                items.add(temp);
+            }
+        }
+        //if(items.size()>0){
+            return items;
+        //}
+        //return null;
     }
 }
