@@ -533,13 +533,11 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     @Override
     public List<String> getAllItemsIDLike(String userID) throws TException {
         if (local_cache.containsKey("getAllItemsIDLike" + userID)) {
-
-            System.out.println("get get all item id like of user: " + userID + " from cache");
-
+            //System.out.println("get get all item id like of user: " + userID + " from cache");
             return (List<String>) local_cache.get("getAllItemsIDLike" + userID);
         }
         List<String> listItemID = handler.getAllItemsIDLike(userID);
-        System.out.println("get get all item id like of user: " + userID + " from backend");
+        //System.out.println("get get all item id like of user: " + userID + " from backend");
         return listItemID;
     }
 
@@ -568,11 +566,11 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     public List<String> getAllItemsIDDislike(String userID) throws TException {
         if (local_cache.containsKey("getAllItemsIDDislike" + userID)) {
             List<String> listItemID = (List<String>) local_cache.get("getAllItemsIDDislike" + userID);
-            System.out.println("get all item id dislike of user: " + userID + " from cache");
+            //System.out.println("get all item id dislike of user: " + userID + " from cache");
             return listItemID;
         }
         List<String> listItemID = handler.getAllItemsIDDislike(userID);
-        System.out.println("get all item id dislike of user: " + userID + " from backend");
+        //System.out.println("get all item id dislike of user: " + userID + " from backend");
         local_cache.put("getAllItemsIDDislike" + userID, listItemID);
         return listItemID;
     }
