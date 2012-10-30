@@ -159,6 +159,8 @@ public class IndexControllerServlet extends HttpServlet {
         //uID and uName: just for test without zing redirect (zing redirect time ~ 17ms)
 //        String uID="5037964";
 //        String uName="thiensuhack";
+//        List<String> strIndexHtml = mycache.getCacheIndexPageWithUser(uID, uName);
+        
         TemplateDataDictionary dic = TemplateDictionary.create();
         
         List<String> strIndexHtml = mycache.getCacheIndexPageWithUser(me.get("id").toString(), me.get("displayname").toString());
@@ -179,13 +181,11 @@ public class IndexControllerServlet extends HttpServlet {
     }
 
     private List<Item> getTopItems(HttpServletRequest req) throws TException {
-
         ProfilerLog profiler = (ProfilerLog) req.getAttribute("profiler");
         if (profiler != null) {
             profiler.doStartLog("fresherthriftservice");
         }
         handler = new MiddlewareHandler();
-
         List<Item> listItem = MiddlewareHandler.myLocalCache.getTopItems();
         if (profiler != null) {
             profiler.doEndLog("fresherthriftservice");
