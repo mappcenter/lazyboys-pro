@@ -382,19 +382,19 @@ $(document).ready(function() {
         }                            
         $("#listTag").html(lTags);
     });
-    // get list tag when loading page    
-    $.post("listTag", {
-        alfa:123
-    }, function(data) {
-        //var myJsonObj = jsonParse(data);
-        var lTags="";
-        for (var prop in myTopTags) {
-            if (myTopTags.hasOwnProperty(prop)) {
-                lTags+="<a href='javascript:getRandomItemOfTagForRandom("+myTopTags[prop].tagID+");' rel='"+myTopTags[prop].tagID+"'style='font-size:"+randomFromInterval(13, 28)+"'>"+myTopTags[prop].tagName+"</a>     ";                                    
-            }
-        }
-        $("#lz-toptags-container").html(lTags);
-    });
+//    // get list tag when loading page    
+//    $.post("listTag", {
+//        alfa:123
+//    }, function(data) {
+//        //var myJsonObj = jsonParse(data);
+//        var lTags="";
+//        for (var prop in myTopTags) {
+//            if (myTopTags.hasOwnProperty(prop)) {
+//                lTags+="<a href='javascript:getRandomItemOfTagForRandom("+myTopTags[prop].tagID+");' rel='"+myTopTags[prop].tagID+"'style='font-size:"+randomFromInterval(13, 28)+"'>"+myTopTags[prop].tagName+"</a>     ";                                    
+//            }
+//        }
+//        $("#lz-toptags-container").html(lTags);
+//    });
     
     $.post("/uItemsCaching", {
         none:123
