@@ -661,7 +661,7 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
 
     @Override
     public List<Item> getItemsPageKeywordOfTag(String keyWord, String tagID, long pageNumber, long itemNumber) throws TException {
-        return handler.getFavouriteItemsofTag(tagID, itemNumber, tagID);
+        return handler.getItemsPageKeywordOfTag(keyWord, tagID, pageNumber, itemNumber);
     }
 
     @Override
