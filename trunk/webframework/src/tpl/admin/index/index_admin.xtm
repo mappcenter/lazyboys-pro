@@ -29,7 +29,11 @@
 
 
         <script type="text/javascript" src="http://localhost:81/static/listtags.js"></script>
-
+        <style>
+        form label{
+            display:inline-block;
+        }
+        </style>
     </head>
 
     <body>
@@ -178,9 +182,12 @@
 
 
 
-                    <div class="content-box" id="content-box">
+                    <div class="content-box" id="content-box" >
                         <div class="content-box-header">
-                            <div style="margin-top:8px; float:left;"><h2 id="task">Status</h2></div>
+                            <div style="margin-top:8px; float:left;"><h2 id="task" >Status</h2>
+                                <input type="hidden" id="search" value="false" alt=""/>
+                            </div>
+                            <div style="float: right; margin-top: 5px; margin-left: 5px;">Search: <input type="text" id="txtKeyword"/></div>
                             <div id="div_cmbTag" style="float:right; margin-top: 5px; margin-left: 10px;">Select tag: <select id="cmbTag">
                                     <option selected="selected" value="-1">-- All Tag --</option>
                                     {{#listTag_section}}
