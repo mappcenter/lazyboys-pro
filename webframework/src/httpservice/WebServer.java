@@ -93,7 +93,10 @@ public class WebServer {
         
         //caching sang thong tin user khi truy cap vao ung dung (Ex: userFavoriteItem)
         handler.addServletWithMapping("webservlet.Client.CachingUserInfoControllerServlet", "/uCaching");
-
+        
+        
+        //Block user page
+        handler.addServletWithMapping("webservlet.Client.ErrorUserControllerServlet", "/blockUser");
 
         //handler.addServletWithMapping("servlet.randomItemServlet","/random");
         //admin services

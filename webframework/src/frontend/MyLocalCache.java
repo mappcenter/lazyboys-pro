@@ -34,6 +34,7 @@ public class MyLocalCache {
     public static String listTopItemsKey = "listTopItems";
     public static String listItemsClientCache = "listItemsClientCache";
     public static String listItemsIDUserLike = "ItemIdUserLike";
+    public static String listItemsUserFavorite = "ItemUserFavorite";
     public static Map<String, Object> LocalCache = new HashMap<String, Object>();
     public static LazyBoysLRUCache UserLocalCache = new LazyBoysLRUCache(capacityUser);
     public static Map<String, Object> TempCacheToSwap = new HashMap<String, Object>();
@@ -218,33 +219,80 @@ public class MyLocalCache {
     public void checkUserQueue() {
     }
 
-    public void CacheUserItemsFavorite(String uID) throws TException {
-        List<Item> listItems = (List<Item>) UserLocalCache.get(uID);
+    public List<Item> CacheUserItemsFavorite(String uID) throws TException {
+        List<Item> listItems = (List<Item>) UserLocalCache.get(listItemsUserFavorite+uID);
         if (listItems == null) {
             listItems = handler.getFavouriteItems(uID, numberFavoriteItems);
-            UserLocalCache.put(uID, listItems, userExpiredTime);
+            UserLocalCache.put(listItemsUserFavorite+uID, listItems, userExpiredTime);
         }
+        return listItems;
     }
     public List<Item> getUserFavoriteItems(String uID) throws TException {
-        List<Item> items = (List<Item>) UserLocalCache.get(uID);
-        if (items == null) {
-            CacheUserItemsFavorite(uID);
+        List<Item> items = (List<Item>) UserLocalCache.get(listItemsUserFavorite+uID);
+        if (items != null) {
+            return items;
         }
-        return (List<Item>) UserLocalCache.get(uID);
+        return CacheUserItemsFavorite(uID);
     }
-    public void CacheUserItemIDsLike(String uID) throws TException {
+    //save user item into localcache LRU
+    public boolean setUserItemsFavorite(String uID, String itemID) throws TException {
+        //check cache User start or not
+        CacheUserItemsFavorite(uID);
+        List<Item> listItems = (List<Item>) UserLocalCache.get(listItemsUserFavorite+uID);
+        if (listItems == null) {
+            listItems = new ArrayList<Item>();
+        }
+        for (Iterator<Item> it = listItems.iterator(); it.hasNext();) {
+            Item item = it.next();
+            if (item.itemID.equals(itemID)) {
+                return false;
+            }
+        }
+        Item item = handler.getItemFromItemID(itemID);
+        if (item != null) {
+            listItems.add(item);
+        }
+        //call middle insert Favorite Item
+        if (!handler.insertFavouriteItem(uID, itemID)) {
+            return false;
+        }
+        UserLocalCache.put(uID, listItems, userExpiredTime);
+        return true;
+    }
+
+    public void removeUserItemsFavourite(String uID, String itemID) throws TException {
+        List<Item> listItems = (List<Item>) UserLocalCache.get(listItemsUserFavorite+uID);
+        //int i = listItems.size();
+        if (listItems.size() > 0) {
+            for (int j = 0; j < listItems.size(); j++) {
+                Item item = listItems.get(j);
+                if (item.itemID.equals(itemID)) {
+                    listItems.remove(j);
+                    UserLocalCache.put(listItemsUserFavorite+uID, listItems);
+                    //int k = listItems.size();
+                    handler.deleteFavouriteItem(uID, itemID);
+                    return;
+                }
+            }
+        }
+    }
+    //End User Favorite Items
+        
+    //User like
+    public List<String> CacheUserItemIDsLike(String uID) throws TException {
         List<String> listItemsIDs = (List<String>) UserLocalCache.get(listItemsIDUserLike+uID);
         if (listItemsIDs == null) {
             listItemsIDs = handler.getAllItemsIDLike(uID);
             UserLocalCache.put(listItemsIDUserLike+uID, listItemsIDs, userExpiredTime);
         }
-    }
+        return listItemsIDs;
+    }    
     public List<String> getUserItemIDsLike(String uID) throws TException {        
         List<String> itemIDs = (List<String>) UserLocalCache.get(listItemsIDUserLike+uID);
-        if (itemIDs == null) {
-            CacheUserItemIDsLike(uID);
+        if (itemIDs != null) {
+            return itemIDs;
         }
-        return (List<String>) UserLocalCache.get(listItemsIDUserLike+uID);
+        return CacheUserItemIDsLike(uID);
     }
     public boolean setUserItemIDLike(String uID, String itemID) throws TException {
         //check cache User start or not
@@ -289,52 +337,28 @@ public class MyLocalCache {
         }
         return false;
     }
-
-    //save user item into localcache LRU
-    public boolean setUserItemsFavorite(String uID, String itemID) throws TException {
-        //check cache User start or not
-        CacheUserItemsFavorite(uID);
-        List<Item> listItems = (List<Item>) UserLocalCache.get(uID);
-        if (listItems == null) {
-            listItems = new ArrayList<Item>();
+    //end of user ItemIDs Like
+    
+    public User cacheUserInfo(String uID) throws TException{
+        User user=(User) UserLocalCache.get(uID);
+        if(user==null){
+            user=handler.getUser(uID);
+            UserLocalCache.put(uID, user, userExpiredTime);
         }
-        for (Iterator<Item> it = listItems.iterator(); it.hasNext();) {
-            Item item = it.next();
-            if (item.itemID.equals(itemID)) {
-                return false;
-            }
-        }
-        Item item = handler.getItemFromItemID(itemID);
-        if (item != null) {
-            listItems.add(item);
-        }
-        //call middle insert Favorite Item
-        if (!handler.insertFavouriteItem(uID, itemID)) {
-            return false;
-        }
-        UserLocalCache.put(uID, listItems, userExpiredTime);
-        return true;
+        return user;
     }
-
-    public void removeUserItemsFavourite(String uID, String itemID) throws TException {
-        List<Item> listItems = (List<Item>) UserLocalCache.get(uID);
-        //int i = listItems.size();
-        if (listItems.size() > 0) {
-            for (int j = 0; j < listItems.size(); j++) {
-                Item item = listItems.get(j);
-                if (item.itemID.equals(itemID)) {
-                    listItems.remove(j);
-                    UserLocalCache.put(uID, listItems);
-                    //int k = listItems.size();
-                    handler.deleteFavouriteItem(uID, itemID);
-                    return;
-                }
-            }
+    public User getUserInfo(String uID) throws TException{
+        User user=(User) UserLocalCache.get(uID);
+        if(user!=null){
+            return user;
         }
+        return cacheUserInfo(uID);
     }
-
+    public void removeUserInfo(String uID){
+        
+    }
     public void removeAllUserFavoriteItems(String uID) {
-        UserLocalCache.remove(uID);
+        UserLocalCache.remove(listItemsUserFavorite+uID);
     }
 
     public void clearAllUserCaching() {
@@ -347,5 +371,17 @@ public class MyLocalCache {
     public List<Item> getItemsForClientCache() {
         List<Item> items = (List<Item>) LocalCache.get(listItemsClientCache);
         return items;
+    }
+    public boolean isBlockUser(String uID) throws TException{
+        User user=getUserInfo(uID);
+        if(user.userRole<0){
+            return true;// is blocked user
+        }
+        return false; //not blocked
+    }
+    public void setBlockUser(String uID) throws TException{
+        User user=getUserInfo(uID);
+        user.userRole=-1;
+        UserLocalCache.put(uID, user);
     }
 }
