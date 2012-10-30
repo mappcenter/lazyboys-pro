@@ -4,6 +4,7 @@
  */
 package frontend;
 
+import IOFile.CachingIndexPage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -33,6 +34,7 @@ public class MySwapLocalCache {
     public static String listItemIDKey = "listItemID";
     public static String listTopItemsKey="listTopItems";
     public static String listItemsClientCache = "listItemsClientCache";
+    public static String indexpage = "indexpage";
     public static Map<String, Object> LocalCache = new HashMap<String, Object>();
     public static LazyBoysLRUCache UserLocalCache = new LazyBoysLRUCache(capacityUser);
     public static Map<String, Object> TempCacheToSwap = new HashMap<String, Object>();
@@ -60,6 +62,12 @@ public class MySwapLocalCache {
 
         //cache top Items
         StartCacheTopItems();
+        
+         //Cache index page;
+        CachingIndexPage cacheIndexPage = new CachingIndexPage();
+        List<String> indexPageHtml=cacheIndexPage.renderIndexHtml();
+        LocalCache.put(indexpage, indexPageHtml);
+        
         System.out.println("Caching Completed! ;)) ");
     }
 
