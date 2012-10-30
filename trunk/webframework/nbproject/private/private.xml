@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
+        <file>file:/home/chanhlt/Desktop/final/webframework/src/httpservice/WebServer.java</file>
+        <file>file:/home/chanhlt/Desktop/final/webframework/src/webservlet/Admin/randomItemServlet.java</file>
+        <file>file:/home/chanhlt/Desktop/final/webframework/src/myLRUCaching/LazyBoysLRUCache.java</file>
+        <file>file:/home/chanhlt/Desktop/final/webframework/src/frontend/MyLocalCache.java</file>
+        <file>file:/home/chanhlt/Desktop/final/webframework/src/frontend/MiddlewareHandler.java</file>
+        <file>file:/home/chanhlt/Desktop/final/webframework/src/webservlet/Admin/addTagServlet.java</file>
+        <file>file:/home/chanhlt/Desktop/final/webframework/src/webservlet/Admin/getContentTabServlet.java</file>
+        <file>file:/home/chanhlt/Desktop/final/webframework/src/webservlet/Admin/getItemPageServlet.java</file>
+        <file>file:/home/chanhlt/Desktop/final/webframework/src/webservlet/Admin/addUserServlet.java</file>
+        <file>file:/home/chanhlt/Desktop/final/webframework/src/webservlet/Admin/IndexControllerServlet.java</file>
+        <file>file:/home/chanhlt/Desktop/final/webframework/src/webservlet/Admin/changeUserRoleServlet.java</file>
+        <file>file:/home/chanhlt/Desktop/final/webframework/src/webservlet/Admin/deleteItemServlet.java</file>
+        <file>file:/home/chanhlt/Desktop/final/webframework/src/webservlet/Admin/deleteTagServlet.java</file>
+        <file>file:/home/chanhlt/Desktop/final/webframework/src/webservlet/Admin/editItemServlet.java</file>
+        <file>file:/home/chanhlt/Desktop/final/webframework/src/webservlet/Admin/editTagServlet.java</file>
+        <file>file:/home/chanhlt/Desktop/final/webframework/src/webservlet/Admin/getAuCodeServerlet.java</file>
+    </open-files>
 </project-private>
