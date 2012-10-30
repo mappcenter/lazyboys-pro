@@ -7,6 +7,7 @@ import frontend.Item;
 import frontend.MiddlewareFrontend;
 import frontend.MiddlewareHandler;
 import frontend.MyAppInfo;
+import frontend.MyLocalCache;
 import hapax.Template;
 import hapax.TemplateDataDictionary;
 import hapax.TemplateDictionary;
@@ -22,6 +23,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.ws.RespectBinding;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.thrift.TException;
 import org.slf4j.Logger;
@@ -56,7 +58,6 @@ public class IndexControllerServlet extends HttpServlet {
         ProfilerLog profiler = new ProfilerLog(dbg);
         req.setAttribute("profiler", profiler);
         profiler.doStartLog("wholereq");
-
         try {
             String content = this.render(req, resp);
             this.out(content, resp);
@@ -98,7 +99,7 @@ public class IndexControllerServlet extends HttpServlet {
 
         List<Item> listItem = this.getTopItems(req);        
         TemplateDataDictionary dic = TemplateDictionary.create();
-
+        MyLocalCache mycache=new MyLocalCache();
        //dic.setVariable("title", "This is title of layout - config=" + config_host + " - product=" + productName);
 
         for (int i = 0; i < listItem.size(); i++) {
@@ -129,13 +130,18 @@ public class IndexControllerServlet extends HttpServlet {
 
             try {
                 me = zm.getInfo(zdata.accessToken, "displayname");
+                
             } catch (ZingMeApiException ex) {
                 java.util.logging.Logger.getLogger(indexServerlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        if (handler.userExisted(me.get("id").toString())) {
-        } else {
-            boolean temp = handler.addUser(me.get("id").toString(), "default", 0);// normal user:0, admin:1, blockuser:-1
+        if (!handler.userExisted(me.get("id").toString())) {
+            boolean temp = handler.addUser(me.get("id").toString(), "default", 0);// normal user:0, admin:1, blockuser:-1            
+        }
+        else{
+            if(mycache.isBlockUser(me.get("id").toString())){
+                res.sendRedirect("/blockUser");
+            }
         }
         
         //MiddlewareHandler.myLocalCache.CacheUserItemIDLike(me.get("id").toString());
