@@ -90,7 +90,7 @@ void BackendMiddlewareHandler::getItemsFromListItemID(std::vector<Item> & _retur
 }
 
 void BackendMiddlewareHandler::getAllItemshaveTag(std::vector<Item> & _return, const std::string& tagID, const int32_t numberItems) {
-    _return = itemDB->getAllItemshaveTag(tagID, *itemTagDB);
+    _return = itemDB->getAllItemshaveTag(tagID, numberItems, *itemTagDB);
 }
 
 void BackendMiddlewareHandler::pagingItemsTag(std::vector<Item> & _return, const std::string& tagID, const int32_t pageNumber, const int32_t numberItems) {

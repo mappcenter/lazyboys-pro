@@ -68,7 +68,7 @@ public:
     vector<Item> getAllItems(int64_t number);
     Item getItemFromItemID(string itemID);
     vector<Item> getItemsFromListItemID(vector<string> itemIDs);
-    vector<Item> getAllItemshaveTag(string tagID, ItemTagDB& itemTagDB);
+    vector<Item> getAllItemshaveTag(string tagID, int64_t numberItems, ItemTagDB& itemTagDB);
 
     bool increaseViewCountItem(string itemID);
     bool increaseLikeCountItem(string itemID);
