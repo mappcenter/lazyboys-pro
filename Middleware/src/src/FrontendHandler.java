@@ -28,26 +28,25 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
 
     static BackendHandler handler = new BackendHandler();
     static Map<String, Object> local_cache = new HashMap<>();
-    static LazyBoysLRUCache lzCache = null;
-    private static List<Tag> listTag = new ArrayList<>();
+    //static LazyBoysLRUCache lzCache = null;
+    static List<Tag> listTag = new ArrayList<>();
     static long numberTopTags = 0;
     static long numberItemsIDofTag = 0;
 
     public FrontendHandler() throws TException, IOException {
     }
 
-    public static void StartLZCache() {
-        int maxObject = 0;
-        try {
-            maxObject = getConfig.getInstance().maxObject();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(FrontendHandler.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(FrontendHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        lzCache = new LazyBoysLRUCache(maxObject);
-    }
-
+//    public static void StartLZCache() {
+//        int maxObject = 0;
+//        try {
+//            maxObject = getConfig.getInstance().maxObject();
+//        } catch (FileNotFoundException ex) {
+//            Logger.getLogger(FrontendHandler.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (IOException ex) {
+//            Logger.getLogger(FrontendHandler.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        //lzCache = new LazyBoysLRUCache(maxObject);
+//    }
     @Override
     public List<Tag> getAllTag() throws TException {
         if (!listTag.isEmpty()) {
@@ -202,14 +201,20 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
      */
     @Override
     public Item getRandomItem() throws TException {
-        String tagID = getRandomTag();
-        Item item = getRandomItemhaveTag(tagID);
+        Item item;
+        do {
+            String tagID = getRandomTag();
+            item = getRandomItemhaveTag(tagID);
+        } while (item==null);
         return item;
         //return handler.getRandomItem();
     }
 
     public int getRandomIndex(int size) {
-        return (new Random()).nextInt(size - 1);
+        if (size == 0) {
+            return -1;
+        }
+        return ((new Random()).nextInt(size));
     }
 
     public String getRandomTag() throws TException {
@@ -222,6 +227,9 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     public Item getRandomItemhaveTag(String tagID) throws TException {
         Item item;
         List<String> listitem = getAllItemsIDhaveTag(tagID, 1000);
+        if (listitem.isEmpty()) {
+            return null;
+        }
         int index = getRandomIndex(listitem.size());
         String itemID = listitem.get(index);
         item = getItemFromItemID(itemID);
@@ -525,12 +533,13 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     @Override
     public List<String> getAllItemsIDLike(String userID) throws TException {
         if (local_cache.containsKey("getAllItemsIDLike" + userID)) {
-            //System.out.println("get getAllItemsIDLike from cache");
+
+            System.out.println("get get all item id like of user: " + userID + " from cache");
+
             return (List<String>) local_cache.get("getAllItemsIDLike" + userID);
         }
         List<String> listItemID = handler.getAllItemsIDLike(userID);
-        //System.out.println("get favouriteItemsSize from backend");
-        local_cache.put("getAllItemsIDLike" + userID, listItemID);
+        System.out.println("get get all item id like of user: " + userID + " from backend");
         return listItemID;
     }
 
@@ -541,11 +550,17 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
 
     @Override
     public boolean insertLikedItem(String userID, String itemID) throws TException {
+        if (local_cache.containsKey("getAllItemsIDLike" + userID)) {
+            local_cache.remove("getAllItemsIDLike" + userID);
+        }
         return handler.insertLikedItem(userID, itemID);
     }
 
     @Override
     public boolean deleteLikedItem(String userID, String itemID) throws TException {
+        if (local_cache.containsKey("getAllItemsIDLike" + userID)) {
+            local_cache.remove("getAllItemsIDLike" + userID);
+        }
         return handler.deleteLikedItem(userID, itemID);
     }
 
@@ -557,7 +572,7 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
             return listItemID;
         }
         List<String> listItemID = handler.getAllItemsIDDislike(userID);
-        System.out.println("get all item id dislike of user: " + userID + " from cache");
+        System.out.println("get all item id dislike of user: " + userID + " from backend");
         local_cache.put("getAllItemsIDDislike" + userID, listItemID);
         return listItemID;
     }
@@ -569,11 +584,17 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
 
     @Override
     public boolean insertDislikedItem(String userID, String itemID) throws TException {
+        if (local_cache.containsKey("getAllItemsIDDislike" + userID)) {
+            local_cache.remove("getAllItemsIDDislike" + userID);
+        }
         return handler.insertDislikedItem(userID, itemID);
     }
 
     @Override
     public boolean deleteDislikedItem(String userID, String itemID) throws TException {
+        if (local_cache.containsKey("getAllItemsIDDislike" + userID)) {
+            local_cache.remove("getAllItemsIDDislike" + userID);
+        }
         return handler.deleteDislikedItem(userID, itemID);
     }
 
@@ -620,8 +641,20 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     }
 
     public void startCache() throws TException {
-        getAllTag();
+        List<Tag> lisTag = getAllTag();
+        int numberItemID = 0;
+        int numberItemCache = 0;
+        try {
+            numberItemID = getConfig.getInstance().numberItemofTag();
+            numberItemCache = getConfig.getInstance().numberItemCache();
+        } catch (Exception ex) {
+        }
+        for (Tag tag : lisTag) {
+            getAllItemshaveTag(tag.tagID, numberItemID);
+        }
+        getAllItems(numberItemCache);
         List<String> listUserID = getAllUser();
+
         for (String userID : listUserID) {
             getAllItemsIDDislike(userID);
             getAllItemsIDLike(userID);
