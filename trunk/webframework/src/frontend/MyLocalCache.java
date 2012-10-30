@@ -4,6 +4,7 @@
  */
 package frontend;
 
+import IOFile.CachingIndexPage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -35,6 +36,7 @@ public class MyLocalCache {
     public static String listItemsClientCache = "listItemsClientCache";
     public static String listItemsIDUserLike = "ItemIdUserLike";
     public static String listItemsUserFavorite = "ItemUserFavorite";
+    public static String indexpage = "indexpage";
     public static Map<String, Object> LocalCache = new HashMap<String, Object>();
     public static LazyBoysLRUCache UserLocalCache = new LazyBoysLRUCache(capacityUser);
     public static LazyBoysLRUCache hostItems = new LazyBoysLRUCache(20);
@@ -85,6 +87,12 @@ public class MyLocalCache {
 
         //cache top Items
         StartCacheTopItems();
+
+        //Cache index page;
+        CachingIndexPage cacheIndexPage = new CachingIndexPage();
+        List<String> indexPageHtml = cacheIndexPage.renderIndexHtml();
+        LocalCache.put(indexpage, indexPageHtml);
+
         System.out.println("Caching Completed! ;)) ");
     }
 
@@ -397,22 +405,34 @@ public class MyLocalCache {
         User user = (User) UserLocalCache.get(uID);
         if (user != null) {
             user.userRole = -1;
-            UserLocalCache.put(uID, user);            
+            UserLocalCache.put(uID, user);
         }
         handler.blockUser(uID);
     }
-    public List<Item> getItemsTag(String tagID){
-        List<String> itemIDs=(List<String>) LocalCache.get(itemIDTagsKey+tagID);
-        List<Item> items=new ArrayList<Item>();
-        for (int i = 0; i < itemIDs.size() && i<16; i++) { // chi lay 15 items
-            Item temp=(Item) LocalCache.get("item"+itemIDs.get(i));
-            if(temp!=null){
+
+    public List<Item> getItemsTag(String tagID) {
+        List<String> itemIDs = (List<String>) LocalCache.get(itemIDTagsKey + tagID);
+        List<Item> items = new ArrayList<Item>();
+        for (int i = 0; i < itemIDs.size() && i < 16; i++) { // chi lay 15 items
+            Item temp = (Item) LocalCache.get("item" + itemIDs.get(i));
+            if (temp != null) {
                 items.add(temp);
             }
         }
         //if(items.size()>0){
-            return items;
+        return items;
         //}
         //return null;
+    }
+
+    public List<String> getCacheIndexPageWithUser(String userID, String userName) {
+        List<String> result = (List<String>) LocalCache.get(indexpage);
+        String replace = "";
+
+        if (result != null) {
+            CachingIndexPage cachingPage = new CachingIndexPage();
+            result = cachingPage.renderIndexHtmlForUser(result, userID, userName);
+        }
+        return result;
     }
 }

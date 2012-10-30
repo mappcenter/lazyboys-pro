@@ -48,7 +48,7 @@ public class randomItemControllerServlet extends HttpServlet {
         }
         //long t2 = System.currentTimeMillis();
         Gson gson = new Gson();
-        String strItem = gson.toJson(item);
+        String strItem = gson.toJson(item);        
         res.getWriter().println(strItem);
     }
 }

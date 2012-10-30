@@ -1,5 +1,6 @@
 package webservlet.Client;
 
+import IOFile.CachingIndexPage;
 import com.google.gson.Gson;
 import com.vng.jcore.common.Config;
 import com.vng.jcore.profiler.ProfilerLog;
@@ -63,11 +64,20 @@ public class ErrorPageControllerServlet extends HttpServlet {
     }
 
     private String render(HttpServletRequest req, HttpServletResponse res) throws Exception {
-        TemplateDataDictionary dic = TemplateDictionary.create();
-        Template template = this.getCTemplate();
-        String content = template.renderToString(dic);
-        return content;
-
+//        TemplateDataDictionary dic = TemplateDictionary.create();
+//        CachingIndexPage cacheIndexPage=new CachingIndexPage();
+//        cacheIndexPage.renderIndexHtml();
+//        List<String> strIndexHtml=CachingIndexPage.indexHtlm;
+//        if(strIndexHtml!=null && strIndexHtml.size()>0){
+//            for (int i = 0; i < strIndexHtml.size(); i++) {
+//            TemplateDataDictionary listsection = dic.addSection("list_content");
+//            listsection.setVariable("contentHtml", strIndexHtml.get(i));
+//        }
+//        }
+//        Template template = this.getCTemplate();
+//        String content = template.renderToString(dic);
+//        return content;
+        return "";
 
     }
     private Template getCTemplate() throws Exception {
