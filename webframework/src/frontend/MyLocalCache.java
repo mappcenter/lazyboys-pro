@@ -32,7 +32,7 @@ public class MyLocalCache {
     public static String listAllTagsKey = "listAllTags";
     public static String listTopTagsKey = "listTopTags";
     public static String listItemIDKey = "listItemID";
-    public static String listTopItemsKey="listTopItems";
+    public static String listTopItemsKey = "listTopItems";
     public static String listItemsClientCache = "listItemsClientCache";
     public static Map<String, Object> LocalCache = new HashMap<String, Object>();
     public static LazyBoysLRUCache UserLocalCache = new LazyBoysLRUCache(capacityUser);
@@ -66,7 +66,7 @@ public class MyLocalCache {
         count = tags.size();
         LocalCache.put(listAllTagsKey, tags);
     }
-    
+
     public void startMyLocalCache() throws TException {
         List<Tag> lTags = handler.getAllTag();
         LocalCache.put(listAllTagsKey, lTags);
@@ -97,14 +97,16 @@ public class MyLocalCache {
         }
         LocalCache.put(listItemIDKey, listItemIDs);
     }
-    public void StartCacheTopItems() throws TException{
-        List<Item> items=handler.getTopItems(numberTopItems);
+
+    public void StartCacheTopItems() throws TException {
+        List<Item> items = handler.getTopItems(numberTopItems);
         LocalCache.put(listTopItemsKey, items);
     }
-    public List<Item> getTopItems() throws TException{
-        List<Item> items=(List<Item>) LocalCache.get(listTopItemsKey);
-        if(items==null){
-            items=handler.getTopItems(numberTopItems);
+
+    public List<Item> getTopItems() throws TException {
+        List<Item> items = (List<Item>) LocalCache.get(listTopItemsKey);
+        if (items == null) {
+            items = handler.getTopItems(numberTopItems);
         }
         return items;
     }
@@ -259,7 +261,7 @@ public class MyLocalCache {
         UserLocalCache.put(uID, listItems, userExpiredTime);
         return true;
     }
-    
+
     public void removeUserItemLike(String uID, String itemID) throws TException {
         List<Item> listItems = (List<Item>) UserLocalCache.get(uID);
         int i = listItems.size();
@@ -276,6 +278,7 @@ public class MyLocalCache {
             }
         }
     }
+
     public void removeAllUserItemIDLike(String uID) {
         UserLocalCache.remove(uID);
     }
@@ -283,9 +286,11 @@ public class MyLocalCache {
     public void clearAllUserCaching() {
         //UserLocalCache.
     }
-    public void clearUserCaching(String uID){
+
+    public void clearUserCaching(String uID) {
         UserLocalCache.remove(uID);
     }
+
     public List<Item> getItemsForClientCache() {
         List<Item> items = (List<Item>) LocalCache.get(listItemsClientCache);
         return items;
