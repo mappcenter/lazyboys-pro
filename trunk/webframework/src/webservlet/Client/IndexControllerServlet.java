@@ -101,13 +101,12 @@ public class IndexControllerServlet extends HttpServlet {
         TemplateDataDictionary dic = TemplateDictionary.create();
         MyLocalCache mycache=new MyLocalCache();
        //dic.setVariable("title", "This is title of layout - config=" + config_host + " - product=" + productName);
-
+        
         for (int i = 0; i < listItem.size(); i++) {
             TemplateDataDictionary listsection = dic.addSection("list_section");
             listsection.setVariable("itemID", listItem.get(i).itemID);
             listsection.setVariable("itemContent", listItem.get(i).content);
         }
-
         TemplateDataDictionary itemRan = dic.addSection("itemRan");
 //        itemRan.setVariable("strItem", strItem);
 //        itemRan.setVariable("ItemID", item.itemID);

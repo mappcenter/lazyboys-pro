@@ -100,7 +100,7 @@ public class FeedControllerServlet extends HttpServlet {
                 "", 
                 ""
                 );
-        String signKey="";
+        String signKey="0";
         try {
             signKey=zfeed.generateSignatureKey(itemfeed);
         } catch (ZingMeApiException ex) {

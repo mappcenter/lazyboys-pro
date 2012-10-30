@@ -1,4 +1,6 @@
+
 <html lang="en">
+
     <head>
         <title id="title" >Lazy Boys</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -27,7 +29,6 @@
                 </ul>
             </div>
             <div class="lztabDetails">
-
                 <div id="lztab1" class="lztabContents" style="display: block; ">
                     <div id="lz-wrapper">						
                         <input type="hidden" value="{{#itemRan}}{{userID}}{{/itemRan}}" id="usrId" />
@@ -97,7 +98,7 @@
                                     </div>
                                     <div id="lz3-container">
                                         <div style="font-size: 20px;">
-                                            ★ Nổi bật ★
+                                            <a href="javascript:getItemsOfTag(-11);">★ Nổi bật ★</a>
                                         </div>
                                         <table style="width: 100%;">
                                             <tbody><tr>
@@ -110,7 +111,7 @@
                                                 <!-- content block -->
                                                 <div id="lz-content-top-item" class="lz-content-top-item">
                                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                                        <tbody>                                
+                                                        <tbody id="itemsOfTag">                                
                                                             <tr>
 
                                                                 {{#list_section}}
