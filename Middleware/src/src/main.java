@@ -28,10 +28,12 @@ public class main {
         options.processor(processor);
 
         TServer server = new THsHaServer(options);
+         System.out.println("Start cache data ...");
         (new FrontendHandler()).startCache();
+        System.out.println("Cache data complete ...");
         Timer timer = new Timer();
         timer.schedule(new myTask(), 10 * 60 * 1000, 10 * 60 * 1000);
-        System.out.println("Starting server on port " + port + " ...");
+        System.out.println("Server is listening on port " + port + " ...");
         server.serve();
     }
 }
