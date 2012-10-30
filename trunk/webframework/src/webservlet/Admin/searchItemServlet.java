@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author root
  */
 public class searchItemServlet extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("text/html; charset=utf-8");
@@ -53,19 +54,38 @@ public class searchItemServlet extends HttpServlet {
     private String renderStatus(HttpServletRequest req) throws Exception {
         int page = 1;
         int itemPerPage = Integer.valueOf(Config.getParam("paging", "itemPerPage"));
-        List<Item> listItem=new ArrayList<Item>();
-        String keyword="";
+        List<Item> listItem = new ArrayList<Item>();
+        String keyword = "";
+        String tagID = "-1";
+        String type = "keyword";
         try {
             if (req.getParameter("p") != null) {
                 page = Integer.parseInt(req.getParameter("p"));
             }
-             if (req.getParameter("key") != null) {
+            if (req.getParameter("key") != null) {
                 keyword = req.getParameter("key");
             }
+            if (req.getParameter("tagID") != null) {
+                tagID = req.getParameter("tagID");
+            }
+            if (req.getParameter("type") != null) {
+                type = req.getParameter("type");
+            }
             MiddlewareHandler handler = new MiddlewareHandler();
-            listItem = handler.getItemsPageKeyword(keyword, page, itemPerPage);
-            if(listItem.isEmpty()){
-                return "null";
+            if ("keyword".equals(type)) {
+                if ("-1".equals(tagID)) {
+                    listItem = handler.getItemsPageKeyword(keyword, page, itemPerPage);
+                } else {
+                    listItem = handler.getItemsPageKeywordOfTag(keyword, tagID, page, itemPerPage);
+                }
+            } else {
+                Item item = handler.getItemFromItemID(keyword);
+                if(!"-1".equals(item.itemID)) {
+                    listItem.add(item);
+                }
+            }
+            if (listItem.isEmpty()) {
+                return "No result ...";
             }
         } catch (Exception ex) {
             return "Error: " + ex.getMessage();
