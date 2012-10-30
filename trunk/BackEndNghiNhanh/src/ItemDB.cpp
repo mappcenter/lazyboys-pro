@@ -278,7 +278,7 @@ vector<Item> ItemDB::getAllItems(int64_t number) {
 }
 
 /**
- * Lay tat ca Item thuoc tagID
+ * Lay number Item thuoc tagID, neu numberItems = -1 thi lay tat ca
  * @param tagID
  * @return vector<Item>
  */
@@ -298,9 +298,10 @@ vector<Item> ItemDB::getAllItemshaveTag(string tagID, int64_t numberItems, ItemT
     int64_t n = liststring.size();
     if (numberItems == -1 || numberItems > n)
         numberItems = n;
-
+    
     for (int i = 0; i < numberItems; i++) {
-        Item item = getItemInGrassDB(liststring[i]);
+        int64_t index = Utils::getRandomNumber(numberItems);
+        Item item = getItemInGrassDB(liststring[index]);
         listItem.push_back(item);
     }
     return listItem;
