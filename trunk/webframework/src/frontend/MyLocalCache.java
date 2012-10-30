@@ -23,7 +23,7 @@ public class MyLocalCache {
     private static int capacityUser = 10000; //1 user: user favorite items and user like itemIDs. => 5000 user info
     private static String itemIDTagsKey = "ItemIDTags";
     private static long userExpiredTime = (10 * 60 * 1000); //15minutes
-    private static int numberTopTags = 30;
+    private static int numberTopTags = 20;
     private static int numberItemIDTags = 30;
     private static int numberTopItems = 15;
     public static int itemIDTagSize = 0;

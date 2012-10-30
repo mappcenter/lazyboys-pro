@@ -128,10 +128,10 @@ public class IndexControllerServlet extends HttpServlet {
             zm = new ZME_Me(MyAppInfo.getInstance().getzConfig());
 
             try {
-                me = zm.getInfo(zdata.accessToken, "displayname");
-                
+                me = zm.getInfo(zdata.accessToken, "displayname");                
             } catch (ZingMeApiException ex) {
                 java.util.logging.Logger.getLogger(indexServerlet.class.getName()).log(Level.SEVERE, null, ex);
+                res.sendRedirect("/blockUser");
             }
         }
         if (!handler.userExisted(me.get("id").toString())) {

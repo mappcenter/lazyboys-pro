@@ -100,6 +100,9 @@ public class WebServer {
         
         //get items of tag
         handler.addServletWithMapping("webservlet.Client.GetItemsOfTagControllerServlet", "/getItemsTag");
+        
+        //get items of tag for random client
+        handler.addServletWithMapping("webservlet.Client.GetItemsOfTagForRandomControllerServlet", "/getItemsTagForRandom");
 
         //handler.addServletWithMapping("servlet.randomItemServlet","/random");
         //admin services
