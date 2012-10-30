@@ -38,12 +38,14 @@ public class myTask extends TimerTask {
     public void swapCache() throws TException, IOException {
         BackendHandler handler = new BackendHandler();
         System.out.println("start swap cache ...");
+        //update listTag
         listTag_update = handler.getAllTag();
         listTag_temp = FrontendHandler.listTag;
         FrontendHandler.listTag = listTag_update;
         listTag_update = listTag_temp;
         listTag_temp.clear();
-
+        
+        
         int numberItemID = 0;
         int numberItemCache = 0;
         try {
@@ -51,6 +53,7 @@ public class myTask extends TimerTask {
             numberItemCache = getConfig.getInstance().numberItemCache();
         } catch (Exception ex) {
         }
+        
         for (Tag tag : FrontendHandler.listTag) {
             local_cache_update.put("getTag" + tag.tagID, tag);
             List<Item> listItem = handler.getAllItemshaveTag(tag.tagID, numberItemID);
