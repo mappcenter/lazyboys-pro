@@ -122,7 +122,7 @@ public class getContentTabServlet extends HttpServlet {
         }
         List<Item> listItem = handler.getItemsPage(page, itemPerPage, tagID);
         Gson gson = new Gson();
-        
+
         TemplateDataDictionary dic = TemplateDictionary.create();
         for (int i = 0; i < listItem.size(); i++) {
             TemplateDataDictionary listsection = dic.addSection("list_section");
@@ -148,7 +148,7 @@ public class getContentTabServlet extends HttpServlet {
                 listPageSection.setVariable("page", "<a href=\"#\" class=\"graybutton pagelink active\" rel=\"" + page + "\">" + page + "</a>");
             } else {
                 TemplateDataDictionary listPageSection = dic.addSection("listPage_section");
-                listPageSection.setVariable("page", "<a href=\"javascript:paging("+i+");\" class=\"graybutton pagelink\" rel=\"" + i + "\">" + i + "</a>");
+                listPageSection.setVariable("page", "<a href=\"javascript:paging(" + i + ");\" class=\"graybutton pagelink\" rel=\"" + i + "\">" + i + "</a>");
             }
         }
         dic.setVariable("last", String.valueOf(pageCount));
@@ -199,7 +199,7 @@ public class getContentTabServlet extends HttpServlet {
                 listPageSection.setVariable("page", "<a href=\"#\" class=\"graybutton pagelink active\" rel=\"" + page + "\">" + page + "</a>");
             } else {
                 TemplateDataDictionary listPageSection = dic.addSection("listPage_section");
-                listPageSection.setVariable("page", "<a href=\"#\" onclick='tagList(" + i + ");' class=\"graybutton pagelink\" rel=\"" + i + "\">" + i + "</a>");
+                listPageSection.setVariable("page", "<a href=\"javascript:paging(" + i + ");\"  class=\"graybutton pagelink\" rel=\"" + i + "\">" + i + "</a>");
             }
         }
         dic.setVariable("last", String.valueOf(pageCount));
