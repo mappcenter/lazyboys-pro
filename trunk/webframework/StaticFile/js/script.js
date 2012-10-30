@@ -119,12 +119,7 @@ $(document).ready(function() {
             $("#manage").html("Manage "+$('#main-nav > li > a.current').html());
             $("#task").html($('#main-nav > li > a.current').html());
             var tabName=$('#main-nav > li > a.current').attr('id');
-            if(tabName=="Status"){
-                $("#cmbTag").val('-1');
-                $('#div_cmbTag').show();
-            }
-            else
-                $('#div_cmbTag').hide();
+            
             $.post("getContentTab",{
                 tabName:tabName,
                 p:"1"
@@ -209,16 +204,27 @@ $(document).ready(function() {
                 return;
             }
             var keyword=$(this).attr('value'); 
+            var tagID=$('#cmbTag').attr('value');
+            var type="keyword";
+            //alert($('#searchKeyWord').attr('checked'));
+            if($('#searchKeyWord').attr('checked')==true){
+                type="keyword";
+            }else{
+                type="ID";
+            }       
+            //alert(type);
             $.post('searchItem', {
-                key:keyword
+                key:keyword,
+                tagID:tagID,
+                type:type
             }, function(data){
+                //alert(data);               
                 $('#table_pagination').html(data);
                 $('#search').attr('value', 'true');
                 $('#search').attr('alt', keyword);
                 regen();
                 return;
-            });
-            
+            });          
             var timer=$.timer(function(){
                 alert("No result ...");
                 return;
@@ -269,24 +275,30 @@ function regen(){
 }
 
 function paging(page){
+    var tagID=$('#cmbTag').attr('value');
     if($('#search').attr('value')=='true'){ 
-        var keyword=$('#search').attr('alt');   
+        var keyword=$('#search').attr('alt');  
+        var type="keyword";
+        //alert($('#searchKeyWord').attr('checked'));
+        if($('#searchKeyWord').attr('checked')==true){
+            type="keyword";
+        }else{
+            type="ID";
+        }       
         //alert(page);
         $.post('searchItem', {
             key:keyword,
-            p:page
-        }, function(data){
-            if(data!='null'){
-                $('#table_pagination').html(data);
-                regen();        
-            }else{
-                alert("No more record ...");
-            }   
+            p:page,
+            tagID:tagID,
+            type:type
+        }, function(data){     
+            $('#table_pagination').html(data);
+            regen();                    
             return;
         });
     }else{
         var tabName=$('#main-nav > li > a.current').attr('id');
-        var tagID=$('#cmbTag').attr('value');
+        
         $.post("getContentTab",{
             tabName:tabName,
             p:page,
