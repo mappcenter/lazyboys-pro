@@ -1,6 +1,7 @@
 package webservlet.Client;
 
 import frontend.MiddlewareHandler;
+import frontend.MyLocalCache;
 import java.io.IOException;
 import java.util.logging.Level;
 import javax.servlet.ServletException;
@@ -26,19 +27,19 @@ public class LikeUnlikeItemControllerServlet extends HttpServlet {
         if(req.getParameter("typeAction")==null){
             return;
         }
-        String result="Khong duoc";
+        String result="Khong Thanh Cong!";
         String action=req.getParameter("typeAction");
         if (req.getParameter("userID") == null || req.getParameter("userID").toString().isEmpty()) {
         } 
         else {
             String itemID=req.getParameter("itemID");
             String userID=req.getParameter("userID");
+            MyLocalCache mycache=new MyLocalCache();
             if (action.compareTo("like") == 0) {
+                
                 try {
-                    if(handler.insertLikedItem(userID, itemID)){
-                        result="Thanh Cong";
-                        resp.getWriter().println(result);
-                        return;
+                    if(mycache.setUserItemIDLike(userID, itemID)){
+                        result="Thanh Cong!";                       
                     }
                 } catch (TException ex) {
                     java.util.logging.Logger.getLogger(LikeUnlikeItemControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -46,8 +47,8 @@ public class LikeUnlikeItemControllerServlet extends HttpServlet {
             }
             if (action.compareTo("unlike") == 0) {
                 try {
-                    if(handler.deleteLikedItem(userID, itemID)){
-                        result="Thanh Cong";
+                    if(mycache.removeUserItemIDLike(userID, itemID)){
+                        result="Thanh Cong";                        
                     }
                 } catch (TException ex) {
                     java.util.logging.Logger.getLogger(LikeUnlikeItemControllerServlet.class.getName()).log(Level.SEVERE, null, ex);

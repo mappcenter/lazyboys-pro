@@ -51,20 +51,48 @@ public class WebServer {
         // user services
         handler.addServletWithMapping("webservlet.Client.IndexControllerServlet", "/");
         handler.addServletWithMapping("webservlet.Client.TestFeedControllerServlet", "/testfeed");
-
-        handler.addServletWithMapping("webservlet.Client.UserItemControllerServlet", "/userItem");
+        
+        // lay favorite items cua user tu UserItem
+        handler.addServletWithMapping("webservlet.Client.UserItemControllerServlet", "/userItem"); //get 
+        
+        // return noi dung file  xcall.proxy-1.00.html cho viec Feed len zingMe
         handler.addServletWithMapping("webservlet.Client.XcallProxyControllerServlet", "/xcall.proxy-1.00.html");
+        
+        //tra ve mot list tag va list top tag dang bien js Ex: var myTags=[json], var myTopTags=[json]
         handler.addServletWithMapping("webservlet.Client.listTagsControllerServlet", "/listtags.js");
+        
+        //tao ra signkey de feed len zingMe
         handler.addServletWithMapping("webservlet.Client.FeedControllerServlet", "/feedItem");
+        
+        //just test feed ^^
         handler.addServletWithMapping("webservlet.Client.TestFeedControllerServlet", "/abc/*");
+        
+        //xu ly like or unlike item
         handler.addServletWithMapping("webservlet.Client.LikeUnlikeItemControllerServlet", "/like_unlike");
+        
+        //luu favorite items cho user
         handler.addServletWithMapping("webservlet.Client.SaveItemControllerServlet", "/saveItem");
+        
+        //xoa' favorite item cua  user
         handler.addServletWithMapping("webservlet.Client.DeleteItemControllerServlet", "/delItem");
+        
+        //tra ve chuoi ID Items ma User da like.(POST method jquery)
         handler.addServletWithMapping("webservlet.Client.UserLikesItemControllerServlet", "/uLikes");
+        
+        //Chua support luc nay'
         handler.addServletWithMapping("webservlet.Client.UserDisLikesItemControllerServlet", "/uDisLikes");
+        
+        //lay 1 item random bat ki
         handler.addServletWithMapping("webservlet.Client.randomItemControllerServlet", "/uRandom");
-        handler.addServletWithMapping("webservlet.Client.SaveItemControllerServlet", "/saveItem");
+        
+        //
+        //handler.addServletWithMapping("webservlet.Client.SaveItemControllerServlet", "/saveItem");
+        
+        //cache items xuong client de random bang js
         handler.addServletWithMapping("webservlet.Client.CachingClientItemsControllerServlet", "/uItemsCaching");
+        
+        //caching sang thong tin user khi truy cap vao ung dung (Ex: userFavoriteItem)
+        handler.addServletWithMapping("webservlet.Client.CachingUserInfoControllerServlet", "/uCaching");
 
 
         //handler.addServletWithMapping("servlet.randomItemServlet","/random");

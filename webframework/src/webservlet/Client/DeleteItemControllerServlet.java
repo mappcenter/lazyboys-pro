@@ -2,9 +2,7 @@ package webservlet.Client;
 
 import frontend.MiddlewareHandler;
 import frontend.MyLocalCache;
-import frontend.UserInfo;
 import java.io.IOException;
-import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -40,7 +38,7 @@ public class DeleteItemControllerServlet extends HttpServlet {
 //            userID=req.getParameter("userID");
 //        }
         try {     
-            myLocalCache.removeUserItemLike(userID, itemID);
+            myLocalCache.removeUserItemsFavourite(userID, itemID);
             
         } catch (TException ex) {            
             java.util.logging.Logger.getLogger(SaveItemControllerServlet.class.getName()).log(Level.SEVERE, null, ex);

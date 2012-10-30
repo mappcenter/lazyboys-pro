@@ -2,6 +2,7 @@ package webservlet.Client;
 
 import com.google.gson.Gson;
 import frontend.MiddlewareHandler;
+import frontend.MyLocalCache;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
@@ -30,7 +31,8 @@ public class UserDisLikesItemControllerServlet extends HttpServlet {
         } else {
             String userID = req.getParameter("userID");
             try {
-                result=handler.getAllItemsIDDislike(userID);
+                MyLocalCache mycache=new MyLocalCache();
+                result=mycache.getUserItemIDsLike(userID);
             } catch (TException ex) {
                 java.util.logging.Logger.getLogger(UserDisLikesItemControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
             }            
