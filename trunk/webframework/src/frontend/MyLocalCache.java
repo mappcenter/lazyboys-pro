@@ -20,9 +20,9 @@ import org.apache.thrift.TException;
 public class MyLocalCache {
 
     MiddlewareHandler handler = new MiddlewareHandler();
-    private static int capacityUser = 5000;
+    private static int capacityUser = 10000; //1 user: user favorite items and user like itemIDs. => 5000 user info
     private static String itemIDTagsKey = "ItemIDTags";
-    private static long userExpiredTime = (15 * 60 * 1000); //15minutes
+    private static long userExpiredTime = (10 * 60 * 1000); //15minutes
     private static int numberTopTags = 30;
     private static int numberItemIDTags = 30;
     private static int numberTopItems = 15;
@@ -33,6 +33,7 @@ public class MyLocalCache {
     public static String listItemIDKey = "listItemID";
     public static String listTopItemsKey = "listTopItems";
     public static String listItemsClientCache = "listItemsClientCache";
+    public static String listItemsIDUserLike = "ItemIdUserLike";
     public static Map<String, Object> LocalCache = new HashMap<String, Object>();
     public static LazyBoysLRUCache UserLocalCache = new LazyBoysLRUCache(capacityUser);
     public static Map<String, Object> TempCacheToSwap = new HashMap<String, Object>();
@@ -224,13 +225,69 @@ public class MyLocalCache {
             UserLocalCache.put(uID, listItems, userExpiredTime);
         }
     }
-
-    public List<Item> getUserItemsLike(String uID) throws TException {
+    public List<Item> getUserFavoriteItems(String uID) throws TException {
         List<Item> items = (List<Item>) UserLocalCache.get(uID);
         if (items == null) {
             CacheUserItemsFavorite(uID);
         }
         return (List<Item>) UserLocalCache.get(uID);
+    }
+    public void CacheUserItemIDsLike(String uID) throws TException {
+        List<String> listItemsIDs = (List<String>) UserLocalCache.get(listItemsIDUserLike+uID);
+        if (listItemsIDs == null) {
+            listItemsIDs = handler.getAllItemsIDLike(uID);
+            UserLocalCache.put(listItemsIDUserLike+uID, listItemsIDs, userExpiredTime);
+        }
+    }
+    public List<String> getUserItemIDsLike(String uID) throws TException {        
+        List<String> itemIDs = (List<String>) UserLocalCache.get(listItemsIDUserLike+uID);
+        if (itemIDs == null) {
+            CacheUserItemIDsLike(uID);
+        }
+        return (List<String>) UserLocalCache.get(listItemsIDUserLike+uID);
+    }
+    public boolean setUserItemIDLike(String uID, String itemID) throws TException {
+        //check cache User start or not
+        CacheUserItemIDsLike(uID);
+        List<String> listItemIDs = (List<String>) UserLocalCache.get(listItemsIDUserLike+uID);
+        if (listItemIDs == null) {
+            listItemIDs = new ArrayList<String>();
+        }
+        if(listItemIDs.size()<1) {
+            return false;
+        }
+        for (Iterator<String> it = listItemIDs.iterator(); it.hasNext();) {
+            String item;
+            item = it.next();
+            if (item.equals(itemID)) {
+                return false;
+            }
+        }
+        if(!handler.insertLikedItem(uID, itemID)){
+            return false;
+        }
+        listItemIDs.add(itemID);
+        UserLocalCache.put(listItemsIDUserLike+uID, listItemIDs, userExpiredTime);
+        return true;
+    }
+    public boolean removeUserItemIDLike(String uID, String itemID) throws TException {
+        List<String> listItemIDs = (List<String>) UserLocalCache.get(listItemsIDUserLike+uID);
+        //int i = listItemIDs.size();
+        if (listItemIDs.size() > 0) {
+            for (int j = 0; j < listItemIDs.size(); j++) {
+                String item = listItemIDs.get(j);
+                if (item.equals(itemID)) {
+                    listItemIDs.remove(j);
+                    UserLocalCache.put(listItemsIDUserLike+uID, listItemIDs);
+                    //int k = listItems.size();
+                    if(!handler.deleteLikedItem(uID, itemID)){
+                        return false;
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     //save user item into localcache LRU
@@ -259,9 +316,9 @@ public class MyLocalCache {
         return true;
     }
 
-    public void removeUserItemLike(String uID, String itemID) throws TException {
+    public void removeUserItemsFavourite(String uID, String itemID) throws TException {
         List<Item> listItems = (List<Item>) UserLocalCache.get(uID);
-        int i = listItems.size();
+        //int i = listItems.size();
         if (listItems.size() > 0) {
             for (int j = 0; j < listItems.size(); j++) {
                 Item item = listItems.get(j);
@@ -276,7 +333,7 @@ public class MyLocalCache {
         }
     }
 
-    public void removeAllUserItemIDLike(String uID) {
+    public void removeAllUserFavoriteItems(String uID) {
         UserLocalCache.remove(uID);
     }
 

@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.vng.jcore.profiler.ProfilerLog;
 import frontend.Item;
 import frontend.MiddlewareHandler;
-import frontend.UserInfo;
 import hapax.Template;
 import hapax.TemplateDataDictionary;
 import hapax.TemplateDictionary;
@@ -29,12 +28,33 @@ public class UserItemControllerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        resp.setContentType("text/html; charset=utf-8");
-        boolean dbg = ("on".equals(req.getParameter("jdbg")));
-        ProfilerLog profiler = new ProfilerLog(dbg);
-        req.setAttribute("profiler", profiler);
-        profiler.doStartLog("wholereq");
+////        resp.setContentType("text/html; charset=utf-8");
+////        boolean dbg = ("on".equals(req.getParameter("jdbg")));
+////        ProfilerLog profiler = new ProfilerLog(dbg);
+////        req.setAttribute("profiler", profiler);
+////        profiler.doStartLog("wholereq");
+////
+////        try {
+////            String content = this.render(req);
+////
+////            this.out(content, resp);
+////        } catch (Exception ex) {
+////
+////            log.error(ex.getMessage());
+////            this.out("Error exception: " + ex.getMessage(), resp);
+////        }
+////
+////        profiler.doEndLog("wholereq");
+////        if (dbg) {
+////            String tmp = profiler.dumpLogHtml();
+////            this.out(tmp, resp);
+////        }
+    }
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/html; charset=UTF-8");
+        doGet(req, resp);
         try {
             String content = this.render(req);
 
@@ -44,20 +64,6 @@ public class UserItemControllerServlet extends HttpServlet {
             log.error(ex.getMessage());
             this.out("Error exception: " + ex.getMessage(), resp);
         }
-
-        profiler.doEndLog("wholereq");
-        if (dbg) {
-            String tmp = profiler.dumpLogHtml();
-            this.out(tmp, resp);
-        }
-
-
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/html; charset=UTF-8");
-        doGet(req, resp);
     }
 
     private String render(HttpServletRequest req) throws Exception {
@@ -74,7 +80,7 @@ public class UserItemControllerServlet extends HttpServlet {
             //uItems=usr.getUserFavoriteItems(userID);//get from memcache
             //if(uItems==null) {
             //uItems=handler.getFavouriteItems(userID, 20);
-            uItems = MiddlewareHandler.myLocalCache.getUserItemsLike(userID);
+            uItems = MiddlewareHandler.myLocalCache.getUserFavoriteItems(userID);
             // }
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(UserItemControllerServlet.class.getName()).log(Level.SEVERE, null, ex);

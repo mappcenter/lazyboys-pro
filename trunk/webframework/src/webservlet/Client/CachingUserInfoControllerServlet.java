@@ -5,6 +5,7 @@ import com.vng.jcore.common.Config;
 import com.vng.jcore.profiler.ProfilerLog;
 import frontend.Item;
 import frontend.MiddlewareHandler;
+import frontend.MyLocalCache;
 import frontend.UserInfo;
 import hapax.Template;
 import hapax.TemplateDataDictionary;
@@ -34,23 +35,16 @@ public class CachingUserInfoControllerServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/html; charset=UTF-8");        
-        String userID="";                
-        if(req.getParameter("userID")==null){
-            return;
-        }
-        userID=req.getParameter("userID");
-        UserInfo usr=new UserInfo();
-        List<Item> items=null;
-        try {
-            items=handler.getFavouriteItems(userID, 30);
-        } catch (TException ex) {
-            java.util.logging.Logger.getLogger(CachingUserInfoControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if (items!=null) {
-            usr.CachingUserItems(items, userID);
-        }
-        return;
+        resp.setContentType("text/html; charset=UTF-8");                               
+        if(!(req.getParameter("userID")==null) && !req.getParameter("userID").isEmpty()){
+            String userID=req.getParameter("userID"); 
+            MyLocalCache mycache=new MyLocalCache();
+            try {
+                mycache.CacheUserItemsFavorite(userID);
+            } catch (TException ex) {
+                java.util.logging.Logger.getLogger(CachingUserInfoControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }            
+        }        
         
     }    
 }
