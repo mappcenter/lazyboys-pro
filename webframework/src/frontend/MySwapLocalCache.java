@@ -23,7 +23,7 @@ public class MySwapLocalCache {
     public static int capacityUser = 5000;
     public static String itemIDTagsKey = "ItemIDTags";
     public static long userExpiredTime = (15 * 60 * 1000); //15minutes
-    public static int numberTopTags = 30;
+    public static int numberTopTags = 20;
     public static int numberItemIDTags = 30;
     public static int numberTopItems = 15;
     public static int itemIDTagSize = 0;

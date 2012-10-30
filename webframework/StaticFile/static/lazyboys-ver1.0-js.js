@@ -5,7 +5,8 @@ var myItemsLike="";
 var uItemsCaching;
 //var myItemsDisLike="";
 var isFeed=true;
-
+var currentTagID="";
+var currentItemsTag=new Array();
 function isUserFeed()
 {
     isFeed=true;
@@ -23,54 +24,54 @@ function getTagName(tagID){
     }                
     return tagName;
 }
-function getRandomItemOfTag(tagID){
-    var tagName=getTagName(tagID);    
-    $currentTagID=tagID.toString();
-    $(document).ready(function(){                
-        $.post("/", {
-            tagID:$currentTagID
-        }, function(data) {	
-            var myJsonObj = jsonParse(data);
-            addItemsToQueue(myJsonObj);
-            $("#lz-save-button").attr("rel", myJsonObj.itemID);
-            $("#curTagID").attr("value", tagID);
-            $("#ContentItem").html(myJsonObj.content); 
-            var listTagsID=myJsonObj.tagsID.toString().split(",");
-            var lTags="";
-            for (var k=0;k< listTagsID.length;k++) {
-                lTags+="<a href='javascript:getRandomItemOfTag("+listTagsID[k]+");' rel='"+listTagsID[k]+"'>"+getTagName(listTagsID[k].toString())+"</a>     ";
-            }                            
-            // alert(lTags);
-            $("#listTag").html(lTags);
-            $("#lztitle").attr("style","visibility: visible;");
-            $("#statusTag").html("<a href='javascript:getRandomItemOfTag("+tagID+");'>"+tagName+"</a>");
-            turnOnOffBackNext(); 
-            checkUserLike(myJsonObj.itemID);
-        }).error(function() { 
-            var count=uItemsCaching.length-1;
-            if(count>1)
-            {
-                var index=randomFromInterval(0,count);
-                var item=uItemsCaching[index];
-                $("#lz-save-button").attr("rel", item.itemID);
-                checkUserLike(item.itemID);//check user like Item
-                //checkUserDisLike(myJsonObj.itemID,0);//check user Dislike Item
-                addItemsToQueue(item);                   
-                $("#ContentItem").html(item.content); 
-                var listTagsID=item.tagsID.toString().split(",");
-                var lTags="";
-                for (var k=0;k< listTagsID.length;k++) {
-                    lTags+="<a href='javascript:getRandomItemOfTag("+listTagsID[k]+");' rel='"+listTagsID[k]+"'>"+getTagName(listTagsID[k].toString())+"</a>     ";
-                }                            
-                $("#listTag").html(lTags); 
-                turnOnOffBackNext(); 
-                checkUserLike(item.itemID);
-            }
-            return;
-        });
-    });
-    
-}
+//function getRandomItemOfTag(tagID){
+//    var tagName=getTagName(tagID);    
+//    $currentTagID=tagID.toString();
+//    $(document).ready(function(){                
+//        $.post("/", {
+//            tagID:$currentTagID
+//        }, function(data) {	
+//            var myJsonObj = jsonParse(data);
+//            addItemsToQueue(myJsonObj);
+//            $("#lz-save-button").attr("rel", myJsonObj.itemID);
+//            $("#curTagID").attr("value", tagID);
+//            $("#ContentItem").html(myJsonObj.content); 
+//            var listTagsID=myJsonObj.tagsID.toString().split(",");
+//            var lTags="";
+//            for (var k=0;k< listTagsID.length;k++) {
+//                lTags+="<a href='javascript:getRandomItemOfTagForRandom("+listTagsID[k]+");' rel='"+listTagsID[k]+"'>"+getTagName(listTagsID[k].toString())+"</a>     ";
+//            }                            
+//            // alert(lTags);
+//            $("#listTag").html(lTags);
+//            $("#lztitle").attr("style","visibility: visible;");
+//            $("#statusTag").html("<a href='javascript:getRandomItemOfTagForRandom("+tagID+");'>"+tagName+"</a>");
+//            turnOnOffBackNext(); 
+//            checkUserLike(myJsonObj.itemID);
+//        }).error(function() { 
+//            var count=uItemsCaching.length-1;
+//            if(count>1)
+//            {
+//                var index=randomFromInterval(0,count);
+//                var item=uItemsCaching[index];
+//                $("#lz-save-button").attr("rel", item.itemID);
+//                checkUserLike(item.itemID);//check user like Item
+//                //checkUserDisLike(myJsonObj.itemID,0);//check user Dislike Item
+//                addItemsToQueue(item);                   
+//                $("#ContentItem").html(item.content); 
+//                var listTagsID=item.tagsID.toString().split(",");
+//                var lTags="";
+//                for (var k=0;k< listTagsID.length;k++) {
+//                    lTags+="<a href='javascript:getRandomItemOfTagForRandom("+listTagsID[k]+");' rel='"+listTagsID[k]+"'>"+getTagName(listTagsID[k].toString())+"</a>     ";
+//                }                            
+//                $("#listTag").html(lTags); 
+//                turnOnOffBackNext(); 
+//                checkUserLike(item.itemID);
+//            }
+//            return;
+//        });
+//    });
+//    
+//}
 function getItemsOfTag(tagID){
     var tagName=getTagName(tagID);    
     $currentTagID=tagID.toString();
@@ -137,7 +138,7 @@ function showItemBackNext(item){
         var aTagsID=item[2];
         var lTags=""; 
         for (var k=0;k< aTagsID.length;k++) {
-            lTags+="<a href='javascript:getRandomItemOfTag("+aTagsID[k]+");' rel='"+aTagsID[k]+"'>"+getTagName(aTagsID[k].toString())+"</a>     ";
+            lTags+="<a href='javascript:getRandomItemOfTagForRandom("+aTagsID[k]+");' rel='"+aTagsID[k]+"'>"+getTagName(aTagsID[k].toString())+"</a>     ";
         }                            
         $("#listTag").html(lTags);
         checkUserLike(item[0]);
@@ -338,17 +339,17 @@ function addUserDisLikeItem(itemID){
     var index=myItemsDisLike.length;
     myItemsDisLike[index]=itemID;    
 }
-function getRandomItemOfTag2(idTag){
-    $(document).ready(function(){            
-        var activeTab = "#lztab1"; 
-        //alert(activeTab);
-        $("a[href=#lztab2]").removeClass("lzactive"); 
-        $("a[href=#lztab1]").addClass("lzactive"); 
-        $(".lztabContents").hide(); 
-        $(activeTab).fadeIn(); 
-        getRandomItemOfTag(idTag);
-    });
-}
+//function getRandomItemOfTag2(idTag){
+//    $(document).ready(function(){            
+//        var activeTab = "#lztab1"; 
+//        //alert(activeTab);
+//        $("a[href=#lztab2]").removeClass("lzactive"); 
+//        $("a[href=#lztab1]").addClass("lzactive"); 
+//        $(".lztabContents").hide(); 
+//        $(activeTab).fadeIn(); 
+//        getRandomItemOfTag(idTag);
+//    });
+//}
 $(document).ready(function() {      
     //$('#unlikeItem').css("visibility","hidden");
     var uId = $('#usrId').val();    
@@ -377,7 +378,7 @@ $(document).ready(function() {
         addItemsToQueue(myJsonObj);
         var lTags=""; 
         for (var k=0;k< aTagsID.length;k++) {
-            lTags+="<a href='javascript:getRandomItemOfTag("+aTagsID[k]+");' rel='"+aTagsID[k]+"'>"+getTagName(aTagsID[k].toString())+"</a>     ";
+            lTags+="<a href='javascript:getRandomItemOfTagForRandom("+aTagsID[k]+");' rel='"+aTagsID[k]+"'>"+getTagName(aTagsID[k].toString())+"</a>     ";
         }                            
         $("#listTag").html(lTags);
     });
@@ -389,7 +390,7 @@ $(document).ready(function() {
         var lTags="";
         for (var prop in myTopTags) {
             if (myTopTags.hasOwnProperty(prop)) {
-                lTags+="<a href='javascript:getRandomItemOfTag("+myTopTags[prop].tagID+");' rel='"+myTopTags[prop].tagID+"'style='font-size:"+randomFromInterval(13, 28)+"'>"+myTopTags[prop].tagName+"</a>     ";                                    
+                lTags+="<a href='javascript:getRandomItemOfTagForRandom("+myTopTags[prop].tagID+");' rel='"+myTopTags[prop].tagID+"'style='font-size:"+randomFromInterval(13, 28)+"'>"+myTopTags[prop].tagName+"</a>     ";                                    
             }
         }
         $("#lz-toptags-container").html(lTags);
@@ -407,7 +408,7 @@ $(document).ready(function() {
     $("#getItem").click(function(){        
         var tagID=$("#curTagID").attr("value");
         if(tagID!=""){
-            getRandomItemOfTag(tagID);
+            getRandomItemOfTagForRandom(tagID);
         }
         else{
             var count=uItemsCaching.length-1;
@@ -423,7 +424,7 @@ $(document).ready(function() {
                 var listTagsID=item.tagsID.toString().split(",");
                 var lTags="";
                 for (var k=0;k< listTagsID.length;k++) {
-                    lTags+="<a href='javascript:getRandomItemOfTag("+listTagsID[k]+");' rel='"+listTagsID[k]+"'>"+getTagName(listTagsID[k].toString())+"</a>     ";
+                    lTags+="<a href='javascript:getRandomItemOfTagForRandom("+listTagsID[k]+");' rel='"+listTagsID[k]+"'>"+getTagName(listTagsID[k].toString())+"</a>     ";
                 }                            
                 $("#listTag").html(lTags);
                 turnOnOffBackNext();
@@ -441,7 +442,7 @@ $(document).ready(function() {
                     var listTagsID=myJsonObj.tagsID.toString().split(",");
                     var lTags="";
                     for (var k=0;k< listTagsID.length;k++) {
-                        lTags+="<a href='javascript:getRandomItemOfTag("+listTagsID[k]+");' rel='"+listTagsID[k]+"'>"+getTagName(listTagsID[k].toString())+"</a>     ";
+                        lTags+="<a href='javascript:getRandomItemOfTagForRandom("+listTagsID[k]+");' rel='"+listTagsID[k]+"'>"+getTagName(listTagsID[k].toString())+"</a>     ";
                     }                            
                     $("#listTag").html(lTags);
                     turnOnOffBackNext();
@@ -661,16 +662,97 @@ function uFeedWall(itemID){
     });
 }
 function uSaveItem(itemID){
-$(document).ready(function(){
-            var value=itemID;
-            var uID=$("#usrId").val();
-            $.post("saveItem", {
-                userID:uID,
-                itemID:value
-            }, function(data) {
-                //var myJsonObj = jsonParse(data);
-                alert(data);
+    $(document).ready(function(){
+        var value=itemID;
+        var uID=$("#usrId").val();
+        $.post("saveItem", {
+            userID:uID,
+            itemID:value
+        }, function(data) {
+            //var myJsonObj = jsonParse(data);
+            alert(data);
+        });
+    //alert(value + "userID:"+uID);
+    });        
+}
+
+function getRandomItemOfTagForRandom(tagID){
+    var tagName=getTagName(tagID);    
+    $curTagID=tagID.toString();
+    if(currentTagID!=tagID)
+    {
+        currentTagID=tagID;
+        $(document).ready(function(){                
+            $.post("/getItemsTagForRandom", {
+                tagID:$curTagID
+            }, function(data) {	
+                currentItemsTag = jsonParse(data);
+                //alert(currentItemsTag[0].content);
+                randomItemsTagClient(tagID,tagName);
+            
+            //            addItemsToQueue(myJsonObj);
+            //            $("#lz-save-button").attr("rel", myJsonObj.itemID);
+            //            $("#curTagID").attr("value", tagID);
+            //            $("#ContentItem").html(myJsonObj.content); 
+            //            var listTagsID=myJsonObj.tagsID.toString().split(",");
+            //            var lTags="";
+            //            for (var k=0;k< listTagsID.length;k++) {
+            //                lTags+="<a href='javascript:getRandomItemOfTag("+listTagsID[k]+");' rel='"+listTagsID[k]+"'>"+getTagName(listTagsID[k].toString())+"</a>     ";
+            //            }                            
+            //            // alert(lTags);
+            //            $("#listTag").html(lTags);
+            //            $("#lztitle").attr("style","visibility: visible;");
+            //            $("#statusTag").html("<a href='javascript:getRandomItemOfTag("+tagID+");'>"+tagName+"</a>");
+            //            turnOnOffBackNext(); 
+            //            checkUserLike(myJsonObj.itemID);
+            }).error(function() { 
+                var count=uItemsCaching.length-1;
+                if(count>1)
+                {
+                    var index=randomFromInterval(0,count);
+                    var item=uItemsCaching[index];
+                    $("#lz-save-button").attr("rel", item.itemID);
+                    checkUserLike(item.itemID);//check user like Item
+                    //checkUserDisLike(myJsonObj.itemID,0);//check user Dislike Item
+                    addItemsToQueue(item);                   
+                    $("#ContentItem").html(item.content); 
+                    var listTagsID=item.tagsID.toString().split(",");
+                    var lTags="";
+                    for (var k=0;k< listTagsID.length;k++) {
+                        lTags+="<a href='javascript:getRandomItemOfTagForRandom("+listTagsID[k]+");' rel='"+listTagsID[k]+"'>"+getTagName(listTagsID[k].toString())+"</a>     ";
+                    }                            
+                    $("#listTag").html(lTags); 
+                    turnOnOffBackNext(); 
+                    checkUserLike(item.itemID);
+                }
+                return;
             });
-        //alert(value + "userID:"+uID);
-        });        
+        });
+    }
+    else{
+        randomItemsTagClient(tagID,tagName);
+    }    
+    
+}
+function randomItemsTagClient(tagID,tagName){
+    //alert(currentItemsTag.length);
+    if(currentItemsTag && currentItemsTag.length>0){
+        var index=randomFromInterval(0,currentItemsTag.length-1);
+        var item=currentItemsTag[index];
+        addItemsToQueue(item);
+        $("#lz-save-button").attr("rel", item.itemID);
+        $("#curTagID").attr("value", tagID);
+        $("#ContentItem").html(item.content); 
+        var listTagsID=item.tagsID.toString().split(",");
+        var lTags="";
+        for (var k=0;k< listTagsID.length;k++) {
+            lTags+="<a href='javascript:getRandomItemOfTagForRandom("+listTagsID[k]+");' rel='"+listTagsID[k]+"'>"+getTagName(listTagsID[k].toString())+"</a>     ";
+        }                            
+        // alert(lTags);
+        $("#listTag").html(lTags);
+        $("#lztitle").attr("style","visibility: visible;");
+        $("#statusTag").html("<a href='javascript:getRandomItemOfTagForRandom("+tagID+");'>"+tagName+"</a>");
+        turnOnOffBackNext(); 
+        checkUserLike(item.itemID);
+    }
 }
