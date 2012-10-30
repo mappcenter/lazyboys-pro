@@ -222,17 +222,17 @@ $(document).ready(function() {
             var timer=$.timer(function(){
                 alert("No result ...");
                 return;
-                }); 
+            }); 
             timer.set({
                 timer:3000, 
                 autostart: true
             });
         }
     });
-	$('#main-nav a').click(function(){	
-		//alert('hello');
-		$('#search').attr('value','false');	
-	}); 
+    $('#main-nav a').click(function(){	
+        //alert('hello');
+        $('#search').attr('value','false');	
+    }); 
 });
 
 function regen(){     
