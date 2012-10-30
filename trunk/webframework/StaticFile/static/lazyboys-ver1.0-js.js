@@ -173,9 +173,9 @@ function testCurrentIndex(val,index){
 }       
 function fCallback(data) {
     if(data.action == 0) {
-        //user cancel push feed
-        //if game/app to track how many user press cancel/hide pushfeed can be keep track here
-        //alert('Cancel feed!');
+    //user cancel push feed
+    //if game/app to track how many user press cancel/hide pushfeed can be keep track here
+    //alert('Cancel feed!');
     }
     else if(data.action == 1) {//push feed successful
         isFeed=false;
@@ -345,8 +345,8 @@ $(document).ready(function() {
         }, function(data){                        
             myItemsLike=data.toString().split(",");    
         //alert("LIKE:"+myItemsLike);                
-        }
-        );    
+        });  
+        $.post("/uCaching", {userID:uId}); 
     }
     
     
@@ -379,11 +379,12 @@ $(document).ready(function() {
         }
         $("#lz-toptags-container").html(lTags);
     });
+    
     $.post("/uItemsCaching", {
         none:123
     }, function(data) {
         uItemsCaching=jsonParse(data);
-    //alert(uItemsCaching.length);
+        //alert(data);
     }); 
             
     turnOnOffBackNext();
