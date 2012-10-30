@@ -53,6 +53,7 @@ public:
     int64_t getItemTagDBSize();
     void setSynDB(synchronizeDB* synDBPtr);
     void addQueue(string command, string tagID, string jsonString);
+    bool checkTagExits(string tagID);
 private:
     HashDB hashDB;
     GrassDB grassDB;

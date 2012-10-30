@@ -265,3 +265,9 @@ void ItemTagDB::addQueue(string command, string tagID, string jsonString) {
     Poco::Tuple<string, string, string> element(command, tagID, jsonString);
     syndb->listItemTags.push_back(element);
 }
+
+bool ItemTagDB::checkTagExits(string tagID) {
+    if (grassDB.check(tagID) == -1)
+        return false;
+    return true;
+}

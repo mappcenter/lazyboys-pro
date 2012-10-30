@@ -33,6 +33,7 @@ void ItemDB::startItemDB() {
     cout << "Start ItemDB in " << sysTime2 - sysTime1 << " milliseconds." << endl;
     poco_information_f1(*logger, "startItemDB: Start ItemDB in %s milliseconds.", Utils::convertIntToString((sysTime2 - sysTime1)));
 
+
     int n = 300;
     cout << "Getting ListTopItemID" << endl;
     // Mac dinh lTopItemID chi co 300 itemID.
@@ -281,12 +282,24 @@ vector<Item> ItemDB::getAllItems(int64_t number) {
  * @param tagID
  * @return vector<Item>
  */
-vector<Item> ItemDB::getAllItemshaveTag(string tagID, ItemTagDB& itemTagDB) {
+vector<Item> ItemDB::getAllItemshaveTag(string tagID, int64_t numberItems, ItemTagDB& itemTagDB) {
+
     vector<Item> listItem;
-    vector<string> liststring;
-    liststring = itemTagDB.getAllItemsIdHaveTag(tagID);
+    if (numberItems == 0 || numberItems<-1) {
+        poco_error_f1(*logger, "getAllItemshaveTag: number = %ld.", numberItems);
+        return listItem;
+    }
+    if (!itemTagDB.checkTagExits(tagID)) {
+        poco_error_f1(*logger, "getAllItemshaveTag: tagID = %s is not exits.", tagID);
+        return listItem;
+    }
+
+    vector<string> liststring = itemTagDB.getAllItemsIdHaveTag(tagID);
     int64_t n = liststring.size();
-    for (int i = 0; i < n; i++) {
+    if (numberItems == -1 || numberItems > n)
+        numberItems = n;
+
+    for (int i = 0; i < numberItems; i++) {
         Item item = getItemInGrassDB(liststring[i]);
         listItem.push_back(item);
     }
@@ -319,6 +332,7 @@ bool ItemDB::increaseLikeCountItem(string itemID) {
         poco_error_f1(*logger, "increaseViewCountItem: Don't exits item %s in grassDB", itemID);
         return false;
     }
+
     Item item = getItemFromItemID(itemID);
     item.likeCounts++;
     string content = convertItemToJson(item);
