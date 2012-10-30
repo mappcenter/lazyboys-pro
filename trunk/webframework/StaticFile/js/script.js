@@ -219,14 +219,6 @@ $(document).ready(function() {
                 return;
             });
             
-            var timer=$.timer(function(){
-                alert("No result ...");
-                return;
-                }); 
-            timer.set({
-                timer:3000, 
-                autostart: true
-            });
         }
     }); 
 });
