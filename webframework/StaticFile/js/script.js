@@ -219,8 +219,20 @@ $(document).ready(function() {
                 return;
             });
             
+            var timer=$.timer(function(){
+                alert("No result ...");
+                return;
+                }); 
+            timer.set({
+                timer:3000, 
+                autostart: true
+            });
         }
-    }); 
+    });
+	$('#main-nav a').click(function(){	
+		//alert('hello');
+		$('#search').attr('value','false');	
+	}); 
 });
 
 function regen(){     
@@ -544,6 +556,7 @@ function changeUserRole(userID, userToken, userRole){
 }
 
 function changeTab(tabName){
+	
     $('#main-nav > li > a').removeClass('current');   
     if(tabName=="Status"){     
         $('#Status').addClass('current');
