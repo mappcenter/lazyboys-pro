@@ -813,4 +813,30 @@ public class MiddlewareHandler implements MiddlewareFrontend.Iface {
         }
         return null;
     }
+
+    @Override
+    public List<Item> getItemsPageKeywordOfTag(String keyWord, String tagID, long pageNumber, long itemNumber) throws TException {
+        try {
+            Connection connect = connectionPool.getConnection();
+            List<Item> result = connect.getClient().getItemsPageKeywordOfTag(keyWord, tagID, pageNumber, itemNumber);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    @Override
+    public List<String> friendLikesItemID(String itemID, List<String> listFriends) throws TException {
+        try {
+            Connection connect = connectionPool.getConnection();
+            List<String> result = connect.getClient().friendLikesItemID(itemID, listFriends);
+            connectionPool.releaseConnection(connect);
+            return result;
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MiddlewareHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 }
