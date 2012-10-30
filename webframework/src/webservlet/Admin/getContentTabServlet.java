@@ -100,6 +100,7 @@ public class getContentTabServlet extends HttpServlet {
 
     private void out(String content, HttpServletResponse resp) throws IOException {
         resp.addHeader("Content-Type", "text/html");
+        resp.setContentType("text/html; charset=utf-8");
         PrintWriter out = resp.getWriter();
         out.println(content);
     }
