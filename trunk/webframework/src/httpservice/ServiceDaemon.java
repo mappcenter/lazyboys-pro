@@ -3,7 +3,7 @@ package httpservice;
 import com.vng.jcore.common.LogUtil;
 import java.io.File;
 import org.apache.log4j.Logger;
-import test.Test;
+//import test.Test;
 
 public class ServiceDaemon {
 
@@ -15,15 +15,15 @@ public class ServiceDaemon {
         WebServer webserver = new WebServer();
 
         String pidFile = System.getProperty("pidfile");
-        
+
         try {
             if (pidFile != null) {
                 new File(pidFile).deleteOnExit();
             }
-//            if (System.getProperty("foreground") == null) {
-//                System.out.close();
-//                System.err.close();
-//            }
+            if (System.getProperty("foreground") == null) {
+                System.out.close();
+                System.err.close();
+            }
 
             webserver.start();
 
