@@ -25,10 +25,10 @@
         <td id="{{userID}}">{{userRoleName}}</td>
         <td>
 <!--            <a href="#">
-                <img src="http://localhost:81/images/icons/pencil.png" alt="EditUser" title="{{userRole}}"/>
+                <img src="http://118.102.6.116:81/images/icons/pencil.png" alt="EditUser" title="{{userRole}}"/>
             </a>-->
 <a href="javascript:changeUserRole('{{userID}}', '{{userToken}}', {{userRole}});" rel="{{userRole}}">
-                <img src="http://localhost:81/images/icons/cross.png" alt="DeleteUser" title="{{userRole}}" />
+                <img src="http://118.102.6.116:81/images/icons/cross.png" alt="DeleteUser" title="{{userRole}}" />
             </a><!-- to create a tooltip-style confirmation, just add .confirmation to the <a>-tag -->
         </td>
     </tr>
