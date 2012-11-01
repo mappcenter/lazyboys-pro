@@ -4,19 +4,15 @@
  */
 package src;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import libs.Item;
 import libs.Tag;
 import libs.User;
-import memcache.LazyBoysLRUCache;
 import org.apache.thrift.TException;
 
 /**
@@ -35,18 +31,6 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
 
     public FrontendHandler() throws TException, IOException {
     }
-
-//    public static void StartLZCache() {
-//        int maxObject = 0;
-//        try {
-//            maxObject = getConfig.getInstance().maxObject();
-//        } catch (FileNotFoundException ex) {
-//            Logger.getLogger(FrontendHandler.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (IOException ex) {
-//            Logger.getLogger(FrontendHandler.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        //lzCache = new LazyBoysLRUCache(maxObject);
-//    }
     @Override
     public List<Tag> getAllTag() throws TException {
         if (!listTag.isEmpty()) {
