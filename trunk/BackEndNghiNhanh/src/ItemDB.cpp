@@ -298,7 +298,7 @@ vector<Item> ItemDB::getAllItemshaveTag(string tagID, int64_t numberItems, ItemT
     int64_t n = liststring.size();
     if (numberItems == -1 || numberItems > n)
         numberItems = n;
-    
+
     for (int i = 0; i < numberItems; i++) {
         int64_t index = Utils::getRandomNumber(numberItems);
         Item item = getItemInGrassDB(liststring[index]);
@@ -434,6 +434,11 @@ bool ItemDB::deleteItem(string itemID, ItemTagDB& itemTagDB) {
     if (!grassDB.remove(itemID)) {
         poco_error_f1(*logger, "deleteItem: Error in GrassDB %s", grassDB.error().name());
         return false;
+    }
+    vector<string>::iterator it;
+    it = std::find(lTopItemID.begin(), lTopItemID.end(), itemID);
+    if (it != lTopItemID.end()) {
+        lTopItemID.erase(it);
     }
     int size = item.tagsID.size();
     for (int i = 0; i < size; i++)
