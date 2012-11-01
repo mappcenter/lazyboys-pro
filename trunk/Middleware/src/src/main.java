@@ -9,7 +9,6 @@ import libs.MiddlewareFrontend;
 import org.apache.thrift.server.THsHaServer;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.transport.TNonblockingServerSocket;
-import org.eclipse.jetty.server.Server;
 
 /**
  *
