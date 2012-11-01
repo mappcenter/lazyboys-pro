@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <!-- Make IE8 behave like IE7, necessary for charts -->
         <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 
@@ -130,7 +130,7 @@
                             </a>
                             <ul>
                                 <li><a href="#" class="current">Manage Tags</a></li>
-<!--                                <li><a href="#">Top Tags</a></li>-->
+                                <!--                                <li><a href="#">Top Tags</a></li>-->
                                 <li><a href="javascript:addTag();" alt="addTag">Add Tags</a></li>
 
                             </ul>
@@ -143,8 +143,8 @@
 
                             <ul>
                                 <li><a href="#" class="current">Manage Users</a></li>
-<!--                                <li><a href="#">Top Users</a></li>
-                                <li><a href="#" alt="addUser">Add Users</a></li>-->
+                                <!--                                <li><a href="#">Top Users</a></li>
+                                                                <li><a href="#" alt="addUser">Add Users</a></li>-->
 
                             </ul>
                         </li>
@@ -156,7 +156,7 @@
 
                             <ul>
                                 <li><a href="#" class="current">Manage Cache</a></li>
-<!--                                <li><a href="#">Edit Cache</a></li>-->
+                                <!--                                <li><a href="#">Edit Cache</a></li>-->
                             </ul>
                         </li>
 
