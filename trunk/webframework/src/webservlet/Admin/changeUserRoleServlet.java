@@ -5,6 +5,7 @@
 package webservlet.Admin;
 
 import frontend.MiddlewareHandler;
+import frontend.MyLocalCache;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,6 +30,8 @@ public class changeUserRoleServlet extends HttpServlet {
         boolean result = false;
         try {
             result = handler.editUser(userID, userToken, userRole);
+            MyLocalCache mycache=new MyLocalCache();
+            mycache.setBlockUser(userID, userToken, userRole);
         } catch (TException ex) {
             Logger.getLogger(changeUserRoleServlet.class.getName()).log(Level.SEVERE, null, ex);
         }

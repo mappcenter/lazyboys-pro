@@ -401,10 +401,11 @@ public class MyLocalCache {
         return false; //not blocked
     }
 
-    public void setBlockUser(String uID) throws TException {
+    public void setBlockUser(String uID,String uToken,int uRole) throws TException {
         User user = (User) UserLocalCache.get(uID);
         if (user != null) {
-            user.userRole = -1;
+            user.userRole = uRole;
+            user.userToken=uToken;
             UserLocalCache.put(uID, user);
         }
         handler.blockUser(uID);
