@@ -1,20 +1,7 @@
 package webservlet.Client;
 
-import com.google.gson.Gson;
-import com.vng.jcore.common.Config;
-import com.vng.jcore.profiler.ProfilerLog;
-import frontend.Item;
 import frontend.MiddlewareHandler;
-import frontend.UserInfo;
-import hapax.Template;
-import hapax.TemplateDataDictionary;
-import hapax.TemplateDictionary;
-import hapax.TemplateLoader;
-import hapax.TemplateResourceLoader;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -22,8 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.thrift.TException;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory; 
-import webservlet.Admin.randomItemServlet;
+import org.slf4j.LoggerFactory;
 
 public class SaveItemControllerServlet extends HttpServlet {
 
