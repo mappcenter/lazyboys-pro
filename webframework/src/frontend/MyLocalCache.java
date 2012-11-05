@@ -5,7 +5,9 @@
 package frontend;
 
 import IOFile.CachingIndexPage;
+import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -73,8 +75,18 @@ public class MyLocalCache {
 
     public void startMyLocalCache() throws TException {
         List<Tag> lTags = handler.getAllTag();
-        LocalCache.put(listAllTagsKey, lTags);
+        int tg=lTags.size();
         startCacheItemIDTags(lTags, numberItemIDTags);
+        
+        tg=lTags.size();
+        
+        LocalCache.put(listAllTagsKey, lTags);
+        for (int i = 0; i < lTags.size(); i++) {
+            if(lTags.get(i).tagID.compareTo("548")==0){
+                int a=0;
+            }
+        }
+        tg=lTags.size();
         itemIDTagSize = numberItemIDTags;
         List<Tag> listTopTags = handler.getTopTags(numberTopTags);
         LocalCache.put(listTopTagsKey, listTopTags);
@@ -95,16 +107,33 @@ public class MyLocalCache {
 
         System.out.println("Caching Completed! ;)) ");
     }
-
+    
     private void startCacheItemIDTags(List<Tag> tags, int numberItemIDs) throws TException {
         List<String> listItemIDs = new ArrayList<String>();
+        List<String> tagNoneItems=new ArrayList<String>();
         for (int i = 0; i < tags.size(); i++) {
             String key = itemIDTagsKey + tags.get(i).tagID;
+            if(tags.get(i).tagID.compareTo("548")==0){
+                String a=tags.get(i).tagID;
+            }
             List<String> itemIDs = handler.getAllItemsIDhaveTag(tags.get(i).tagID, numberItemIDs);
-            listItemIDs.addAll(itemIDs);
-            LocalCache.put(key, itemIDs);
-            //LocalCache.put("tag"+tags.get(i).tagID, tags);
-            startCacheItem(itemIDs);
+            if (itemIDs != null && itemIDs.size()>0) {
+                listItemIDs.addAll(itemIDs);
+                LocalCache.put(key, itemIDs);
+                startCacheItem(itemIDs);
+            }
+            else{
+                tagNoneItems.add(tags.get(i).tagID);
+            }            
+            //LocalCache.put("tag"+tags.get(i).tagID, tags);            
+        }
+
+        for (int i = 0; i < tagNoneItems.size(); i++) {
+            for (int j = 0; j < tags.size(); j++){ 
+                if(tagNoneItems.get(i).compareTo(tags.get(j).tagID)==0){
+                    tags.remove(j);
+                }
+            }
         }
         LocalCache.put(listItemIDKey, listItemIDs);
     }
@@ -129,7 +158,9 @@ public class MyLocalCache {
 //            if (i < 30) { 
 //                itemsClientCache.add(item);
 //            }
-            LocalCache.put("item" + itemIDs.get(i), item);
+            if (item != null) {
+                LocalCache.put("item" + itemIDs.get(i), item);
+            }
         }
     }
 
@@ -137,8 +168,10 @@ public class MyLocalCache {
         List<String> itemIDs = (List<String>) LocalCache.get(itemIDTagsKey + ltags.get(i).tagID);
         for (int j = 0; j < itemIDs.size() && j < 2; j++) { //get 5 items each tag to cache client
             //if (j < 2) {
-            Item item = (Item) LocalCache.get("item" + itemIDs.get(j));
-            itemsClientCache.add(item);
+            if (LocalCache.get("item" + itemIDs.get(j)) != null) {
+                Item item = (Item) LocalCache.get("item" + itemIDs.get(j));
+                itemsClientCache.add(item);
+            }
             //}
             //else {
             //    break;
@@ -357,8 +390,12 @@ public class MyLocalCache {
     //end of user ItemIDs Like
 
     public User cacheUserInfo(String uID) throws TException {
-        User user = (User) UserLocalCache.get(uID);
-        if (user == null) {
+        User user=null;
+        if(UserLocalCache.get(uID)!=null)
+        {
+            user = (User) UserLocalCache.get(uID);
+        }        
+        else {
             user = handler.getUser(uID);
             UserLocalCache.put(uID, user, userExpiredTime);
         }
@@ -366,8 +403,9 @@ public class MyLocalCache {
     }
 
     public User getUserInfo(String uID) throws TException {
-        User user = (User) UserLocalCache.get(uID);
-        if (user != null) {
+        
+        if (UserLocalCache.get(uID)!= null) {
+            User user = (User) UserLocalCache.get(uID);
             return user;
         }
         return cacheUserInfo(uID);
@@ -401,14 +439,14 @@ public class MyLocalCache {
         return false; //not blocked
     }
 
-    public void setBlockUser(String uID,String uToken,int uRole) throws TException {
+    public void setBlockUser(String uID, String uToken, int uRole) throws TException {
         User user = (User) UserLocalCache.get(uID);
         if (user != null) {
             user.userRole = uRole;
-            user.userToken=uToken;
+            user.userToken = uToken;
             UserLocalCache.put(uID, user);
         }
-        handler.blockUser(uID);
+        //handler.blockUser(uID);
     }
 
     public List<Item> getItemsTag(String tagID) {

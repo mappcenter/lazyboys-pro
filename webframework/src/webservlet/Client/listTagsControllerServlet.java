@@ -2,6 +2,7 @@ package webservlet.Client;
 
 import com.google.gson.Gson;
 import frontend.MiddlewareHandler;
+import frontend.MyLocalCache;
 import frontend.Tag;
 import hapax.Template;
 import hapax.TemplateDataDictionary;
@@ -23,7 +24,7 @@ public class listTagsControllerServlet extends HttpServlet {
     private static MiddlewareHandler handler = new MiddlewareHandler();
     public static List<Tag> ltags = new ArrayList<Tag>();
     private static String contentFile = null;
-
+    private  static MyLocalCache mycache=new MyLocalCache();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, ClientProtocolException {
 
@@ -46,12 +47,12 @@ public class listTagsControllerServlet extends HttpServlet {
         TemplateDataDictionary dic = TemplateDictionary.create();
         Template template = this.getCTemplate();       
         if (contentFile == null) {
-            ltags=handler.getAllTag();
+            ltags=mycache.getAllTags();
             Gson gson = new Gson();
             contentFile = "var listTags='";
             contentFile += gson.toJson(ltags) + "';";
             
-            List<Tag> topTags=(List<Tag>)handler.getTopTags();
+            List<Tag> topTags=(List<Tag>)mycache.getTopTags();
             int t=topTags.size();
             contentFile+="var myTopTags='";
             contentFile+=gson.toJson(topTags)+"';";
