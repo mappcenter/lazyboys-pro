@@ -376,6 +376,7 @@ function deleteOneItem(itemID){
 }
 
 function editItem(itemID) {
+    $('#Submit').html('Submit');
     var id='#'+itemID;
     //alert(itemID);
     var itemContent=$(id).find('td:nth-child(3)').html(); 
@@ -410,7 +411,8 @@ function editItem(itemID) {
 
 function submit(){
     var tabName=$('#main-nav > li > a.current').attr('id');
-    if(tabName=="Status"){
+    if(tabName=="Status"&&$('#Submit').attr('rel')=='edit'){
+        //alert("edit");
         var tagIDs="";
         var arrTagID=new Array();
         $('input[type="checkbox"]').each(function(){
@@ -427,14 +429,43 @@ function submit(){
             itemID:itemID, 
             itemContent:itemContent, 
             tagIDs:tagIDs
-        }, function(data){                    
+        }, function(data){    
+            alert(data);
             $('#hidden'+itemID).parent().parent().find('td:nth-child(3)').html(itemContent);
             $('#hidden'+itemID).attr('value', JSON.stringify(arrTagID));
             $('#dialog-box').hide();
             $('#content-box').show();                 
         });
     }
-    
+    else if(tabName=="Status"&&$('#Submit').attr('rel')=='add'){
+        //alert("add");
+        $('#Submit').click(function(){
+            var statusContent=$('#status_content').attr('value');
+            var tagids="";         
+            //alert(statusContent);
+            $('#dialog-box').find('input[type="checkbox"]').each(function(){
+                if($(this).attr('checked')){
+                    tagids += $(this).attr('value')+",";
+                } 
+            });
+            //alert(tagids);
+            if($('#status_content').attr('value')==''){
+                alert("Please typing status content ...");         
+            }
+            else{      
+                //alert("post");
+                $.post('insertItem',{
+                    tagIDs:tagids,
+                    statusContent:statusContent                 
+                }, function(data){
+                    alert(data);
+                    regen();    
+                    $('#Submit').attr('rel','edit');
+                    
+                });           
+            }
+        }); 
+    }
 }
 
 function back(){
@@ -479,7 +510,7 @@ function topStatus(){
 function addStatus(){
     $('#Status').parent().find('ul > li > a').removeClass('current');
     $('#Status').parent().find('ul > li:nth-child(3) > a').addClass('current');
-    var tagIDs="";  
+    $('#Submit').attr("rel", 'add');
     $('#dialog-box').show();
     $('#content-box').hide();
     $('#status_id').parent().parent().hide();
@@ -495,33 +526,8 @@ function addStatus(){
         var list_tag_textarea=document.getElementById('tag_list_textbox');
         list_tag_textarea.innerHTML=str;     
     });
-    $('a[href="#submit"]').html("Add");       
-    $('#dialog-box').find('input[type="checkbox"]').each(function(){
-        if($(this).attr('checked')){
-            tagIDs += $(this).attr('value')+",";
-        } 
-    });
-    $('a[href="#submit"]').click(function(){
-        var statusContent=$('#status_content').attr('value');
-        var tagids="";               
-        $('#dialog-box').find('input[type="checkbox"]').each(function(){
-            if($(this).attr('checked')){
-                tagids += $(this).attr('value')+",";
-            } 
-        });
-        if($('#status_content').attr('value')==''){
-            alert("Please typing status content ...");         
-        }
-        else{               
-            $.post('insertItem',{
-                tagIDs:tagids,
-                statusContent:statusContent                 
-            }, function(data){
-                alert(data);
-                regen();           
-            });           
-        }
-    }); 
+    $('#Submit').html("Add");       
+    
 }
 
 function manageStatus(){
