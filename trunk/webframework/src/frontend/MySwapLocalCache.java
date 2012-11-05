@@ -271,7 +271,7 @@ public class MySwapLocalCache {
         if (!handler.insertFavouriteItem(uID, itemID)) {
             return false;
         }
-        UserLocalCache.put(uID, listItems, userExpiredTime);
+        UserLocalCache.put(listItemsUserFavorite+uID, listItems, userExpiredTime);
         return true;
     }
 
