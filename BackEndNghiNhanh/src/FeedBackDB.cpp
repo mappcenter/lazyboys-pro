@@ -100,9 +100,7 @@ UserFeedBack FeedBackDB::convertJsonToUserFeedBack(string jsonString) {
 UserFeedBack FeedBackDB::getUserFeedBack(string userID) {
     string value;
     UserFeedBack userFeedBack;
-    if (grassDB.get(userID, &value)) {
-        cout << "Read " << userID << ": " << value << endl;
-    } else {
+    if (grassDB.get(userID, &value) == false) {
         cerr << "Get error: " << grassDB.error().name() << endl;
         poco_error_f1(*logger, "getUserFeedBack: Can't open userID %s in grassDB", userID);
         userFeedBack.userID = "-1";
@@ -122,7 +120,7 @@ vector<string> FeedBackDB::getAllItemsIDLike(string userID) {
     if (grassDB.get(userID, &value)) {
         userFeedBack = convertJsonToUserFeedBack(value);
         itemsLike = userFeedBack.itemsLike;
-        poco_information_f1(*logger, "getAllItemsLike: userID %s in grassDB", userID);
+        //poco_information_f1(*logger, "getAllItemsLike: userID %s in grassDB", userID);
     } else {
         cerr << "Get error: " << grassDB.error().name() << endl;
         poco_error_f1(*logger, "getAllItemsLike: Can't open userID %s in grassDB", userID);
@@ -151,6 +149,7 @@ bool FeedBackDB::insertLikedItem(string userID, string itemID) {
         }
         return true;
     } catch (...) {
+        cerr << "insertLikedItem: Can't insert itemID into userID"<< endl;
         poco_error_f2(*logger, "insertLikedItem: Can't insert itemID %s into userID %s", itemID, userID);
         return false;
     }
@@ -171,6 +170,7 @@ bool FeedBackDB::deleteLikedItem(string userID, string itemID) {
         }
         return true;
     } catch (...) {
+        cerr << "deleteLikedItem: Can't delete itemID into userID"<< endl;
         poco_error_f2(*logger, "deleteLikedItem: Can't delete itemID %s in userID %s", itemID, userID);
         return false;
     }
@@ -365,6 +365,7 @@ bool FeedBackDB::insertFavouriteItem(string userID, string itemID) {
         }
         return true;
     } catch (...) {
+        cout << "insertFavouriteItem: Can't insert itemID into userID"<< endl;
         poco_error_f2(*logger, "insertFavouriteItem: Can't insert itemID %s into userID %s", itemID, userID);
         return false;
     }
@@ -385,6 +386,7 @@ bool FeedBackDB::deleteFavouriteItem(string userID, string itemID) {
         }
         return true;
     } catch (...) {
+        cout << "deleteFavouriteItem: Can't delete itemID in userID"<< endl;
         poco_error_f2(*logger, "deleteFavouriteItem: Can't delete itemID %s in userID %s", itemID, userID);
         return false;
     }

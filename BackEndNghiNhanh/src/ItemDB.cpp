@@ -138,7 +138,7 @@ Item ItemDB::getItemInHashDB(string itemID) {
         itemReturn = convertJsonToItem(value);
         itemReturn.itemID = itemID;
         return itemReturn;
-    } catch (Exception ex) {
+    } catch (...) {
         cerr << "getItemInHashDB: Get error " << hashDB.error().name() << endl;
         poco_error_f2(*logger, "getItemInHashDB: Can't open ItemID %s in HashDB. Error is %s.", itemID, hashDB.error().name());
         itemReturn.itemID = "-1";
@@ -161,7 +161,7 @@ Item ItemDB::getItemInGrassDB(string itemID) {
         itemReturn = convertJsonToItem(value);
         itemReturn.itemID = itemID;
         return itemReturn;
-    } catch (Exception ex) {
+    } catch (...) {
         //cerr << "Get error: " << grassDB.error().name() << endl;
         poco_error_f1(*logger, "getItemInGrassDB: Can't open ItemID %s in GrassDB", itemID);
         itemReturn.itemID = "-1";
@@ -413,7 +413,7 @@ string ItemDB::insertItem(string content, vector<string> tagsID, ItemTagDB& item
         addQueue(ADD, item.itemID, jsonStr);
         LASTID = item.itemID;
         return item.itemID;
-    } catch (Exception ex) {
+    } catch (...) {
         cout << "insertItem: Error to add itemID=" << item.itemID << endl;
         poco_error_f1(*logger, "insertItem: Error to add itemID=%s", item.itemID);
         return "-1";
