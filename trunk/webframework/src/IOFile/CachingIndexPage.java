@@ -5,12 +5,8 @@
 package IOFile;
 
 import frontend.Item;
-import frontend.MiddlewareFrontend;
-import frontend.MiddlewareHandler;
 import frontend.MyLocalCache;
 import frontend.Tag;
-import frontend.User;
-import java.util.ArrayList;
 import java.util.List;
 import org.apache.thrift.TException;
 
@@ -23,14 +19,18 @@ public class CachingIndexPage {
     public static FileIO file = new FileIO();
     public String indexUrl = "src/IOFile/cacheindex.html";
     MyLocalCache mycache = new MyLocalCache();
-    public List<String> indexHtlm = new ArrayList<String>();
+    public String indexHtlm ="";
 
-    public List<String> getPageHtml() {
+    public String getPageHtml() {
         List<String> aIndexPageHtml = file.loadFile(indexUrl);
-        return aIndexPageHtml;
+        String temp="";
+        for (int i = 0; i < aIndexPageHtml.size(); i++) {
+            temp+=aIndexPageHtml.get(i);
+        }
+        return temp;
     }
 
-    public List<String> renderIndexHtml() throws TException {
+    public String renderIndexHtml() throws TException {
         CachingIndexPage cachingIndexPage = new CachingIndexPage();
         replaceTopTags(cachingIndexPage);
         //renderIndexHtmlForUser(UserID,UserName);
@@ -39,20 +39,21 @@ public class CachingIndexPage {
 
     private void replaceTopTags(CachingIndexPage cachingIndexPage) throws TException {
         indexHtlm = cachingIndexPage.getPageHtml();
-        String replace = "";
+        //String replace = "";
         String strRenderTopItems = cachingIndexPage.renderTopItems();
         String strRenderTopTags=cachingIndexPage.renderListTopTags();
+        String topItem="";
         if (indexHtlm != null) {
-            for (int i = 0; i < indexHtlm.size(); i++) {
-                if (indexHtlm.get(i).contains("{{topItemsHere}}")) {
-                    replace = indexHtlm.get(i).replace("{{topItemsHere}}", strRenderTopItems);
-                    indexHtlm.set(i, replace);
+            //for (int i = 0; i < indexHtlm.size(); i++) {
+                if (indexHtlm.contains("{{topItemsHere}}")) {
+                    indexHtlm = indexHtlm.replace("{{topItemsHere}}", strRenderTopItems);
+                    //indexHtlm.set(i, replaceAll);
                 }
-                if (indexHtlm.get(i).contains("{{listTopTagsHere}}")) {
-                    replace = indexHtlm.get(i).replace("{{listTopTagsHere}}", strRenderTopTags);
-                    indexHtlm.set(i, replace);
+                if (indexHtlm.contains("{{listTopTagsHere}}")) {
+                    indexHtlm = indexHtlm.replace("{{listTopTagsHere}}", strRenderTopTags);
+                    //indexHtlm.set(i, replaceAll);
                 }
-            }
+            //}
         }
     }
 
@@ -80,19 +81,18 @@ public class CachingIndexPage {
         return (from + (int) (Math.random() * to));
     }
 
-    public List<String> renderIndexHtmlForUser(List<String> html,String userID, String userName) {
-        String replace = "";
-        List<String> temp = html;
-        for (int i = 0; i < temp.size(); i++) {
-            if (temp.get(i).contains("{{userNameHere}}")) {
-                replace = temp.get(i).replace("{{userNameHere}}", userName);
-                temp.set(i, replace);
+    public String renderIndexHtmlForUser(String html,String userID, String userName) {
+        String temp = html;
+        //for (int i = 0; i < temp.size(); i++) {
+            if (temp.contains("{{userNameHere}}")) {
+                temp = temp.replace("{{userNameHere}}", userName);
+                //temp.set(i, replaceAll);
             }
-            if (temp.get(i).contains("{{userIDHere}}")) {
-                replace = temp.get(i).replace("{{userIDHere}}", userID);
-                temp.set(i, replace);
+            if (temp.contains("{{userIDHere}}")) {
+                temp = temp.replace("{{userIDHere}}", userID);
+                //temp.set(i, replaceAll);
             }
-        }        
+        //}        
         return temp;
     }
     public List<String> renderItemRandom(Item item) {

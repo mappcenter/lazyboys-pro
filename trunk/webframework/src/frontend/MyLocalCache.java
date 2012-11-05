@@ -102,7 +102,7 @@ public class MyLocalCache {
 
         //Cache index page;
         CachingIndexPage cacheIndexPage = new CachingIndexPage();
-        List<String> indexPageHtml = cacheIndexPage.renderIndexHtml();
+        String indexPageHtml = cacheIndexPage.renderIndexHtml();
         LocalCache.put(indexpage, indexPageHtml);
 
         System.out.println("Caching Completed! ;)) ");
@@ -463,10 +463,8 @@ public class MyLocalCache {
         //return null;
     }
 
-    public List<String> getCacheIndexPageWithUser(String userID, String userName) {
-        List<String> result = (List<String>) LocalCache.get(indexpage);
-        String replace = "";
-
+    public String getCacheIndexPageWithUser(String userID, String userName) {
+        String result = (String) LocalCache.get(indexpage);        
         if (result != null) {
             CachingIndexPage cachingPage = new CachingIndexPage();
             result = cachingPage.renderIndexHtmlForUser(result, userID, userName);
