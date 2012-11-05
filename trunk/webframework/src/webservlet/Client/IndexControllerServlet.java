@@ -60,11 +60,10 @@ public class IndexControllerServlet extends HttpServlet {
         }
         long end = System.currentTimeMillis();
         long t = end - start;
-        System.out.println("Render page Time 1:" + (end - start) + " ms");
+        System.out.println("Render page Time:" + (end - start) + " ms");
 
         profiler.doEndLog("wholereq");
         String tmp = profiler.dumpLogHtml();
-
         if (dbg) {
             tmp = profiler.dumpLogHtml();
             System.out.print(tmp);
@@ -94,19 +93,20 @@ public class IndexControllerServlet extends HttpServlet {
     }
 
     private String render(HttpServletRequest req, HttpServletResponse res) throws Exception {
-        //long zingStart = System.currentTimeMillis();        
+        long zingStart = System.currentTimeMillis();        
         String accesstoken;
         String signed_request = req.getParameter("signed_request");
         accesstoken = zmAuthen.getAccessTokenFromSignedRequest(signed_request);
+        String meID="5037964";
+        String myName="thiensuhack";
         try {
             me = zmMe.getInfo(accesstoken, "displayname");
         } catch (ZingMeApiException ex) {
             java.util.logging.Logger.getLogger(indexServerlet.class.getName()).log(Level.SEVERE, null, ex);
             res.sendRedirect("/blockUser");
         }
-        // long zingEnd = System.currentTimeMillis();
-        // long tem = zingEnd - zingStart;
-        //System.out.println("Zing time:" + (zingEnd - zingStart) + " ms");
+         long zingEnd = System.currentTimeMillis();
+        System.out.println("Zing time:" + (zingEnd - zingStart) + " ms");
 
         if (!handler.userExisted(me.get("id").toString())) {
             boolean temp = handler.addUser(me.get("id").toString(), accesstoken, 0);// normal user:0, admin:1, blockuser:-1            
@@ -116,22 +116,22 @@ public class IndexControllerServlet extends HttpServlet {
             }
         }
         TemplateDataDictionary dic = TemplateDictionary.create();
-        List<String> strIndexHtml = mycache.getCacheIndexPageWithUser(me.get("id").toString(), me.get("displayname").toString());
+        String strIndexHtml = mycache.getCacheIndexPageWithUser(me.get("id").toString(), me.get("displayname").toString());
         //long start = System.currentTimeMillis();
-        if (strIndexHtml != null && strIndexHtml.size() > 0) {
-            for (int i = 0; i < strIndexHtml.size(); i++) {
+        if (strIndexHtml != null && !strIndexHtml.isEmpty()) {
+           // for (int i = 0; i < strIndexHtml.size(); i++) {
                 TemplateDataDictionary listsection = dic.addSection("list_content");
-                listsection.setVariable("contentHtml", strIndexHtml.get(i));
-            }
+                listsection.setVariable("contentHtml", strIndexHtml);
+           // }
         }
         // long end = System.currentTimeMillis();
         //System.out.print("repair before render:" + (end - start) + " ms");
-        Template template = this.getCTemplate();
+        Template template = IndexControllerServlet.getCTemplate();
         String content = template.renderToString(dic);
         return content;
     }
 
-    private Template getCTemplate() throws Exception {
+    private static Template getCTemplate() throws Exception {
         TemplateLoader templateLoader = TemplateResourceLoader.create("tpl/");
         Template template = templateLoader.getTemplate("client/index/index.xtm");
         return template;
