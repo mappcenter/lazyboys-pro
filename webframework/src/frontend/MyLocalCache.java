@@ -303,7 +303,7 @@ public class MyLocalCache {
         if (!handler.insertFavouriteItem(uID, itemID)) {
             return false;
         }
-        UserLocalCache.put(uID, listItems, userExpiredTime);
+        UserLocalCache.put(listItemsUserFavorite+uID, listItems, userExpiredTime);
         return true;
     }
 
@@ -402,8 +402,7 @@ public class MyLocalCache {
         return user;
     }
 
-    public User getUserInfo(String uID) throws TException {
-        
+    public User getUserInfo(String uID) throws TException {        
         if (UserLocalCache.get(uID)!= null) {
             User user = (User) UserLocalCache.get(uID);
             return user;
@@ -439,9 +438,9 @@ public class MyLocalCache {
         return false; //not blocked
     }
 
-    public void setBlockUser(String uID, String uToken, int uRole) throws TException {
-        User user = (User) UserLocalCache.get(uID);
-        if (user != null) {
+    public void setBlockUser(String uID, String uToken, int uRole) throws TException {        
+        if (UserLocalCache.get(uID) != null) {
+            User user = (User) UserLocalCache.get(uID);
             user.userRole = uRole;
             user.userToken = uToken;
             UserLocalCache.put(uID, user);
