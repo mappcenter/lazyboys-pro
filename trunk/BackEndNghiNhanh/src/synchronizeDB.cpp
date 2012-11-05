@@ -32,7 +32,7 @@ synchronizeDB::~synchronizeDB() {
 bool synchronizeDB::addToItemDB(string& itemID, string& stringJson) {
     if (itemDB->check(itemID) == -1) {
         itemDB->set(itemID, stringJson);
-        cout << "Sucess synchronizeDB addToItemDB itemID:" << itemID << endl;
+        //cout << "Sucess synchronizeDB addToItemDB itemID:" << itemID << endl;
         return true;
     }
     cout << "Error synchronizeDB addToItemDB itemID:" << itemID << endl;
@@ -42,7 +42,7 @@ bool synchronizeDB::addToItemDB(string& itemID, string& stringJson) {
 bool synchronizeDB::addToItemTagDB(string& tagID, string& stringJson) {
     if (itemtagDB->check(tagID) == -1) {
         itemtagDB->set(tagID, stringJson);
-        cout << "Sucess synchronizeDB addToItemTagDB tagID:" << tagID << endl;
+        //cout << "Sucess synchronizeDB addToItemTagDB tagID:" << tagID << endl;
         return true;
     }
     cout << "Error synchronizeDB addToItemTagDB tagID" << tagID << endl;
@@ -52,7 +52,7 @@ bool synchronizeDB::addToItemTagDB(string& tagID, string& stringJson) {
 bool synchronizeDB::addToTagDB(string& tagID, string& stringJson) {
     if (tagDB->check(tagID) == -1) {
         tagDB->set(tagID, stringJson);
-        cout << "Sucess synchronizeDB addToTagDB tagID:" << tagID << endl;
+        //cout << "Sucess synchronizeDB addToTagDB tagID:" << tagID << endl;
         return true;
     }
     cout << "Error synchronizeDB addToTagDB tagID:" << tagID << endl;
@@ -62,7 +62,7 @@ bool synchronizeDB::addToTagDB(string& tagID, string& stringJson) {
 bool synchronizeDB::addToUserDB(string& userID, string& stringJson) {
     if (userDB->check(userID) == -1) {
         userDB->set(userID, stringJson);
-        cout << "Sucess synchronizeDB addToUserDB userID:" << userID << endl;
+        //cout << "Sucess synchronizeDB addToUserDB userID:" << userID << endl;
         return true;
     }
     cout << "Error synchronizeDB addToUserDB userID:" << userID << endl;
@@ -72,7 +72,7 @@ bool synchronizeDB::addToUserDB(string& userID, string& stringJson) {
 bool synchronizeDB::addToFeedBackDB(string& userID, string& stringJson) {
     if (feedbackDB->check(userID) == -1) {
         feedbackDB->set(userID, stringJson);
-        cout << "Sucess synchronizeDB addToFeedBackDB userID:" << userID << endl;
+        //cout << "Sucess synchronizeDB addToFeedBackDB userID:" << userID << endl;
         return true;
     }
     cout << "Error synchronizeDB addToFeedBackDB userID:" << userID << endl;
@@ -82,7 +82,7 @@ bool synchronizeDB::addToFeedBackDB(string& userID, string& stringJson) {
 bool synchronizeDB::updateToItemDB(string& itemID, string& stringJson) {
     if (itemDB->check(itemID) != -1) {
         itemDB->replace(itemID, stringJson);
-        cout << "Sucess synchronizeDB updateToItemDB itemID:" << itemID << endl;
+        //cout << "Sucess synchronizeDB updateToItemDB itemID:" << itemID << endl;
         return true;
     }
     cout << "Error synchronizeDB updateToItemDB itemID:" << itemID << endl;
@@ -92,7 +92,7 @@ bool synchronizeDB::updateToItemDB(string& itemID, string& stringJson) {
 bool synchronizeDB::updateToItemTagDB(string& tagID, string& stringJson) {
     if (itemtagDB->check(tagID) != -1) {
         itemtagDB->replace(tagID, stringJson);
-        cout << "Sucess synchronizeDB updateToItemTagDB tagID:" << tagID << endl;
+        //cout << "Sucess synchronizeDB updateToItemTagDB tagID:" << tagID << endl;
         return true;
     }
     cout << "Error synchronizeDB updateToItemTagDB tagID:" << tagID << endl;
@@ -102,7 +102,7 @@ bool synchronizeDB::updateToItemTagDB(string& tagID, string& stringJson) {
 bool synchronizeDB::updateToTagDB(string& tagID, string& stringJson) {
     if (tagDB->check(tagID) != -1) {
         tagDB->replace(tagID, stringJson);
-        cout << "Sucess synchronizeDB updateToTagDB tagID:" << tagID << endl;
+        //cout << "Sucess synchronizeDB updateToTagDB tagID:" << tagID << endl;
         return true;
     }
     cout << "Error synchronizeDB updateToTagDB tagID:" << tagID << endl;
@@ -112,7 +112,7 @@ bool synchronizeDB::updateToTagDB(string& tagID, string& stringJson) {
 bool synchronizeDB::updateToUserDB(string& userID, string& stringJson) {
     if (userDB->check(userID) != -1) {
         userDB->replace(userID, stringJson);
-        cout << "Sucess synchronizeDB updateToUserDB userID" << userID << endl;
+        //cout << "Sucess synchronizeDB updateToUserDB userID" << userID << endl;
         return true;
     }
     cout << "Error synchronizeDB updateToUserDB userID" << userID << endl;
@@ -122,7 +122,7 @@ bool synchronizeDB::updateToUserDB(string& userID, string& stringJson) {
 bool synchronizeDB::updateToFeedBackDB(string& userID, string& stringJson) {
     if (feedbackDB->check(userID) != -1) {
         feedbackDB->replace(userID, stringJson);
-        cout << "Sucess synchronizeDB updateToFeedBackDB userID:" << userID << endl;
+        //cout << "Sucess synchronizeDB updateToFeedBackDB userID:" << userID << endl;
         return true;
     }
     cout << "Error synchronizeDB updateToFeedBackDB userID:" << userID << endl;
@@ -132,7 +132,7 @@ bool synchronizeDB::updateToFeedBackDB(string& userID, string& stringJson) {
 bool synchronizeDB::deleteFromItemDB(string& itemID) {
     if (itemDB->check(itemID) != -1) {
         itemDB->remove(itemID);
-        cout << "Sucess synchronizeDB deleteFromItemDB itemID:" << itemID << endl;
+        //cout << "Sucess synchronizeDB deleteFromItemDB itemID:" << itemID << endl;
         return true;
     }
     cout << "Error synchronizeDB deleteFromItemDB itemID:" << itemID << endl;
@@ -142,7 +142,7 @@ bool synchronizeDB::deleteFromItemDB(string& itemID) {
 bool synchronizeDB::deleteFromItemTagDB(string& tagID) {
     if (itemtagDB->check(tagID) != -1) {
         itemtagDB->remove(tagID);
-        cout << "Sucess synchronizeDB deleteFromItemTagDB tagID:" << tagID << endl;
+        //cout << "Sucess synchronizeDB deleteFromItemTagDB tagID:" << tagID << endl;
         return true;
     }
     cout << "Error synchronizeDB deleteFromItemTagDB tagID:" << tagID << endl;
@@ -152,7 +152,7 @@ bool synchronizeDB::deleteFromItemTagDB(string& tagID) {
 bool synchronizeDB::deleteFromTagDB(string& tagID) {
     if (tagDB->check(tagID) != -1) {
         tagDB->remove(tagID);
-        cout << "Sucess synchronizeDB deleteFromTagDB tagID:" << tagID << endl;
+        //cout << "Sucess synchronizeDB deleteFromTagDB tagID:" << tagID << endl;
         return true;
     }
     cout << "Error synchronizeDB deleteFromTagDB tagID:" << tagID << endl;
@@ -162,7 +162,7 @@ bool synchronizeDB::deleteFromTagDB(string& tagID) {
 bool synchronizeDB::deleteFromUserDB(string& userID) {
     if (userDB->check(userID) != -1) {
         userDB->remove(userID);
-        cout << "Sucess synchronizeDB deleteFromUserDB userID:" << userID << endl;
+        //cout << "Sucess synchronizeDB deleteFromUserDB userID:" << userID << endl;
         return true;
     }
     cout << "Error synchronizeDB deleteFromUserDB userID:" << userID << endl;
@@ -172,7 +172,7 @@ bool synchronizeDB::deleteFromUserDB(string& userID) {
 bool synchronizeDB::deleteFromFeedBackDB(string& userID) {
     if (feedbackDB->check(userID) != -1) {
         feedbackDB->remove(userID);
-        cout << "Sucess synchronizeDB deleteFromFeedBackDB userID:" << userID << endl;
+        //cout << "Sucess synchronizeDB deleteFromFeedBackDB userID:" << userID << endl;
         return true;
     }
     cout << "Error synchronizeDB deleteFromFeedBackDB userID:" << userID << endl;
