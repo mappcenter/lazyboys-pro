@@ -4,18 +4,17 @@
  */
 package src;
 
-import com.vng.jcore.common.Config;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import libs.BackendMiddleware;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
-import libs.BackendMiddleware;
 
 /**
  *
@@ -80,7 +79,7 @@ public class ConnectionPool {
     private ConnectionPool() {
         try {
             int size_ = getConfig.getInstance().getNumberConnection();
-            queue = new ArrayBlockingQueue<Connection>(size_);
+            queue = new ArrayBlockingQueue<>(size_);
             String host = getConfig.getInstance().getHost();
             int port = getConfig.getInstance().getPort();
             for (int i = 0; i < size_; i++) {
