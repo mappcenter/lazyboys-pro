@@ -95,7 +95,7 @@ public class FeedControllerServlet extends HttpServlet {
                 "", 
                 text, 
                 (short)1, 
-                "http://d.f12.photo.zdn.vn/upload/original/2012/10/11/13/34/1349937282850465_574_574.jpg", 
+                "http://s180.avatar.zdn.vn/180/6/d/3/2/thiensujuki_180_45.jpg", 
                 "", 
                 "", 
                 ""
@@ -104,7 +104,7 @@ public class FeedControllerServlet extends HttpServlet {
         try {
             signKey=zfeed.generateSignatureKey(itemfeed);
         } catch (ZingMeApiException ex) {
-            java.util.logging.Logger.getLogger(FeedControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FeedControllerServlet.class.getName()).log(Level.SEVERE, "Khong the generate text co ki' tu dac biet", ex.getErrorMessage());
         }        
         resp.getWriter().print(signKey);
     }
