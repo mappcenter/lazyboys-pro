@@ -15,7 +15,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.List;
 import java.util.logging.Level;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -27,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import webservlet.Admin.indexServerlet;
 import zme.api.exception.ZingMeApiException;
 import zme.api.graph.ZME_Me;
+import zme.api.oauth.ZME_AccessTokenData;
 import zme.api.oauth.ZME_Authentication;
 
 public class IndexControllerServlet extends HttpServlet {
@@ -34,8 +34,8 @@ public class IndexControllerServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(IndexControllerServlet.class);
     public static MiddlewareHandler handler = new MiddlewareHandler();
     public static ZME_Authentication zmAuthen;
+    public ZME_AccessTokenData zdata;
     private static ZME_Me zmMe;
-    HashMap<String, Object> me = null;
     MyLocalCache mycache = new MyLocalCache();
 
     public IndexControllerServlet() throws FileNotFoundException, IOException {
@@ -50,22 +50,17 @@ public class IndexControllerServlet extends HttpServlet {
         ProfilerLog profiler = new ProfilerLog(dbg);
         req.setAttribute("profiler", profiler);
         profiler.doStartLog("wholereq");
-        //long start = System.currentTimeMillis();
         try {
-            
-            String content = this.render(req, resp,profiler);
+
+            String content = this.render(req, resp, profiler);
             profiler.doStartLog("renderPage");
             this.out(content, resp);
             profiler.doEndLog("renderPage");
-            
+
         } catch (Exception ex) {
             log.error(ex.getMessage());
             this.out("Error exception: " + ex.getMessage(), resp);
         }
-//        long end = System.currentTimeMillis();
-//        long t = end - start;
-//        System.out.println("Render page Time:" + (end - start) + " ms");
-
         profiler.doEndLog("wholereq");
         String tmp = profiler.dumpLogHtml();
         if (dbg) {
@@ -90,16 +85,19 @@ public class IndexControllerServlet extends HttpServlet {
                 return;
             }
         }
-        //long t2 = System.currentTimeMillis();
         Gson gson = new Gson();
         String strItem = gson.toJson(item);
         resp.getWriter().println(strItem);
     }
 
-    private String render(HttpServletRequest req, HttpServletResponse res,ProfilerLog profiler) throws Exception {
+    private String render(HttpServletRequest req, HttpServletResponse res, ProfilerLog profiler) throws Exception {
         req.setAttribute("profiler", profiler);
         profiler.doStartLog("connect_zingMe");
+        HashMap<String, Object> me = null;
         String accesstoken;
+        if (req.getParameter("signed_request") == null || req.getParameter("signed_request").isEmpty()) {
+            return "<html><head></head><body><div><h1 style='text-align: center;'>Vui long Login <a href='http://me.zing.vn' target='_blank'>zingMe</a> truoc khi truy cap vao ung dung!<br/>Cam on!<img src='http://static.me.zing.vn/v3/images/smilley/default/56.jpg' /><h1><div></body></html>";
+        }
         String signed_request = req.getParameter("signed_request");
         accesstoken = zmAuthen.getAccessTokenFromSignedRequest(signed_request);
         try {
@@ -109,7 +107,7 @@ public class IndexControllerServlet extends HttpServlet {
             res.sendRedirect("/blockUser");
         }
         profiler.doEndLog("connect_zingMe");
-        
+
         profiler.doStartLog("Check&Save_User");
         if (!handler.userExisted(me.get("id").toString())) {
             boolean temp = handler.addUser(me.get("id").toString(), accesstoken, 0);// normal user:0, admin:1, blockuser:-1            
@@ -119,17 +117,17 @@ public class IndexControllerServlet extends HttpServlet {
             }
         }
         profiler.doEndLog("Check&Save_User");
-        
+
         profiler.doStartLog("getCacheIndex4User");
         TemplateDataDictionary dic = TemplateDictionary.create();
         String strIndexHtml = mycache.getCacheIndexPageWithUser(me.get("id").toString(), me.get("displayname").toString());
-        
-        if (strIndexHtml != null && !strIndexHtml.isEmpty()) {           
-                TemplateDataDictionary listsection = dic.addSection("list_content");
-                listsection.setVariable("contentHtml", strIndexHtml);
+
+        if (strIndexHtml != null && !strIndexHtml.isEmpty()) {
+            TemplateDataDictionary listsection = dic.addSection("list_content");
+            listsection.setVariable("contentHtml", strIndexHtml);
         }
         profiler.doStartLog("getCacheIndex4User");
-        
+
         profiler.doStartLog("getTemplate");
         Template template = IndexControllerServlet.getCTemplate();
         String content = template.renderToString(dic);
