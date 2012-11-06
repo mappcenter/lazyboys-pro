@@ -24,22 +24,16 @@ import org.slf4j.LoggerFactory;
  * @author chanhlt
  */
 public class randomItemServlet extends HttpServlet {
-
-    private static final org.slf4j.Logger log = LoggerFactory.getLogger(IndexControllerServlet.class);
+    
     public static MiddlewareHandler handler = new MiddlewareHandler();
-    int count = 0;
-
+    
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        System.out.println("Count = "+count);
-        res.setContentType("text/html; charset=utf-8");
+        res.setContentType("text/html; charset=UTF-8");
         boolean dbg = ("on".equals(req.getParameter("jdbg")));
         ProfilerLog profiler = new ProfilerLog(dbg);
         req.setAttribute("profiler", profiler);
         profiler.doStartLog("wholereq");
-        
-        long t1 = System.currentTimeMillis();
-        res.setContentType("text/html; charset=UTF-8");
         Item item = null;
         try {
             MyLocalCache mycache = new MyLocalCache();
@@ -47,28 +41,16 @@ public class randomItemServlet extends HttpServlet {
         } catch (Exception ex) {
             Logger.getLogger(randomItemServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        long t2 = System.currentTimeMillis();
-        //Gson gson = new Gson();
-        //String strItem = gson.toJson(item);
-        String str = "<html><body><center><h1>Welcome to LazyBoys!</h1></center><br/>Count = "+count+"<br/>Time: " + (t2 - t1) + " ms<br/>" + item.toString() + "</body></html>";
-        this.out(str, res);
+        res.getWriter().println("<html><body><center><h1>Welcome to LazyBoys!</h1></center><br/>" + item.content.toString() + "</body></html>");
         profiler.doEndLog("wholereq");
         if (dbg) {
             String tmp = profiler.dumpLogHtml();
-            this.out(tmp, res);
+            res.getWriter().println(tmp);
         }
-        count++;
     }
-
+    
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-        doGet(req, res);
-    }
-
-    private void out(String content, HttpServletResponse resp) throws IOException {
-        resp.addHeader("Content-Type", "text/html");
-        resp.setContentType("text/html; charset=utf-8");
-        PrintWriter out = resp.getWriter();
-        out.println(content);
+        this.doGet(req, res);
     }
 }
