@@ -18,7 +18,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.sound.midi.SysexMessage;
 import org.apache.thrift.TException;
+import org.eclipse.jetty.server.session.JDBCSessionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +37,13 @@ public class IndexControllerServlet extends HttpServlet {
         profiler.doStartLog("wholereq");
         try {
             String content = this.render(req);
-
+            HttpSession session=req.getSession();
+            System.out.println(session);
+            String user = (String) session.getAttribute("user");
+            System.out.println(user);
+            if(user==null){
+                resp.sendRedirect("/login");
+            }
             this.out(content, resp);
         } catch (Exception ex) {
 
@@ -47,7 +56,7 @@ public class IndexControllerServlet extends HttpServlet {
             this.out(tmp, resp);
         }
     }
-
+    
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doGet(req, resp);
