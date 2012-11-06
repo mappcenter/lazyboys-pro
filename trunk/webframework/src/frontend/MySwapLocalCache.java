@@ -23,7 +23,7 @@ public class MySwapLocalCache {
     MiddlewareHandler handler = new MiddlewareHandler();
     public static int capacityUser = 10000; //1 user: user favorite items and user like itemIDs. => 5000 user info
     public static String itemIDTagsKey = "ItemIDTags";
-    public static long userExpiredTime = (10 * 60 * 1000); //15minutes
+    public static long userExpiredTime = (10 * 60 * 1000); //10minutes
     public static int numberTopTags = 20;
     public static int numberItemIDTags = 30;
     public static int numberTopItems = 15;

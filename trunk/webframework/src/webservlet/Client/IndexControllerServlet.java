@@ -44,7 +44,7 @@ public class IndexControllerServlet extends HttpServlet {
     }
 
     @Override
-    protected synchronized void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, ClientProtocolException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, ClientProtocolException {
         resp.setContentType("text/html; charset=utf-8");
         boolean dbg = ("on".equals(req.getParameter("jdbg")));
         ProfilerLog profiler = new ProfilerLog(dbg);
@@ -71,7 +71,7 @@ public class IndexControllerServlet extends HttpServlet {
     }
 
     @Override
-    protected synchronized void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html; charset=UTF-8");
         Item item = null;
         if (req.getParameter("tagID") == null) {
@@ -110,7 +110,7 @@ public class IndexControllerServlet extends HttpServlet {
 
         profiler.doStartLog("Check&Save_User");
         if (!handler.userExisted(me.get("id").toString())) {
-            boolean temp = handler.addUser(me.get("id").toString(), accesstoken, 0);// normal user:0, admin:1, blockuser:-1            
+            boolean temp = handler.addUser(me.get("id").toString(), "default ;))", 0);// normal user:0, admin:1, blockuser:-1            
         } else {
             if (mycache.isBlockUser(me.get("id").toString())) {
                 res.sendRedirect("/blockUser");
