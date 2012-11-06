@@ -85,12 +85,7 @@ public class getContentTabServlet extends HttpServlet {
         if (tabName.compareTo("Users") == 0) {
             return renderUsers(req);
         }
-        if (tabName.compareTo("Cache") == 0) {
-            return renderCache(req);
-        }
-        if (tabName.compareTo("Settings") == 0) {
-            return renderSetting(req);
-        }
+        
         return null;
     }
 
