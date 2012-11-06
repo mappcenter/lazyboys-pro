@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.thrift.TException;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -30,7 +29,7 @@ import org.slf4j.LoggerFactory;
 public class getItemPageServlet extends HttpServlet {
 
     private static MiddlewareHandler handler = handler = new MiddlewareHandler();
-    private static final org.slf4j.Logger log = LoggerFactory.getLogger(IndexControllerServlet.class);
+    //private static final org.slf4j.Logger log = LoggerFactory.getLogger(IndexServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
@@ -47,7 +46,7 @@ public class getItemPageServlet extends HttpServlet {
             this.out(content, res);
         } catch (Exception ex) {
 
-            log.error(ex.getMessage());
+            //log.error(ex.getMessage());
             this.out("Error exception: " + ex.getMessage(), res);
         }
 
