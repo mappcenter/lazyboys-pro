@@ -4,7 +4,9 @@
  */
 package webservlet.Admin;
 
+import frontend.Item;
 import frontend.MiddlewareHandler;
+import frontend.MyLocalCache;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,7 +28,7 @@ public class insertItemServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
-        
+
         res.setContentType("text/html; charset=utf-8");
         String tagIDs = req.getParameter("tagIDs");
         String statusContent = req.getParameter("statusContent");
@@ -35,9 +37,15 @@ public class insertItemServlet extends HttpServlet {
         listTagIDs.addAll(Arrays.asList(arrTagIDs));
         //listTagIDs.addAll(Arrays.asList(arrTagIDs));
         String result = null;
-        
+
         try {
             result = handler.insertItem(statusContent, listTagIDs);
+            if (result!=null) {
+                Item item=handler.getItemFromItemID(result);
+                MyLocalCache myLocalCache = new MyLocalCache();
+                myLocalCache.setNewItem(item);
+            }
+
         } catch (TException ex) {
             Logger.getLogger(insertItemServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
