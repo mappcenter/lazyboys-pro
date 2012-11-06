@@ -38,7 +38,7 @@ public class SaveItemControllerServlet extends HttpServlet {
             }                                  
         } catch (TException ex) {
             java.util.logging.Logger.getLogger(SaveItemControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
-            resp.getWriter().println(result);
+            //resp.getWriter().println(result);
         }
         resp.getWriter().println(result);
     }
