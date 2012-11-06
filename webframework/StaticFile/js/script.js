@@ -461,7 +461,7 @@ function submit(){
                     alert(data);
                     regen();    
                     $('#Submit').attr('rel','edit');
-                    
+                    back();
                 });           
             }
         }); 
