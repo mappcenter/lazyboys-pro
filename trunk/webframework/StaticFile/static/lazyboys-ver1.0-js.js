@@ -248,7 +248,7 @@ function feedWall(id){
                     attach_caption: "",
                     attach_des: statusText,
                     media_type:1,
-                    media_img:"http://d.f12.photo.zdn.vn/upload/original/2012/10/11/13/34/1349937282850465_574_574.jpg",
+                    media_img:"http://s180.avatar.zdn.vn/180/6/d/3/2/thiensujuki_180_45.jpg",
                     media_src:"",
                     actlink_text:"",
                     actlink_href:"",
@@ -476,18 +476,18 @@ $(document).ready(function() {
         });
     //alert(value + "userID:"+uID);
     });
-    $(".saveItem").click(function (){
-        var value=$(this).attr("rel");
-        var uID=$("#usrId").val();
-        $.post("saveItem", {
-            userID:uID,
-            itemID:value
-        }, function(data) {
-            //var myJsonObj = jsonParse(data);
-            alert(data);
-        });
-    //alert(value + "userID:"+uID);
-    });
+//    $(".saveItem").click(function (){
+//        var value=$(this).attr("rel");
+//        var uID=$("#usrId").val();
+//        $.post("saveItem", {
+//            userID:uID,
+//            itemID:value
+//        }, function(data) {
+//            //var myJsonObj = jsonParse(data);
+//            alert(data);
+//        });
+//    //alert(value + "userID:"+uID);
+//    });
         
     $("#lz-feed-button").click(function(){ 
         if(isFeed==true){
@@ -511,7 +511,7 @@ $(document).ready(function() {
                     attach_caption: "",
                     attach_des: statusText,
                     media_type:1,
-                    media_img:"http://d.f12.photo.zdn.vn/upload/original/2012/10/11/13/34/1349937282850465_574_574.jpg",
+                    media_img:"http://s180.avatar.zdn.vn/180/6/d/3/2/thiensujuki_180_45.jpg",
                     media_src:"",
                     actlink_text:"",
                     actlink_href:"",
@@ -550,7 +550,7 @@ $(document).ready(function() {
                     attach_caption: "",
                     attach_des: statusText,
                     media_type:1,
-                    media_img:"http://d.f12.photo.zdn.vn/upload/original/2012/10/11/13/34/1349937282850465_574_574.jpg",
+                    media_img:"http://s180.avatar.zdn.vn/180/6/d/3/2/thiensujuki_180_45.jpg",
                     media_src:"",
                     actlink_text:"",
                     actlink_href:"",
@@ -655,7 +655,7 @@ function uFeedWall(itemID){
                     attach_caption: "",
                     attach_des: statusText,
                     media_type:1,
-                    media_img:"http://d.f12.photo.zdn.vn/upload/original/2012/10/11/13/34/1349937282850465_574_574.jpg",
+                    media_img:"http://s180.avatar.zdn.vn/180/6/d/3/2/thiensujuki_180_45.jpg",
                     media_src:"",
                     actlink_text:"",
                     actlink_href:"",
@@ -682,7 +682,9 @@ function uSaveItem(itemID){
             itemID:value
         }, function(data) {
             //var myJsonObj = jsonParse(data);
+            //alert("before alert");
             alert(data);
+            //alert("after alert");
         });
     //alert(value + "userID:"+uID);
     });        
