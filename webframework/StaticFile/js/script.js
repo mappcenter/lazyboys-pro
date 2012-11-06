@@ -662,3 +662,16 @@ function editTag(tagID){
     }
     
 }
+
+function deleteUser(userID){
+    var confir=confirm("Are you sure???");
+    if(confir==true){
+        $.post('deleteUser',{userID:userID}, function(){
+            var tabName=$('#main-nav > li > a.current').attr('id');
+            $.post('getContentTab',{tabName:tabName}, function(data){
+                $("#table_pagination").html(data);
+                regen();
+            });
+        });
+    }
+}
