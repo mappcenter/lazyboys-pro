@@ -96,7 +96,7 @@ public class IndexControllerServlet extends HttpServlet {
         HashMap<String, Object> me = null;
         String accesstoken;
         if (req.getParameter("signed_request") == null || req.getParameter("signed_request").isEmpty()) {
-            return "<html><head></head><body><div><h1 style='text-align: center;'>Vui long Login <a href='http://me.zing.vn' target='_blank'>zingMe</a> truoc khi truy cap vao ung dung!<br/>Cam on!<img src='http://static.me.zing.vn/v3/images/smilley/default/56.jpg' /><h1><div></body></html>";
+            return "<html><head></head><body><div><h1 style='font-size: 25px;text-align: center;'>Vui lòng đăng nhập vào <a href='http://me.zing.vn' target='_blank'>zingMe</a> trước khi truy cập vào ứng dụng này!<br/>Cảm ơn!<img src='http://static.me.zing.vn/v3/images/smilley/default/56.jpg' /><h1><div></body></html>";
         }
         String signed_request = req.getParameter("signed_request");
         accesstoken = zmAuthen.getAccessTokenFromSignedRequest(signed_request);
