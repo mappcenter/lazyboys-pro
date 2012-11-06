@@ -50,17 +50,21 @@ public class IndexControllerServlet extends HttpServlet {
         ProfilerLog profiler = new ProfilerLog(dbg);
         req.setAttribute("profiler", profiler);
         profiler.doStartLog("wholereq");
-        long start = System.currentTimeMillis();
+        //long start = System.currentTimeMillis();
         try {
-            String content = this.render(req, resp);
+            
+            String content = this.render(req, resp,profiler);
+            profiler.doStartLog("renderPage");
             this.out(content, resp);
+            profiler.doEndLog("renderPage");
+            
         } catch (Exception ex) {
             log.error(ex.getMessage());
             this.out("Error exception: " + ex.getMessage(), resp);
         }
-        long end = System.currentTimeMillis();
-        long t = end - start;
-        System.out.println("Render page Time:" + (end - start) + " ms");
+//        long end = System.currentTimeMillis();
+//        long t = end - start;
+//        System.out.println("Render page Time:" + (end - start) + " ms");
 
         profiler.doEndLog("wholereq");
         String tmp = profiler.dumpLogHtml();
@@ -92,22 +96,21 @@ public class IndexControllerServlet extends HttpServlet {
         resp.getWriter().println(strItem);
     }
 
-    private String render(HttpServletRequest req, HttpServletResponse res) throws Exception {
-        long zingStart = System.currentTimeMillis();        
+    private String render(HttpServletRequest req, HttpServletResponse res,ProfilerLog profiler) throws Exception {
+        req.setAttribute("profiler", profiler);
+        profiler.doStartLog("connect_zingMe");
         String accesstoken;
         String signed_request = req.getParameter("signed_request");
         accesstoken = zmAuthen.getAccessTokenFromSignedRequest(signed_request);
-        String meID="5037964";
-        String myName="thiensuhack";
         try {
             me = zmMe.getInfo(accesstoken, "displayname");
         } catch (ZingMeApiException ex) {
             java.util.logging.Logger.getLogger(indexServerlet.class.getName()).log(Level.SEVERE, null, ex);
             res.sendRedirect("/blockUser");
         }
-         long zingEnd = System.currentTimeMillis();
-        System.out.println("Zing time:" + (zingEnd - zingStart) + " ms");
-
+        profiler.doEndLog("connect_zingMe");
+        
+        profiler.doStartLog("Check&Save_User");
         if (!handler.userExisted(me.get("id").toString())) {
             boolean temp = handler.addUser(me.get("id").toString(), accesstoken, 0);// normal user:0, admin:1, blockuser:-1            
         } else {
@@ -115,19 +118,22 @@ public class IndexControllerServlet extends HttpServlet {
                 res.sendRedirect("/blockUser");
             }
         }
+        profiler.doEndLog("Check&Save_User");
+        
+        profiler.doStartLog("getCacheIndex4User");
         TemplateDataDictionary dic = TemplateDictionary.create();
         String strIndexHtml = mycache.getCacheIndexPageWithUser(me.get("id").toString(), me.get("displayname").toString());
-        //long start = System.currentTimeMillis();
-        if (strIndexHtml != null && !strIndexHtml.isEmpty()) {
-           // for (int i = 0; i < strIndexHtml.size(); i++) {
+        
+        if (strIndexHtml != null && !strIndexHtml.isEmpty()) {           
                 TemplateDataDictionary listsection = dic.addSection("list_content");
                 listsection.setVariable("contentHtml", strIndexHtml);
-           // }
         }
-        // long end = System.currentTimeMillis();
-        //System.out.print("repair before render:" + (end - start) + " ms");
+        profiler.doStartLog("getCacheIndex4User");
+        
+        profiler.doStartLog("getTemplate");
         Template template = IndexControllerServlet.getCTemplate();
         String content = template.renderToString(dic);
+        profiler.doEndLog("getTemplate");
         return content;
     }
 
