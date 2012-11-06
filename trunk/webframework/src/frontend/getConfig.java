@@ -20,6 +20,8 @@ public class getConfig {
     private static int number_connection;
     private static int number_min_thread;
     private static int number_max_thread;
+    private static String userName;
+    private static String password;
     private static getConfig instance;
 
     /**
@@ -38,6 +40,8 @@ public class getConfig {
         port_listen = Integer.valueOf(Config.getParam("rest", "port_listen"));
         number_min_thread = Integer.valueOf(Config.getParam("rest", "number_min_thread"));
         number_max_thread = Integer.valueOf(Config.getParam("rest", "number_max_thread"));
+        userName=Config.getParam("Admin", "userName");
+        password=Config.getParam("Admin", "password");
     }
 
     public static synchronized getConfig getInstance() {
@@ -73,5 +77,12 @@ public class getConfig {
 
     public int getNumber_min_thread() {
         return number_min_thread;
+    }
+    public String userName(){
+        return userName;
+    }
+    
+    public String password(){
+        return password;
     }
 }
