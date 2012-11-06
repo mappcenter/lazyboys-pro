@@ -15,7 +15,6 @@ public class ServiceDaemon {
         WebServer webserver = new WebServer();
 
         String pidFile = System.getProperty("pidfile");
-
         try {
             if (pidFile != null) {
                 new File(pidFile).deleteOnExit();
@@ -24,7 +23,6 @@ public class ServiceDaemon {
                 System.out.close();
                 System.err.close();
             }
-
             webserver.start();
 
         } catch (Throwable e) {
