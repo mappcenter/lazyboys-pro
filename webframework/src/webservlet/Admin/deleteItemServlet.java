@@ -5,6 +5,7 @@
 package webservlet.Admin;
 
 import frontend.MiddlewareHandler;
+import frontend.MyLocalCache;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,6 +28,8 @@ public class deleteItemServlet extends HttpServlet{
         try {
             for(int i=0; i<listItemID.length; i++){
                 handler.deleteItem(listItemID[i]);
+                MyLocalCache myLocalCache=new MyLocalCache();
+                myLocalCache.deleteNewItem(listItemID[i]);
             }           
         } catch (TException ex) {
             Logger.getLogger(deleteItemServlet.class.getName()).log(Level.SEVERE, null, ex);

@@ -4,7 +4,9 @@
  */
 package webservlet.Admin;
 
+import frontend.Item;
 import frontend.MiddlewareHandler;
+import frontend.MyLocalCache;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +43,11 @@ public class editItemServlet extends HttpServlet{
         }       
         try {
             result = handler.editItem(itemID, itemContent, tagIDs);
+            if(result){
+                Item item=handler.getItemFromItemID(itemID);
+                MyLocalCache myLocalCache=new MyLocalCache();
+                myLocalCache.updateNewItem(item);
+            }
         } catch (TException ex) {
             Logger.getLogger(editItemServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
