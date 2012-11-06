@@ -8,25 +8,25 @@
 		<title>Admin Control Panel</title>
 		
 		<!-- CSS -->
-		<link rel="stylesheet" type="text/css" media="screen" href="http://localhost:81/css/reset.css" />
-		<link rel="stylesheet" type="text/css" media="screen" href="http://localhost:81/css/main.css" />
-		<link rel="stylesheet" type="text/css" media="screen" href="http://localhost:81/css/custom-theme/jquery-ui-1.8.1.custom.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="http://118.102.6.116:81/css/reset.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="http://118.102.6.116:81/css/main.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="http://118.102.6.116:81/css/custom-theme/jquery-ui-1.8.1.custom.css" />
 		
 		<!-- IE specific CSS stylesheet -->
 		<!--[if IE]>
-			<link rel="stylesheet" type="text/css" media="screen" href="http://localhost:81/css/ie.css" />
+			<link rel="stylesheet" type="text/css" media="screen" href="http://118.102.6.116:81/css/ie.css" />
 		<![endif]-->
 		
 		<!-- This stylesheet contains advanced CSS3 features that do not validate yet -->
-		<link rel="stylesheet" type="text/css" media="screen" href="http://localhost:81/css/css3.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="http://118.102.6.116:81/css/css3.css" />
 		
 		<!-- JavaScript -->
-		<script type="text/javascript" src="http://localhost:81/js/jquery-1.4.2.min.js"></script>
-		<script type="text/javascript" src="http://localhost:81/js/jquery-ui.min.js"></script>
-		<script type="text/javascript" src="http://localhost:81/js/jquery.wysiwyg.js"></script>
-		<script type="text/javascript" src="http://localhost:81/js/excanvas.js"></script>
-		<script type="text/javascript" src="http://localhost:81/js/jquery.visualize.js"></script>
-		<script type="text/javascript" src="http://localhost:81/js/script.js"></script>
+		<script type="text/javascript" src="http://118.102.6.116:81/js/jquery-1.4.2.min.js"></script>
+		<script type="text/javascript" src="http://118.102.6.116:81/js/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="http://118.102.6.116:81/js/jquery.wysiwyg.js"></script>
+		<script type="text/javascript" src="http://118.102.6.116:81/js/excanvas.js"></script>
+		<script type="text/javascript" src="http://118.102.6.116:81/js/jquery.visualize.js"></script>
+		<script type="text/javascript" src="http://118.102.6.116:81/js/script.js"></script>
 	</head>
 
 	<body>
@@ -38,7 +38,7 @@
 			
 			<div id="content">
 			
-				<h2><img src="http://localhost:81/images/icons/user_32.png" alt="Login" />Login</h2>
+				<h2><img src="http://118.102.6.116:81/images/icons/user_32.png" alt="Login" />Login</h2>
 			
 				<div id="login">
 					
