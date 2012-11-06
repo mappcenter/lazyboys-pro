@@ -5,9 +5,7 @@
 package frontend;
 
 import IOFile.CachingIndexPage;
-import java.util.AbstractList;
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -51,16 +49,14 @@ public class MyLocalCache {
     }
 
     public void SwapData() {
-
         if (MySwapLocalCache.LocalCache.size() > 0) {
             TempCacheToSwap = LocalCache;
-            System.out.println("Starting....! Swapping data...");
+            System.out.println("Starting....! Swapping data...");            
             LocalCache = MySwapLocalCache.LocalCache;
             numberFavoriteItems = MySwapLocalCache.numberFavoriteItems;
             numberItemIDTags = MySwapLocalCache.numberItemIDTags;
             numberTopTags = MySwapLocalCache.numberTopTags;
             itemIDTagSize = numberItemIDTags;
-
             TempCacheToSwap.clear();
             MySwapLocalCache.LocalCache = TempCacheToSwap;
         }

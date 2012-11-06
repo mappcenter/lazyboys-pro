@@ -21,6 +21,7 @@ public class MyTask extends TimerTask{
     public void run() {
         mySwapCache.clearAllCaching();        
         try {
+            MySwapLocalCache.newItems=MyLocalCache.newItems;
             mySwapCache.startMyLocalCache();
         } catch (TException ex) {
             Logger.getLogger(MyTask.class.getName()).log(Level.SEVERE, null, ex);

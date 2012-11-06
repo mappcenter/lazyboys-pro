@@ -28,10 +28,13 @@ public class MySwapLocalCache {
     public static int numberItemIDTags = 30;
     public static int numberTopItems = 15;
     public static int itemIDTagSize = 0;
+    public static int itemsNewSize = 10;
+    public static int itemsNewExpriedTime = (7*24*60*60*1000);
     public static int numberFavoriteItems = 20;
     public static String listAllTagsKey = "listAllTags";
     public static String listTopTagsKey = "listTopTags";
     public static String listItemIDKey = "listItemID";
+    public static String newItemsKey = "newItems";
     public static String listTopItemsKey = "listTopItems";
     public static String listItemsClientCache = "listItemsClientCache";
     public static String listItemsIDUserLike = "ItemIdUserLike";
@@ -39,7 +42,7 @@ public class MySwapLocalCache {
     public static String indexpage = "indexpage";
     public static Map<String, Object> LocalCache = new HashMap<String, Object>();
     public static LazyBoysLRUCache UserLocalCache = new LazyBoysLRUCache(capacityUser);
-    public static LazyBoysLRUCache hostItems = new LazyBoysLRUCache(20);
+    public static LazyBoysLRUCache newItems = new LazyBoysLRUCache(itemsNewSize);
     public static Map<String, Object> TempCacheToSwap = new HashMap<String, Object>();
 
     public void startMyLocalCache() throws TException {
@@ -116,7 +119,12 @@ public class MySwapLocalCache {
         if (items == null) {
             items = handler.getTopItems(numberTopItems);
         }
-        return items;
+        List<Item> listNewItems=(List<Item>) newItems.get(newItemsKey);
+        if(listNewItems==null){
+           listNewItems=new ArrayList<Item>();
+        }
+         listNewItems.addAll(items);
+        return listNewItems;
     }
     public static List<Item> itemsClientCache = new ArrayList<Item>();
 
@@ -429,7 +437,7 @@ public class MySwapLocalCache {
         //}
         //return null;
     }
-
+    
     public String getCacheIndexPageWithUser(String userID, String userName) {
         String result = (String) LocalCache.get(indexpage);
         if (result != null) {
@@ -438,7 +446,44 @@ public class MySwapLocalCache {
         }
         return result;
     }
-
+    public void setNewItem(Item item){
+        List<Item> listItem=getNewItems();
+        if(listItem==null)
+        {         
+            listItem=new ArrayList<Item>();            
+        }
+        listItem.add(item);
+        newItems.put(newItemsKey, listItem, itemsNewExpriedTime);
+    }
+    public List<Item> getNewItems(){
+        List<Item> listItems=(List<Item>) newItems.get(newItemsKey);
+        return listItems;
+    }
+    public void updateNewItem(Item item){   
+        List<Item> listItems=getNewItems();
+        if(listItems!=null && listItems.size()>0){
+            for (int i = 0; i < listItems.size(); i++) {
+                if(listItems.get(i).itemID.equals(item.itemID)){
+                    listItems.remove(i);
+                    listItems.add(item);
+                    newItems.put(newItemsKey, listItems,itemsNewExpriedTime);
+                    return;
+                }
+            }
+        }        
+    }
+    public void deleteNewItem(String itemID){   
+        List<Item> listItems=getNewItems();
+        if(listItems!=null && listItems.size()>0){
+            for (int i = 0; i < listItems.size(); i++) {
+                if(listItems.get(i).itemID.equals(itemID)){
+                    listItems.remove(i);                    
+                    newItems.put(newItemsKey, listItems,itemsNewExpriedTime);
+                    return;
+                }
+            }
+        }        
+    }
     public void clearUserCaching() {
         //UserLocalCache.
     }
