@@ -25,13 +25,15 @@ public class main {
         THsHaServer.Args options = new THsHaServer.Args(serverTransport);
         options.workerThreads(numthread);
         options.processor(processor);
+        
 
         TServer server = new THsHaServer(options);
          System.out.println("Start cache data ...");
         (new FrontendHandler()).startCache();
         System.out.println("Cache data complete ...");
         Timer timer = new Timer();
-        timer.schedule(new myTask(), 10 * 60 * 1000, 10 * 60 * 1000);
+        int expireTime=getConfig.getInstance().expireTime();
+        timer.schedule(new myTask(), expireTime, expireTime);
         System.out.println("Server is listening on port " + port + " ...");
         server.serve();
     }
