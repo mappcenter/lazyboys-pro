@@ -505,11 +505,11 @@ public class MyLocalCache {
             }
         }        
     }
-    public void deleteNewItem(Item item){   
+    public void deleteNewItem(String itemID){   
         List<Item> listItems=getNewItems();
         if(listItems!=null && listItems.size()>0){
             for (int i = 0; i < listItems.size(); i++) {
-                if(listItems.get(i).itemID.equals(item.itemID)){
+                if(listItems.get(i).itemID.equals(itemID)){
                     listItems.remove(i);                    
                     newItems.put(newItemsKey, listItems,itemsNewExpriedTime);
                     return;
