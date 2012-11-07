@@ -108,7 +108,7 @@ public class WebServer {
 
         //trang chu admin
         servletContextHandler.addServlet(new ServletHolder(new IndexServlet()), "/admin");
-        
+       
         
         servletContextHandler.addServlet(new ServletHolder(new randomItemServlet()), "/random");
         
