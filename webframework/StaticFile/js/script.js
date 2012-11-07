@@ -550,16 +550,13 @@ function changeUserRole(userID, userToken, userRole){
     var userRolename="";
     if(userRole==-1){
         userRole=0;
-        userRolename="User";
+        userRolename="Unblocked";
     }
     else if(userRole==0){
-        userRole=1;
-        userRolename="Admin";
-    }
-    else if(userRole==1){
         userRole=-1;
         userRolename="Blocked";
     }
+    
     $.post('changeUserRole', {
         userID:userID, 
         userToken:userToken, 
@@ -659,8 +656,7 @@ function editTag(tagID){
             alert(data);
             $('#'+tagID).find('td:nth-child(3)').html(tagName);
         });
-    }
-    
+    }   
 }
 
 function deleteUser(userID){
