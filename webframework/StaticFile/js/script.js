@@ -556,7 +556,10 @@ function changeUserRole(userID, userToken, userRole){
         userRole=-1;
         userRolename="Blocked";
     }
-    
+    else if(userRole==1){
+        userRole=-1;
+        userRolename="Unblocked";
+    }
     $.post('changeUserRole', {
         userID:userID, 
         userToken:userToken, 
