@@ -6,6 +6,7 @@ import frontend.Item;
 import frontend.MiddlewareHandler;
 import frontend.MyAppInfo;
 import frontend.MyLocalCache;
+import frontend.getConfig;
 import hapax.Template;
 import hapax.TemplateDataDictionary;
 import hapax.TemplateDictionary;
@@ -17,6 +18,7 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.logging.Level;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,7 +39,7 @@ public class IndexControllerServlet extends HttpServlet {
     public ZME_AccessTokenData zdata;
     private static ZME_Me zmMe;
     MyLocalCache mycache = new MyLocalCache();
-
+    private static int expriedTimeCookie=getConfig.getInstance().getExpriedTimeCookie(); //seconds
     public IndexControllerServlet() throws FileNotFoundException, IOException {
         zmMe = new ZME_Me(MyAppInfo.getInstance().getzConfig());
         zmAuthen = new ZME_Authentication(MyAppInfo.getInstance().getzConfig());
@@ -92,35 +94,70 @@ public class IndexControllerServlet extends HttpServlet {
 
     private String render(HttpServletRequest req, HttpServletResponse res, ProfilerLog profiler) throws Exception {
         req.setAttribute("profiler", profiler);
-        profiler.doStartLog("connect_zingMe");
         HashMap<String, Object> me = null;
-        String accesstoken;
-        if (req.getParameter("signed_request") == null || req.getParameter("signed_request").isEmpty()) {
-            return "<html><head></head><body><div><h1 style='font-size: 25px;text-align: center;'>Vui lòng đăng nhập vào <a href='http://me.zing.vn' target='_blank'>zingMe</a> trước khi truy cập vào ứng dụng này!<br/>Cảm ơn!<img src='http://static.me.zing.vn/v3/images/smilley/default/56.jpg' /><h1><div></body></html>";
-        }
-        String signed_request = req.getParameter("signed_request");
-        accesstoken = zmAuthen.getAccessTokenFromSignedRequest(signed_request);
-        try {
-            me = zmMe.getInfo(accesstoken, "displayname");
-        } catch (ZingMeApiException ex) {
-            java.util.logging.Logger.getLogger(indexServerlet.class.getName()).log(Level.SEVERE, null, ex);
-            res.sendRedirect("/blockUser");
-        }
-        profiler.doEndLog("connect_zingMe");
-
-        profiler.doStartLog("Check&Save_User");
-        if (!handler.userExisted(me.get("id").toString())) {
-            boolean temp = handler.addUser(me.get("id").toString(), "default ;))", 0);// normal user:0, admin:1, blockuser:-1            
-        } else {
-            if (mycache.isBlockUser(me.get("id").toString())) {
-                res.sendRedirect("/blockUser");
+        
+        
+        Cookie myNameCookie = null;
+        Cookie myIDCookie = null;
+        Cookie[] cookies = (Cookie[]) req.getCookies();
+        boolean newCookie = false;
+        
+        profiler.doStartLog("checkExistCookies");
+        if (cookies != null) {
+            for (int i = 0; i < cookies.length; i++) {
+                if (cookies[i].getName().equals("lazyboysNameCookie")) {
+                    myNameCookie = cookies[i];
+                }
+                if (cookies[i].getName().equals("lazyboysIDCookie")) {
+                    myIDCookie = cookies[i];
+                }
             }
         }
-        profiler.doEndLog("Check&Save_User");
+        profiler.doEndLog("checkExistCookies");
+        
+        if (myNameCookie == null || myIDCookie == null) {
+            profiler.doStartLog("connect_zingMe");
+            String accesstoken;
+            if (req.getParameter("signed_request") == null || req.getParameter("signed_request").isEmpty()) {
+                return "<html><head></head><body><div><h1 style='font-size: 25px;text-align: center;'>Vui lòng đăng nhập vào <a href='http://me.zing.vn' target='_blank'>zingMe</a> trước khi truy cập vào ứng dụng này!<br/>Cảm ơn!<img src='http://static.me.zing.vn/v3/images/smilley/default/56.jpg' /><h1><div></body></html>";
+            }
+            String signed_request = req.getParameter("signed_request");
+            accesstoken = zmAuthen.getAccessTokenFromSignedRequest(signed_request);
+            try {
+                me = zmMe.getInfo(accesstoken, "displayname");
+            } catch (ZingMeApiException ex) {
+                java.util.logging.Logger.getLogger(indexServerlet.class.getName()).log(Level.SEVERE, null, ex);
+                res.sendRedirect("/blockUser");
+            }
+            profiler.doEndLog("connect_zingMe");
+
+            profiler.doStartLog("Check&Save_User");
+            if (!handler.userExisted(me.get("id").toString())) {
+                boolean temp = handler.addUser(me.get("id").toString(), "default ;))", 0);// normal user:0, admin:1, blockuser:-1            
+            } else {
+                if (mycache.isBlockUser(me.get("id").toString())) {
+                    res.sendRedirect("/blockUser");
+                }
+            }
+            profiler.doEndLog("Check&Save_User");
+            
+            profiler.doStartLog("createUserCookies");
+            
+            myNameCookie = new Cookie("lazyboysNameCookie", me.get("displayname").toString());
+            myNameCookie.setPath(req.getContextPath());
+            myNameCookie.setMaxAge(expriedTimeCookie);            
+            myIDCookie = new Cookie("lazyboysIDCookie", me.get("id").toString());
+            myIDCookie.setPath(req.getContextPath());
+            myIDCookie.setMaxAge(expriedTimeCookie);
+            res.addCookie(myNameCookie);
+            res.addCookie(myIDCookie);
+            
+            profiler.doEndLog("createUserCookies");
+        }
 
         profiler.doStartLog("getCacheIndex4User");
         TemplateDataDictionary dic = TemplateDictionary.create();
-        String strIndexHtml = mycache.getCacheIndexPageWithUser(me.get("id").toString(), me.get("displayname").toString());
+        String strIndexHtml = mycache.getCacheIndexPageWithUser(myIDCookie.getValue(), myNameCookie.getValue());
 
         if (strIndexHtml != null && !strIndexHtml.isEmpty()) {
             TemplateDataDictionary listsection = dic.addSection("list_content");
@@ -145,5 +182,5 @@ public class IndexControllerServlet extends HttpServlet {
         resp.addHeader("Content-Type", "text/html");
         PrintWriter out = resp.getWriter();
         out.print(content);
-    }
+    }   
 }

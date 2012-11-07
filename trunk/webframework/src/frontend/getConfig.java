@@ -24,6 +24,7 @@ public class getConfig {
     private static String password;
     private static getConfig instance;
     private static int swapCacheTime;
+    private static int expriedTimeCookie;
 
     /**
      * @return the number_connection
@@ -44,7 +45,7 @@ public class getConfig {
         userName=Config.getParam("Admin", "userName");
         password=Config.getParam("Admin", "password");
         swapCacheTime= Integer.valueOf(Config.getParam("Cache", "swapCacheTime"));
-        
+        expriedTimeCookie=Integer.valueOf(Config.getParam("expriedCookie", "expriedTimeCookie"));        
     }
 
     public static synchronized getConfig getInstance() {
@@ -90,5 +91,8 @@ public class getConfig {
     }
     public int swapCacheTime(){
         return swapCacheTime;
+    }
+    public int getExpriedTimeCookie(){
+        return expriedTimeCookie;
     }
 }
