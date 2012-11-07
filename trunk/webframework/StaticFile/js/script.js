@@ -666,13 +666,13 @@ function editTag(tagID){
 function deleteUser(userID){
     var confir=confirm("Are you sure???");
     if(confir==true){
-        alert(confir);
+        //alert(confir);
         $.post('deleteUser',{userID:userID}, function(){
             var tabName=$('#main-nav > li > a.current').attr('id');
-            alert(tabName);
+            //alert(tabName);
             $.post('getContentTab',{tabName:tabName}, function(data){
                 $("#table_pagination").html(data);
-                alert(data);
+                //alert(data);
                 regen();
             });
         });
