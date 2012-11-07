@@ -38,6 +38,7 @@ public class myTask extends TimerTask {
     public void swapCache() throws TException, IOException {
         BackendHandler handler = new BackendHandler();
         System.out.println("start swap cache ...");
+        main.logger_.info("start swap cache ...");
         //update listTag
         listTag_update = handler.getAllTag();
         listTag_temp = FrontendHandler.listTag;
@@ -77,5 +78,6 @@ public class myTask extends TimerTask {
         local_cache_update = local_cache_temp;
         local_cache_temp.clear();
         System.out.println("Swap cache complete ...");
+        main.logger_.info("start swap cache ...");
     }
 }
