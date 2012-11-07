@@ -4,8 +4,10 @@
  */
 package src;
 
+import com.vng.jcore.common.LogUtil;
 import java.util.Timer;
 import libs.MiddlewareFrontend;
+import org.apache.log4j.Logger;
 import org.apache.thrift.server.THsHaServer;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.transport.TNonblockingServerSocket;
@@ -16,7 +18,10 @@ import org.apache.thrift.transport.TNonblockingServerSocket;
  */
 public class main {
 
+    public static Logger logger_ = Logger.getLogger(main.class);
+
     public static void main(String[] args) throws InterruptedException, Exception {
+        LogUtil.init();
         int port = getConfig.getInstance().getPortListen();
         int numthread = getConfig.getInstance().getNumthread();
         TNonblockingServerSocket serverTransport = new TNonblockingServerSocket(port);
@@ -25,16 +30,19 @@ public class main {
         THsHaServer.Args options = new THsHaServer.Args(serverTransport);
         options.workerThreads(numthread);
         options.processor(processor);
-        
+
 
         TServer server = new THsHaServer(options);
-         System.out.println("Start cache data ...");
+        logger_.info("Start cache data ...");
+        
         (new FrontendHandler()).startCache();
-        System.out.println("Cache data complete ...");
+        logger_.info("Cache data complete ...");
+        
         Timer timer = new Timer();
-        int expireTime=getConfig.getInstance().expireTime();
+        int expireTime = getConfig.getInstance().expireTime();
         timer.schedule(new myTask(), expireTime, expireTime);
-        System.out.println("Server is listening on port " + port + " ...");
+        
+        logger_.info("Server is listening on port " + port + " ...");
         server.serve();
     }
 }
