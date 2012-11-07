@@ -318,7 +318,7 @@ HashDB& TagDB::getHashDB() {
 }
 
 int64_t TagDB::getTagDBSize() {
-    return grassDB.count() - 1;
+    return grassDB.count();
 }
 
 void TagDB::setSynDB(synchronizeDB* synDBPtr) {
