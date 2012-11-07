@@ -1,7 +1,6 @@
 package webservlet.Client;
 
 import com.google.gson.Gson;
-import com.vng.jcore.profiler.ProfilerLog;
 import frontend.Item;
 import frontend.MiddlewareHandler;
 import hapax.Template;
