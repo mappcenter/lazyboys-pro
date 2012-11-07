@@ -15,6 +15,8 @@ import hapax.TemplateResourceLoader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.logging.Level;
 import javax.servlet.ServletException;
@@ -142,11 +144,12 @@ public class IndexControllerServlet extends HttpServlet {
             profiler.doEndLog("Check&Save_User");
             
             profiler.doStartLog("createUserCookies");
-            
-            myNameCookie = new Cookie("lazyboysNameCookie", me.get("displayname").toString());
+            String myName=URLEncoder.encode(me.get("displayname").toString(), "UTF-8");
+            String myID=me.get("id").toString();
+            myNameCookie = new Cookie("lazyboysNameCookie", myName);
             myNameCookie.setPath(req.getContextPath());
             myNameCookie.setMaxAge(expriedTimeCookie);            
-            myIDCookie = new Cookie("lazyboysIDCookie", me.get("id").toString());
+            myIDCookie = new Cookie("lazyboysIDCookie", myID);
             myIDCookie.setPath(req.getContextPath());
             myIDCookie.setMaxAge(expriedTimeCookie);
             res.addCookie(myNameCookie);
@@ -157,7 +160,7 @@ public class IndexControllerServlet extends HttpServlet {
 
         profiler.doStartLog("getCacheIndex4User");
         TemplateDataDictionary dic = TemplateDictionary.create();
-        String strIndexHtml = mycache.getCacheIndexPageWithUser(myIDCookie.getValue(), myNameCookie.getValue());
+        String strIndexHtml = mycache.getCacheIndexPageWithUser(myIDCookie.getValue(), URLDecoder.decode(myNameCookie.getValue(),"UTF-8"));
 
         if (strIndexHtml != null && !strIndexHtml.isEmpty()) {
             TemplateDataDictionary listsection = dic.addSection("list_content");
