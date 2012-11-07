@@ -23,6 +23,7 @@ public class getConfig {
     private static String userName;
     private static String password;
     private static getConfig instance;
+    private static int swapCacheTime;
 
     /**
      * @return the number_connection
@@ -42,6 +43,8 @@ public class getConfig {
         number_max_thread = Integer.valueOf(Config.getParam("rest", "number_max_thread"));
         userName=Config.getParam("Admin", "userName");
         password=Config.getParam("Admin", "password");
+        swapCacheTime= Integer.valueOf(Config.getParam("Cache", "swapCacheTime"));
+        
     }
 
     public static synchronized getConfig getInstance() {
@@ -84,5 +87,8 @@ public class getConfig {
     
     public String password(){
         return password;
+    }
+    public int swapCacheTime(){
+        return swapCacheTime;
     }
 }
