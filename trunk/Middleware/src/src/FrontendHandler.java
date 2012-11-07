@@ -4,12 +4,15 @@
  */
 package src;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import libs.Item;
 import libs.Tag;
 import libs.User;
@@ -210,7 +213,15 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     @Override
     public Item getRandomItemhaveTag(String tagID) throws TException {
         Item item;
-        List<String> listitem = getAllItemsIDhaveTag(tagID, 1000);
+        int numberItemOfTag = 0;
+        try {
+            numberItemOfTag = getConfig.getInstance().numberItemofTag();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(FrontendHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FrontendHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        List<String> listitem = getAllItemsIDhaveTag(tagID, numberItemOfTag);
         if (listitem.isEmpty()) {
             return null;
         }
