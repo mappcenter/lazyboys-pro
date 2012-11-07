@@ -47,7 +47,7 @@ public class searchItemServlet extends HttpServlet {
 
     private Template getItemTemplate() throws Exception {
         TemplateLoader templateLoader = TemplateResourceLoader.create("tpl/");
-        Template template = templateLoader.getTemplate("admin/index/paging_item_1.xtm");
+        Template template = templateLoader.getTemplate("admin/index/paging_search.xtm");
         return template;
     }
 
