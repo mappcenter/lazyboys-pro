@@ -189,7 +189,7 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
         do {
             String tagID = getRandomTag();
             item = getRandomItemhaveTag(tagID);
-        } while (item==null);
+        } while (item == null);
         return item;
         //return handler.getRandomItem();
     }
@@ -306,11 +306,12 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     @Override
     public boolean deleteUser(String userID) throws TException {
         boolean result = handler.deleteUser(userID);
-        if (result && local_cache.containsKey("user" + userID)) {
-            local_cache.remove("user" + userID);
+        local_cache.remove("getAllUser");
+        if (result) {
+            System.out.println("delete success user: " + userID);
         }
+        local_cache.remove("user" + userID);
         return result;
-
     }
 
     @Override
@@ -347,7 +348,9 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
 
     @Override
     public String insertItem(String content, List<String> tagIDs) throws TException {
-        return handler.insertItem(content, tagIDs);
+        String userID = handler.insertItem(content, tagIDs);
+        getUser(userID);
+        return userID;
     }
 
     @Override
@@ -589,11 +592,11 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     public User getUser(String userID) throws TException {
         User user;
         if (local_cache.containsKey("user" + userID)) {
-            //System.out.println("get user " + userID + "from cache ...");
+            System.out.println("get user " + userID + "from cache ...");
             user = (User) local_cache.get("user" + userID);
             return user;
         }
-        //System.out.println("get user " + userID + "from backend ...");
+        System.out.println("get user " + userID + "from backend ...");
         user = handler.getUser(userID);
         local_cache.put("user" + userID, user);
         return user;
@@ -603,12 +606,12 @@ public class FrontendHandler implements libs.MiddlewareFrontend.Iface {
     public List<String> getAllUser() throws TException {
         List<String> listUser;
         if (local_cache.containsKey("getAllUser")) {
-            //System.out.println("get all user from cache ...");
+            System.out.println("get all user from cache ...");
             listUser = (List<String>) local_cache.get("getAllUser");
             return listUser;
         }
         //start cache
-        //System.out.println("get all user from backend ...");
+        System.out.println("get all user from backend ...");
         listUser = handler.getAllUser();
         local_cache.put("getAllUser", listUser);
         for (String userID : listUser) {
