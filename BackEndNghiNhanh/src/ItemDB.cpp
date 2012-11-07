@@ -242,7 +242,7 @@ vector<Item> ItemDB::getAllItems(int64_t number) {
     if (number == 0 || number<-1)
         return result;
 
-    int64_t size = grassDB.count() - 1;
+    int64_t size = grassDB.count();
     if (number > size || number == -1)
         number = size;
 
@@ -532,7 +532,7 @@ vector<Item> ItemDB::getItemsPage(int64_t pageNumber, int32_t numberItems, strin
     }
     Item item;
     if (tagID == "-1") {
-        int64_t size = grassDB.count() - 1;
+        int64_t size = grassDB.count();
         int totalPageNumber;
         if (size % numberItems == 0)
             totalPageNumber = size / numberItems;
@@ -860,7 +860,7 @@ vector<Item> ItemDB::getItemsPageKeyword(string keyWord, int64_t pageNumber, int
         poco_error(*logger, "getItemsPage: numberItems < 0");
         return lItem;
     }
-    int64_t size = grassDB.count() - 1;
+    int64_t size = grassDB.count();
 
     int totalPageNumber;
     if (size % itemNumber == 0)
@@ -874,23 +874,24 @@ vector<Item> ItemDB::getItemsPageKeyword(string keyWord, int64_t pageNumber, int
         pageNumber = totalPageNumber;
     }
 
-    int64_t first = (pageNumber - 1) * itemNumber - 1;
+    int64_t first = (pageNumber - 1) * itemNumber;
     int64_t last = pageNumber * itemNumber;
-    int64_t i = 0;
+    int count = 0;
     string key, value;
     DB::Cursor* cur = grassDB.cursor();
     cur->jump();
 
     Item item;
-    while (i < last) {
-        cur->get(&key, &value, true);
+    while (cur->get(&key, &value, true)) {
         if (Utils::findStringInString(value, keyWord)) {
+            count++;
+            if (count < first)
+                continue;
             item = convertJsonToItem(value);
-            if (i > first) {
-                item.itemID = key;
-                lItem.push_back(item);
-            }
-            i++;
+            item.itemID = key;
+            lItem.push_back(item);
+            if (count >= last)
+                break;
         }
     }
     delete cur;
@@ -1037,7 +1038,7 @@ HashDB& ItemDB::getHashDB() {
 }
 
 int64_t ItemDB::getSize() {
-    return grassDB.count() - 1;
+    return grassDB.count();
 }
 
 void ItemDB::setSynDB(synchronizeDB* synDBPtr) {

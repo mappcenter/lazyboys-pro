@@ -63,8 +63,6 @@ int64_t Utils::getRandomNumber(int64_t max) {
  * @return bool true neu co, false neu khong co
  */
 bool Utils::findStringInString(string str1, string str2) {
-    //str1 = toLowerInPlace(str1);
-    //str2 = toLowerInPlace(str2);
     size_t found = str1.find(str2);
     if (found == string::npos) {
         return false;
