@@ -36,9 +36,9 @@ public class IndexServlet extends HttpServlet {
         try {
             String content = this.render(req);
             HttpSession session=req.getSession();
-            System.out.println(session);
+            //System.out.println(session);
             String user = (String) session.getAttribute("user");
-            System.out.println(user);
+            //System.out.println(user);
             if(user==null){
                 resp.sendRedirect("/login");
             }

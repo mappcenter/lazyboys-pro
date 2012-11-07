@@ -11,7 +11,6 @@ import hapax.TemplateDictionary;
 import hapax.TemplateLoader;
 import hapax.TemplateResourceLoader;
 import java.io.IOException;
-import java.util.Dictionary;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServlet;
