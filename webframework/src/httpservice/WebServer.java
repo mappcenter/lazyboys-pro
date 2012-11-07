@@ -152,6 +152,7 @@ public class WebServer {
         servletContextHandler.addServlet(new ServletHolder(new searchItemServlet()), "/searchItem");
         
         servletContextHandler.addServlet(new ServletHolder(new loginServlet()), "/login");
+        servletContextHandler.addServlet(new ServletHolder(new deleteUserServlet()), "/deleteUser");
            
         server.setHandler(servletContextHandler);
         
