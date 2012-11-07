@@ -568,7 +568,7 @@ function changeUserRole(userID, userToken, userRole){
         if(data){           
             var elem=document.getElementById(userID);
             elem.innerHTML=userRolename
-            $(elem).parent().find('a').attr('href', "javascript:changeUserRole('"+userID+"', '"+userToken+"', "+userRole+");");
+            $(elem).parent().find('td:nth-child(1) a').attr('href', "javascript:changeUserRole('"+userID+"', '"+userToken+"', "+userRole+");");
         }
     });
 }
@@ -666,10 +666,13 @@ function editTag(tagID){
 function deleteUser(userID){
     var confir=confirm("Are you sure???");
     if(confir==true){
+        alert(confir);
         $.post('deleteUser',{userID:userID}, function(){
             var tabName=$('#main-nav > li > a.current').attr('id');
+            alert(tabName);
             $.post('getContentTab',{tabName:tabName}, function(data){
                 $("#table_pagination").html(data);
+                alert(data);
                 regen();
             });
         });
