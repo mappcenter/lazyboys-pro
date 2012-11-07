@@ -43,7 +43,7 @@
                     <h1 id="logo">Admin Control Panel </h1>
 
                     <div id="header_buttons">
-                        <a href="/">view website</a>
+                        <a href="http://fresher2012.live/">view website</a>
 
                     </div><!-- end #header_buttons -->
 
@@ -149,14 +149,14 @@
                             </ul>
                         </li>
 
-                        <li>
+<!--                        <li>
                             <a id="Cache" href="#">
                                 Cache
                             </a>
 
                             <ul>
                                 <li><a href="#" class="current">Manage Cache</a></li>
-                                <!--                                <li><a href="#">Edit Cache</a></li>-->
+                                                                <li><a href="#">Edit Cache</a></li>
                             </ul>
                         </li>
 
@@ -171,7 +171,7 @@
                                 <li><a href="#" class="current">Account settings</a></li>
                                 <li><a href="#">Domain settings</a></li>
                             </ul>
-                        </li>
+                        </li>-->
                     </ul><!-- end #nav -->
 
                 </div><!-- end #header -->

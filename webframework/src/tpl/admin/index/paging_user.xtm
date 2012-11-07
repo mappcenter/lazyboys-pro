@@ -23,13 +23,14 @@
         </td>
         <td>{{userToken}}</td>
         <td id="{{userID}}">{{userRoleName}}</td>
-        <td>
-<!--            <a href="#">
-                <img src="http://118.102.6.116:81/images/icons/pencil.png" alt="EditUser" title="{{userRole}}"/>
-            </a>-->
-<a href="javascript:changeUserRole('{{userID}}', '{{userToken}}', {{userRole}});" rel="{{userRole}}">
-                <img src="http://118.102.6.116:81/images/icons/cross.png" alt="DeleteUser" title="{{userRole}}" />
-            </a><!-- to create a tooltip-style confirmation, just add .confirmation to the <a>-tag -->
+        <td style="width: 150px;"><table>
+                <tr><td><a href="javascript:changeUserRole('{{userID}}', '{{userToken}}', {{userRole}});" rel="{{userRole}}" class="graybutton" style="width: 40px;">
+                Change
+            </a></td><td><a href="javascript:deleteUser({{userID}});" rel="{{userRole}}" class="graybutton" style="width: 40px;">
+                Delete
+            </a></td></tr>
+            </table>
+            
         </td>
     </tr>
     {{/list_section}}
@@ -47,7 +48,7 @@
             </div>
             <div class="bulk-actions">
 
-<!--                <a href="#" class="graybutton">Delete selected</a>-->
+                <!--                <a href="#" class="graybutton">Delete selected</a>-->
             </div>
         </td>
     </tr>

@@ -21,10 +21,10 @@
         <td>{{tagName}}</td>
         <td>
             <a href="javascript:editTag({{tagID}});">
-                <img src="http://118.102.6.116:81/images/icons/pencil.png" alt="EditTag" />
+                <img src="http://localhost:81/images/icons/pencil.png" alt="EditTag" />
             </a>
             <a href="#" class="confirmation" rel="{{tagID}}">
-                <img src="http://118.102.6.116:81/images/icons/cross.png" alt="DeleteTag" />
+                <img src="http://localhost:81/images/icons/cross.png" alt="DeleteTag" />
             </a>
         </td>
     </tr>

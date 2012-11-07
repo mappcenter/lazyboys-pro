@@ -27,11 +27,9 @@
     <tr>
         <td colspan="4">	
             <div class="pagination" id="pagination" >
-                <a href="javascript:paging(1);" rel="1">first</a>
-                {{#listPage_section}}
-                {{page}}
-                {{/listPage_section}}
-                <a href="javascript:paging({{last}});" rel="{{last}}">last</a>
+                <a href="javascript:paging({{back}});">back</a>
+                <a href="#" class="graybutton pagelink active">{{page}}</a>
+                <a href="javascript:paging({{next}});">next</a>
             </div>
             <div class="bulk-actions" onclick="deleteItem();">
                 <a href="#" class="graybutton">Delete selected</a>
