@@ -41,7 +41,7 @@ public class WebServer {
 
         // user services
         
-        servletContextHandler.addServlet(new ServletHolder(new IndexControllerServlet()), "/");
+        servletContextHandler.addServlet(new ServletHolder(new webservlet.Client.IndexControllerServlet()), "/");
         
         servletContextHandler.addServlet(new ServletHolder(new TestFeedControllerServlet()), "/testfeed");
         
