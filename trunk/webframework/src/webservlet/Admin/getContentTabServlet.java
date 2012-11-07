@@ -222,10 +222,10 @@ public class getContentTabServlet extends HttpServlet {
             listUserSection.setVariable("userRole", String.valueOf(user.userRole));
             String userRoleName = null;
             if (user.userRole == 1) {
-                userRoleName = "Admin";
+                userRoleName = "Unblocked";
             }
             if (user.userRole == 0) {
-                userRoleName = "User";
+                userRoleName = "Unblocked";
             }
             if (user.userRole == -1) {
                 userRoleName = "Blocked";
