@@ -106,7 +106,7 @@ public class WebServer {
 
         //Admin
 
-        
+        //trang chu admin
         servletContextHandler.addServlet(new ServletHolder(new IndexServlet()), "/admin");
         
         
@@ -152,6 +152,7 @@ public class WebServer {
         servletContextHandler.addServlet(new ServletHolder(new searchItemServlet()), "/searchItem");
         
         servletContextHandler.addServlet(new ServletHolder(new loginServlet()), "/login");
+        
         servletContextHandler.addServlet(new ServletHolder(new deleteUserServlet()), "/deleteUser");
            
         server.setHandler(servletContextHandler);
@@ -160,7 +161,8 @@ public class WebServer {
         System.out.println("Caching data ...");
         handler.startLocalCache();
         Timer timer = new Timer();
-        timer.schedule(new MyTask(), (10 * 60 * 1000), (10 * 60 * 1000));
+        int swapCacheTime=getConfig.getInstance().swapCacheTime();
+        timer.schedule(new MyTask(), swapCacheTime, swapCacheTime);
         server.start();
         server.join();
     }
