@@ -15,8 +15,8 @@
         <td>{{itemContent}}</td>
         <td>
             <input type="hidden" id="hidden{{itemID}}" value='{{tagIDs}}'/>
-            <a href="javascript:editItem({{itemID}});" rel="EditItem"><img src="http://localhost:81/images/icons/pencil.png" alt="Edit" /></a>
-            <a href="#" class="confirmation" rel="{{itemID}}"><img src="http://localhost:81/images/icons/cross.png" alt="Delete" /></a>
+            <a href="javascript:editItem({{itemID}});" rel="EditItem"><img src="http://118.102.6.116:81/images/icons/pencil.png" alt="Edit" /></a>
+            <a href="#" class="confirmation" rel="{{itemID}}"><img src="http://118.102.6.116:81/images/icons/cross.png" alt="Delete" /></a>
 
         </td>
     </tr>
